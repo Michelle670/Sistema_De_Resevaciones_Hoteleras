@@ -1,0 +1,11 @@
+
+package goHotel.model;
+/**
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ */
+public class Reserva 
+{
+    
+}
