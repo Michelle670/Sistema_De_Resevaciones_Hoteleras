@@ -1,13 +1,92 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package goHotel.model;
 
 /**
- *
- * @author soloa
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
  */
-public class TipoHabitacion {
+public class TipoHabitacion 
+{
+//==============================================================================
+//ATRIBUTOS   
+//==============================================================================
+    private String idTipo;
+    private String nombreTipo;
+    private String descripcion;
+    private int capacidad;
+    private double precioBase;
+//==============================================================================
+//CONSTRUCTOR
+//==============================================================================
+    public TipoHabitacion() {
+        this.idTipo = "";
+        this.nombreTipo = "";
+        this.descripcion = "";
+        this.capacidad = 0;
+        this.precioBase = 0.0;
+    }
+
+    public TipoHabitacion(String idTipo, String nombreTipo, String descripcion, int capacidad, double precioBase) 
+    {
+        this.idTipo = idTipo;
+        this.nombreTipo = nombreTipo;
+        this.descripcion = descripcion;
+        this.capacidad = capacidad;
+        this.precioBase = precioBase;
+    } 
+//==============================================================================
+//GETTERS Y SETTERS
+//============================================================================== 
+
+    public String getIdTipo() 
+    {
+        return idTipo;
+    }
+
+    public void setIdTipo(String idTipo) 
+    {
+        this.idTipo = idTipo;
+    }
+
+    public String getNombreTipo() 
+    {
+        return nombreTipo;
+    }
+
+    public void setNombreTipo(String nombreTipo) 
+    {
+        this.nombreTipo = nombreTipo;
+    }
+
+    public String getDescripcion() 
+    {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) 
+    {
+        this.descripcion = descripcion;
+    }
+
+    public int getCapacidad() 
+    {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad)
+    {
+        this.capacidad = capacidad;
+    }
+
+    public double getPrecioBase() 
+    {
+        return precioBase;
+    }
+
+    public void setPrecioBase(double precioBase) 
+    {
+        this.precioBase = precioBase;
+    }
     
 }

@@ -4,10 +4,12 @@
  */
 package goHotel.controller;
 
+
 /**
  *
  * @author soloa
  */
-public class HotelController {
-    
+public class HotelController 
+{
+      
 }
