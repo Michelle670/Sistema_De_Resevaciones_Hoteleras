@@ -47,6 +47,7 @@ public class Menu extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        chmSalir = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Principal");
@@ -64,12 +65,13 @@ public class Menu extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
@@ -163,6 +165,16 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("SALIR");
+
+        chmSalir.setSelected(true);
+        chmSalir.setText("Salir");
+        chmSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmSalirActionPerformed(evt);
+            }
+        });
+        jMenu4.add(chmSalir);
+
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -196,6 +208,10 @@ public class Menu extends javax.swing.JFrame {
        p.setVisible(true);
        p.setLocationRelativeTo(null);
     }//GEN-LAST:event_chmGestionPaisesActionPerformed
+
+    private void chmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmSalirActionPerformed
+       System.exit(0);  
+    }//GEN-LAST:event_chmSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,6 +256,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem chmGestionPaises;
     private javax.swing.JCheckBoxMenuItem chmGestionPlanLealtad;
     private javax.swing.JCheckBoxMenuItem chmGestionReservas;
+    private javax.swing.JCheckBoxMenuItem chmSalir;
     private javax.swing.JCheckBoxMenuItem chmTipoHabitacion;
     private javax.swing.JCheckBoxMenuItem chmTipoServicio;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
