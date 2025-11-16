@@ -1,30 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package goHotel.view;
 
+package goHotel.view;
+import goHotel.controller.HotelController;
+import goHotel.controller.PaisController;
 import goHotel.model.Hotel;
-import goHotel.controller.ConexionBD;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.io.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author soloa
+* AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
  */
 public class GestionHoteles extends javax.swing.JFrame {
+    private HotelController controller;
     /**
      * Creates new form GestionHoteles
      */
     public GestionHoteles() {
         initComponents();
+        jtGestionHoteles.setDefaultEditor(Object.class, null);  // ← DESACTIVA EDICIÓN
+        controller = new HotelController();
+        PaisController pc = new PaisController();
+        pc.cargarPaises(jcPais);
         java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
         jtGestionHoteles.getTableHeader().setBackground(lightGray);
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
@@ -59,7 +57,8 @@ public class GestionHoteles extends javax.swing.JFrame {
         jtGestionHoteles = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDireccion = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcPais = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Hoteles");
@@ -176,17 +175,22 @@ public class GestionHoteles extends javax.swing.JFrame {
         jtGestionHoteles.setForeground(new java.awt.Color(51, 51, 51));
         jtGestionHoteles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "País", "Ciudad", "Dirección"
+                "Código", "Nombre", " ID País", " País", "Ciudad", "Dirección"
             }
         ));
         jtGestionHoteles.setGridColor(new java.awt.Color(255, 255, 255));
         jtGestionHoteles.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        jtGestionHoteles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtGestionHotelesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtGestionHoteles);
 
         txtDireccion.setBackground(new java.awt.Color(255, 255, 255));
@@ -195,75 +199,80 @@ public class GestionHoteles extends javax.swing.JFrame {
         txtDireccion.setRows(5);
         jScrollPane2.setViewportView(txtDireccion);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcPais.setBackground(new java.awt.Color(255, 255, 255));
+        jcPais.setForeground(new java.awt.Color(0, 0, 0));
+        jcPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/LogoGOHOTEL_1.jpeg"))); // NOI18N
+        jLabel7.setText("jLabel7");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 752, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(46, 46, 46)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(33, 33, 33)
-                                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(62, 62, 62)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane2)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(jScrollPane2))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jcPais, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+                                        .addGap(35, 35, 35)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(278, 278, 278)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(10, 10, 10)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jcPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -281,336 +290,93 @@ public class GestionHoteles extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-      registrarHotel();
+    int idPais = jcPais.getSelectedIndex() + 1; // mapeo temporal: primer ítem -> id 1
+    if (controller.registrarHotel(txtCodigo.getText(), txtNombre.getText(), idPais, txtCiudad.getText(), txtDireccion.getText())) {
+        limpiarCampos();
+        actualizarTabla();
+    }   
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-       editarHotel();
+    int idPais = jcPais.getSelectedIndex() + 1;
+    if (controller.editarHotel(txtCodigo.getText(), txtNombre.getText(), idPais, txtCiudad.getText(), txtDireccion.getText())) {
+        limpiarCampos();
+        actualizarTabla();
+    }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
-       buscarHotel();
+       Hotel hotel = controller.buscarHotel(txtCodigo.getText());
+    if (hotel != null) {
+        txtCodigo.setText(String.valueOf(hotel.getIdHotel()));
+        txtNombre.setText(hotel.getNombreHotel());
+        // seleccionar el combo por idPais (asumimos que idPais empieza en 1 y el combo está en ese orden)
+        int idPais = hotel.getIdPais();
+        if (idPais > 0 && idPais <= jcPais.getItemCount()) {
+            jcPais.setSelectedIndex(idPais - 1);
+        } else {
+            jcPais.setSelectedIndex(0); // fallback
+        }
+        txtCiudad.setText(hotel.getCiudad());
+        txtDireccion.setText(hotel.getDireccion());
+    }
     }//GEN-LAST:event_BtnBuscarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       eliminarHotel(); 
+     String codigoTexto = txtCodigo.getText().trim();
+
+    if (codigoTexto.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Ingrese el código del hotel que desea eliminar",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    int codigo = Integer.parseInt(codigoTexto);
+
+    controller.eliminarHotel(codigo, this);  
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-       salir();
+      int confirmacion = JOptionPane.showConfirmDialog(null, 
+        "¿Está seguro de salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        System.exit(0);
+    }
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        actualizarTabla();
+     actualizarTabla();
     }//GEN-LAST:event_formWindowOpened
- // MÉTODOS DE LÓGICA DE NEGOCIO
+
+    private void jtGestionHotelesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtGestionHotelesMouseClicked
+     
+    int fila = jtGestionHoteles.getSelectedRow();
+
+    if (fila == -1) 
+        return; // No seleccionó nada
     
-    private void registrarHotel() {
-        try {
-            String codigoTexto = txtCodigo.getText().trim();
-            String nombre = txtNombre.getText().trim();
-            String pais = txtPais.getText().trim();
-            String ciudad = txtCiudad.getText().trim();
-            String direccion = txtDireccion.getText().trim();
-
-            if (codigoTexto.isEmpty() || nombre.isEmpty() || pais.isEmpty() || 
-                ciudad.isEmpty() || direccion.isEmpty()) {
-                JOptionPane.showMessageDialog(null, 
-                    "Todos los campos son obligatorios", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int codigo = Integer.parseInt(codigoTexto);
-            
-            // Verificar si ya existe un hotel con ese código
-            if (buscarHotelPorCodigo(codigo) != null) {
-                JOptionPane.showMessageDialog(null, 
-                    "Ya existe un hotel con ese código", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Hotel nuevoHotel = new Hotel(codigo, nombre, pais, ciudad, direccion);
-            //DAO
-            if (nuevoHotel.agregar()) 
-            {
-                JOptionPane.showMessageDialog(null, "Hotel agregado correctamente.","Éxito",JOptionPane.INFORMATION_MESSAGE);
-            } 
-            else 
-            {
-                JOptionPane.showMessageDialog(null, "Error: No se pudo agregar el hotel.","Fallido",JOptionPane.ERROR_MESSAGE);
-            }
-
-            limpiarCampos();
-            actualizarTabla();
-
-        } 
-        catch (NumberFormatException e) 
-        {
-            JOptionPane.showMessageDialog(null, 
-                "El código debe ser un número válido", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        } 
-        catch (Exception e) 
-        {
-            JOptionPane.showMessageDialog(null, 
-                "Error: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        }
-    }
-//==============================================================================
-    private void editarHotel() {
-    try {
-        String codigoTexto = txtCodigo.getText().trim();
-
-        if (codigoTexto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Ingrese el código del hotel que va a editar", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int idHotel = Integer.parseInt(codigoTexto);
-
-        String nombre = txtNombre.getText().trim();
-        String pais = txtPais.getText().trim();
-        String ciudad = txtCiudad.getText().trim();
-        String direccion = txtDireccion.getText().trim();
-
-        if (nombre.isEmpty() || pais.isEmpty() || ciudad.isEmpty() || direccion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Todos los campos son obligatorios", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Connection conn = ConexionBD.getConnection();
-        String sql = "UPDATE hotel SET nombre = ?, pais = ?, ciudad = ?, direccion = ? WHERE id_hotel = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
         
-        ps.setString(1, nombre);
-        ps.setString(2, pais);
-        ps.setString(3, ciudad);
-        ps.setString(4, direccion);
-        ps.setInt(5, idHotel);
+    String codigo = jtGestionHoteles.getValueAt(fila, 0).toString();
+    txtCodigo.setText(codigo);
+    
+        
+    }//GEN-LAST:event_jtGestionHotelesMouseClicked
 
-        int filasActualizadas = ps.executeUpdate();
-
-        if (filasActualizadas > 0) {
-            JOptionPane.showMessageDialog(this, 
-                "Hotel actualizado correctamente", 
-                "Éxito",
-                JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, 
-                "No existe un hotel con ese ID", 
-                "Advertencia", 
-                JOptionPane.WARNING_MESSAGE);
-        }
-
-        ps.close();
-        // NO cerramos conn porque es conexión global
-
-        limpiarCampos();
-        actualizarTabla();
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, 
-            "El código debe ser un número válido", 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "Error: " + e.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    }
+public void limpiarCampos() {
+    txtCodigo.setText("");
+    txtNombre.setText("");
+    jcPais.setSelectedIndex(0);
+    txtCiudad.setText("");
+    txtDireccion.setText("");
+    txtCodigo.requestFocus();
 }
 
-//==============================================================================
-private void buscarHotel() {
-        try {
-            String codigoTexto = txtCodigo.getText().trim();
-
-            if (codigoTexto.isEmpty()) {
-                JOptionPane.showMessageDialog(null, 
-                    "Ingrese el código del hotel que va a buscar", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int codigo = Integer.parseInt(codigoTexto);
-            Hotel hotel = buscarHotelPorCodigo(codigo);
-
-            if (hotel != null) {
-                txtCodigo.setText(String.valueOf(hotel.getIdHotel()));
-                txtNombre.setText(hotel.getNombreHotel());
-                txtPais.setText(hotel.getPais());
-                txtCiudad.setText(hotel.getCiudad());
-                txtDireccion.setText(hotel.getDireccion());
-
-                JOptionPane.showMessageDialog(null, 
-                    "Hotel encontrado", 
-                    "Éxito", 
-                    JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, 
-                    "No se encontró el hotel", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, 
-                "El código debe ser un número válido", 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-//==============================================================================
-    private void eliminarHotel() {
-        try {
-            String codigoTexto = txtCodigo.getText().trim();
-
-            if (codigoTexto.isEmpty()) {
-                JOptionPane.showMessageDialog(null, 
-                    "Ingrese el código del hotel que va a eliminar", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int codigo = Integer.parseInt(codigoTexto);
-           
-            // Confirmación antes de eliminar
-        int confirmacion = JOptionPane.showConfirmDialog(null,
-            "¿Está seguro de eliminar el hotel con código: " + codigo + "?",
-            "Confirmar Eliminación",
-            JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-
-            Connection conn = null;
-            PreparedStatement ps = null;
-
-            try {
-                conn = ConexionBD.getConnection();
-                String sql = "DELETE FROM hotel WHERE id_hotel = ?";
-                ps = conn.prepareStatement(sql);
-                ps.setInt(1, codigo);
-
-                int filasAfectadas = ps.executeUpdate();
-
-                if (filasAfectadas > 0) {
-                    JOptionPane.showMessageDialog(null, 
-                        "Hotel eliminado exitosamente", 
-                        "Éxito", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, 
-                        "No existe un hotel con ese código", 
-                        "Advertencia", 
-                        JOptionPane.WARNING_MESSAGE);
-                }
-
-                limpiarCampos();
-                actualizarTabla();
-
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, 
-                    "Error al eliminar el hotel: " + e.getMessage(), 
-                    "Error SQL", 
-                    JOptionPane.ERROR_MESSAGE);
-
-            } finally {
-                try { if (ps != null) ps.close(); } catch (Exception e) {}
-                // No cerramos conn porque puede ser global
-            }
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, 
-            "El código debe ser un número válido", 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    }
+public void actualizarTabla() {
+    DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
+    controller.cargarDatosEnTabla(modelo);
 }
-//==============================================================================
-    private void actualizarTabla() 
-    {
-        DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
-        modelo.setRowCount(0);
-
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = ConexionBD.getConnection();
-            String sql = "SELECT id_hotel, nombre, pais, ciudad, direccion FROM hotel";
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getInt("id_hotel"),
-                    rs.getString("nombre"),
-                    rs.getString("pais"),
-                    rs.getString("ciudad"),
-                    rs.getString("direccion")
-                };
-                modelo.addRow(fila);
-            }
-            
-            jtGestionHoteles.setModel(modelo);
-        } catch (SQLException e) {
-            System.out.println("Error al cargar los hoteles: " + e.getMessage());
-        } finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {}
-            try { if (ps != null) ps.close(); } catch (Exception e) {}
-            // NO cerramos conn porque es conexión global
-        }
-    }
-//==============================================================================
-    private void salir() {
-        int confirmacion = JOptionPane.showConfirmDialog(null,
-                "¿Está seguro de salir?",
-                "Confirmar Salida",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
-    }
-//==============================================================================    
-   private Hotel buscarHotelPorCodigo(int codigo) {
-        //for (Hotel hotel : listaHoteles) {
-        //    if (hotel.getIdHotel() == codigo) {
-        //        return hotel;
-        //    }
-        //}
-        return null;
-    }
-
-//==============================================================================
-    private void limpiarCampos() {
-        txtCodigo.setText("");
-        txtNombre.setText("");
-        txtPais.setText("");
-        txtCiudad.setText("");
-        txtDireccion.setText("");
-        txtCodigo.requestFocus();
-    } 
     /**
      * @param args the command line arguments
      */
@@ -652,16 +418,17 @@ private void buscarHotel() {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JComboBox<String> jcPais;
     private javax.swing.JTable jtGestionHoteles;
     private javax.swing.JTextField txtCiudad;
     private javax.swing.JTextField txtCodigo;
