@@ -34,16 +34,35 @@ public class LoginController
 
 
     // ---------------------------
-    // LOGIN EMPLEADO (FIJO)
+    // LOGIN EMPLEADO 
     // ---------------------------
     public boolean loginEmpleado(String correo, String pass) {
-        // SOLO acepta:
-        // correo: gohotel@gmail.com
-        // pass: 12345
-        return correo.equals("gohotel@gmail.com") && pass.equals("12345");
+
+    String sql = "SELECT password FROM empleado WHERE correo = ?";
+
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, correo);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            // contraseña almacenada en la BD
+            String password = rs.getString("password");
+
+            // Comparamos la contraseña ingresada con la de la BD
+            return pass.equals(password);
+        } else {
+            // si no encuentra el correo
+            return false;
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
     }
-
-
+}
     // ---------------------------
     // LOGIN CLIENTE 
     // ---------------------------
@@ -65,6 +84,44 @@ public class LoginController
             return false;
         }
     }
+    
+    // ---------------------------
+    //   Metodo GetUserInfo
+    // --------------------------- 
+public static String[] getUserInfo(String correo, String tipo) {
 
+    String sql;
+
+    if (tipo.equalsIgnoreCase("empleado")) {
+        sql = "SELECT A.nombre, B.nombre AS nombre_rol " +
+              "FROM empleado A " +
+              "INNER JOIN rol_empleado B ON A.id_rol = B.id_rol " +
+              "WHERE A.correo = ?";
+    } else {
+        sql = "SELECT nombre, null AS nombre_rol FROM cliente WHERE correo = ?";
+    }
+
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, correo);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            String nombre = rs.getString("nombre");
+            String rol = rs.getString("nombre_rol");
+            
+            return new String[]{ nombre, rol };   // ← TUPLA
+        } else {
+            return null;
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
+   
  
 }

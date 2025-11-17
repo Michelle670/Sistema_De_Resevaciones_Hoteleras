@@ -4,7 +4,9 @@
  */
 package goHotel.view;
 
+import goHotel.controller.LoginController;
 import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 
 /**
 * AUTOR: GRUPO 3
@@ -15,12 +17,26 @@ public class Menu extends javax.swing.JFrame {
 
     /**
      * Creates new form Menu
+ 
      */
+    public Menu(String correo, String tipo) 
+    {
+        initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
+        String[] infoUsuario = LoginController.getUserInfo(correo, tipo);
+        if (tipo.equalsIgnoreCase("Cliente")) 
+        {
+            mnuMantenimientos.setVisible(false);
+            mnuLimpieza.setVisible(false);
+        }
+        jlCorreo.setText(infoUsuario[0]);
+        jlTipo.setText(infoUsuario[1]);
+    }
     public Menu() {
+        // Llama al principal con valores por defecto
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,12 +46,14 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jlTipo = new javax.swing.JLabel();
+        jlCorreo = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mnuReservas = new javax.swing.JMenu();
         chmGestionReservas = new javax.swing.JCheckBoxMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mnuMantenimientos = new javax.swing.JMenu();
         chmGestionHoteles = new javax.swing.JCheckBoxMenuItem();
         chmGestionHabitaciones = new javax.swing.JCheckBoxMenuItem();
         chmTipoServicio = new javax.swing.JCheckBoxMenuItem();
@@ -44,9 +62,9 @@ public class Menu extends javax.swing.JFrame {
         chmGestionPlanLealtad = new javax.swing.JCheckBoxMenuItem();
         chmGestionClientes = new javax.swing.JCheckBoxMenuItem();
         chmGestionEmpleados = new javax.swing.JCheckBoxMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        mnuLimpieza = new javax.swing.JMenu();
+        chmReporteOcupacion = new javax.swing.JCheckBoxMenuItem();
+        mnuSalir = new javax.swing.JMenu();
         chmSalir = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,31 +72,42 @@ public class Menu extends javax.swing.JFrame {
         setIconImage(getIconImage());
         setIconImages(getIconImages());
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jlTipo.setForeground(new java.awt.Color(0, 0, 0));
+        jlTipo.setText("Tipo");
+        getContentPane().add(jlTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 530, 160, 30));
+
+        jlCorreo.setForeground(new java.awt.Color(0, 0, 0));
+        jlCorreo.setText("Correo");
+        getContentPane().add(jlCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 510, 180, 30));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/MENUADOC.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/MenuFinal.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 580));
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jMenu1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenu1.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu1.setText("RESERVAS");
+        mnuReservas.setBackground(new java.awt.Color(255, 255, 255));
+        mnuReservas.setForeground(new java.awt.Color(0, 0, 0));
+        mnuReservas.setText("RESERVAS");
 
         chmGestionReservas.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionReservas.setForeground(new java.awt.Color(0, 0, 0));
@@ -90,13 +119,13 @@ public class Menu extends javax.swing.JFrame {
                 chmGestionReservasActionPerformed(evt);
             }
         });
-        jMenu1.add(chmGestionReservas);
+        mnuReservas.add(chmGestionReservas);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mnuReservas);
 
-        jMenu2.setBackground(new java.awt.Color(255, 255, 255));
-        jMenu2.setForeground(new java.awt.Color(0, 0, 0));
-        jMenu2.setText("GESTION");
+        mnuMantenimientos.setBackground(new java.awt.Color(255, 255, 255));
+        mnuMantenimientos.setForeground(new java.awt.Color(0, 0, 0));
+        mnuMantenimientos.setText("MANTENIMIENTOS");
 
         chmGestionHoteles.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionHoteles.setForeground(new java.awt.Color(0, 0, 0));
@@ -107,25 +136,25 @@ public class Menu extends javax.swing.JFrame {
                 chmGestionHotelesActionPerformed(evt);
             }
         });
-        jMenu2.add(chmGestionHoteles);
+        mnuMantenimientos.add(chmGestionHoteles);
 
         chmGestionHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionHabitaciones.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionHabitaciones.setSelected(true);
         chmGestionHabitaciones.setText("Gestion de Habitaciones");
-        jMenu2.add(chmGestionHabitaciones);
+        mnuMantenimientos.add(chmGestionHabitaciones);
 
         chmTipoServicio.setBackground(new java.awt.Color(255, 255, 255));
         chmTipoServicio.setForeground(new java.awt.Color(0, 0, 0));
         chmTipoServicio.setSelected(true);
         chmTipoServicio.setText("Tipo de Servicio");
-        jMenu2.add(chmTipoServicio);
+        mnuMantenimientos.add(chmTipoServicio);
 
         chmTipoHabitacion.setBackground(new java.awt.Color(255, 255, 255));
         chmTipoHabitacion.setForeground(new java.awt.Color(0, 0, 0));
         chmTipoHabitacion.setSelected(true);
         chmTipoHabitacion.setText("Tipos de Habitacion");
-        jMenu2.add(chmTipoHabitacion);
+        mnuMantenimientos.add(chmTipoHabitacion);
 
         chmGestionPaises.setSelected(true);
         chmGestionPaises.setText("Gestión de Países");
@@ -134,37 +163,37 @@ public class Menu extends javax.swing.JFrame {
                 chmGestionPaisesActionPerformed(evt);
             }
         });
-        jMenu2.add(chmGestionPaises);
+        mnuMantenimientos.add(chmGestionPaises);
 
         chmGestionPlanLealtad.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionPlanLealtad.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionPlanLealtad.setSelected(true);
         chmGestionPlanLealtad.setText("Gestion de Planes de Lealtad");
-        jMenu2.add(chmGestionPlanLealtad);
+        mnuMantenimientos.add(chmGestionPlanLealtad);
 
         chmGestionClientes.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionClientes.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionClientes.setSelected(true);
         chmGestionClientes.setText("Gestion de Clientes");
-        jMenu2.add(chmGestionClientes);
+        mnuMantenimientos.add(chmGestionClientes);
 
         chmGestionEmpleados.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionEmpleados.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionEmpleados.setSelected(true);
         chmGestionEmpleados.setText("Gestion de Empleados");
-        jMenu2.add(chmGestionEmpleados);
+        mnuMantenimientos.add(chmGestionEmpleados);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(mnuMantenimientos);
 
-        jMenu3.setText("LIMPIEZA");
+        mnuLimpieza.setText("LIMPIEZA");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Reporte de Ocupación");
-        jMenu3.add(jCheckBoxMenuItem1);
+        chmReporteOcupacion.setSelected(true);
+        chmReporteOcupacion.setText("Reporte de Ocupación");
+        mnuLimpieza.add(chmReporteOcupacion);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(mnuLimpieza);
 
-        jMenu4.setText("SALIR");
+        mnuSalir.setText("SALIR");
 
         chmSalir.setSelected(true);
         chmSalir.setText("Salir");
@@ -173,22 +202,11 @@ public class Menu extends javax.swing.JFrame {
                 chmSalirActionPerformed(evt);
             }
         });
-        jMenu4.add(chmSalir);
+        mnuSalir.add(chmSalir);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(mnuSalir);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -256,16 +274,18 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem chmGestionPaises;
     private javax.swing.JCheckBoxMenuItem chmGestionPlanLealtad;
     private javax.swing.JCheckBoxMenuItem chmGestionReservas;
+    private javax.swing.JCheckBoxMenuItem chmReporteOcupacion;
     private javax.swing.JCheckBoxMenuItem chmSalir;
     private javax.swing.JCheckBoxMenuItem chmTipoHabitacion;
     private javax.swing.JCheckBoxMenuItem chmTipoServicio;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jlCorreo;
+    private javax.swing.JLabel jlTipo;
+    private javax.swing.JMenu mnuLimpieza;
+    private javax.swing.JMenu mnuMantenimientos;
+    private javax.swing.JMenu mnuReservas;
+    private javax.swing.JMenu mnuSalir;
     // End of variables declaration//GEN-END:variables
 }

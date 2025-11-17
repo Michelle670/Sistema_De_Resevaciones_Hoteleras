@@ -180,15 +180,26 @@ private LoginController controller = new LoginController();
     String correo = txtCorreo.getText().trim();
     String pass = new String(jPassword.getPassword());
     boolean esEmpleado = jrEmpleado.isSelected();
-
+    String tipoUsuario = "";
+    
+        if (esEmpleado == true) 
+        {
+            tipoUsuario = "Empleado";
+        } else 
+        {
+           tipoUsuario = "Cliente";  
+        }
+        
     // VALIDAR CORREO
-    if (!controller.validarCorreo(correo)) {
+    if (!controller.validarCorreo(correo)) 
+    {
         JOptionPane.showMessageDialog(this, "Correo inválido, debe contener '@' y un '.'.");
         return;
     }
 
     // VALIDAR CONTRASEÑA
-    if (!controller.validarPassword(pass)) {
+    if (!controller.validarPassword(pass)) 
+    {
         JOptionPane.showMessageDialog(this, "La contraseña debe tener mínimo 4 caracteres.");
         return;
     }
@@ -196,30 +207,33 @@ private LoginController controller = new LoginController();
     boolean loginCorrecto = false;
 
     // SI ES EMPLEADO (login fijo)
-    if (esEmpleado) {
+    if (esEmpleado) 
+    {
         loginCorrecto = controller.loginEmpleado(correo, pass);
     }
     // SI ES CLIENTE (se valida en BD)
-    else {
+    else 
+    {
         loginCorrecto = controller.loginCliente(correo, pass);
     }
 
-    if (loginCorrecto) {
+    if (loginCorrecto) 
+    {
         JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!");
 
-        Menu m = new Menu();
+        Menu m = new Menu(txtCorreo.getText(),tipoUsuario);
         m.setVisible(true);
         m.setLocationRelativeTo(null);
 
         this.dispose(); // cerrar ventana de login
-    } else {
+    } else 
+    {
         JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.");
     }
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
-            System.exit(0);  
+    System.exit(0);  
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
