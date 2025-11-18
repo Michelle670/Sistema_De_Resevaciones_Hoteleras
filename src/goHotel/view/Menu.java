@@ -31,7 +31,35 @@ public class Menu extends javax.swing.JFrame {
         }
         jlCorreo.setText(infoUsuario[0]);
         jlTipo.setText(infoUsuario[1]);
+        
+     
+        if (tipo.equalsIgnoreCase("Empleado")) 
+        {
+        String rol = infoUsuario[1].replace("Rol:", "").trim();
+        switch (rol) 
+        {
+        case "Admin":
+          mnuReservas.setVisible(true);
+          mnuMantenimientos.setVisible(true);  
+          mnuLimpieza.setVisible(true);
+          break;
+
+        case "Recepcion":
+          mnuMantenimientos.setVisible(false);  
+          mnuLimpieza.setVisible(false);
+          break;
+            
+        case "Limpieza":
+          mnuMantenimientos.setVisible(false);
+          mnuReservas.setVisible(false);
+          break;
+        default:
+            
+            break;
     }
+        }
+    }
+    
     public Menu() {
         // Llama al principal con valores por defecto
         initComponents();
@@ -46,10 +74,10 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jlTipo = new javax.swing.JLabel();
         jlCorreo = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jlTipo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuReservas = new javax.swing.JMenu();
         chmGestionReservas = new javax.swing.JCheckBoxMenuItem();
@@ -74,31 +102,30 @@ public class Menu extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jlTipo.setForeground(new java.awt.Color(0, 0, 0));
-        jlTipo.setText("Tipo");
-        getContentPane().add(jlTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 530, 160, 30));
-
         jlCorreo.setForeground(new java.awt.Color(0, 0, 0));
-        jlCorreo.setText("Correo");
-        getContentPane().add(jlCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 510, 180, 30));
+        jlCorreo.setText("NombreUsuario");
+        getContentPane().add(jlCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 0, 180, 30));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
+        jlTipo.setForeground(new java.awt.Color(0, 0, 0));
+        jlTipo.setText("RolAcceso");
+        getContentPane().add(jlTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 160, 30));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/MenuFinal.jpeg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 580, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 580));
@@ -110,7 +137,6 @@ public class Menu extends javax.swing.JFrame {
         mnuReservas.setText("RESERVAS");
 
         chmGestionReservas.setBackground(new java.awt.Color(255, 255, 255));
-        chmGestionReservas.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionReservas.setSelected(true);
         chmGestionReservas.setText("Gestion Reservas");
         chmGestionReservas.setName("mnuGestionReservas"); // NOI18N
@@ -128,9 +154,8 @@ public class Menu extends javax.swing.JFrame {
         mnuMantenimientos.setText("MANTENIMIENTOS");
 
         chmGestionHoteles.setBackground(new java.awt.Color(255, 255, 255));
-        chmGestionHoteles.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionHoteles.setSelected(true);
-        chmGestionHoteles.setText("Gestion de Hoteles");
+        chmGestionHoteles.setText("Gestion Hoteles");
         chmGestionHoteles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chmGestionHotelesActionPerformed(evt);
@@ -139,25 +164,27 @@ public class Menu extends javax.swing.JFrame {
         mnuMantenimientos.add(chmGestionHoteles);
 
         chmGestionHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
-        chmGestionHabitaciones.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionHabitaciones.setSelected(true);
-        chmGestionHabitaciones.setText("Gestion de Habitaciones");
+        chmGestionHabitaciones.setText("Gestion Habitaciones");
         mnuMantenimientos.add(chmGestionHabitaciones);
 
         chmTipoServicio.setBackground(new java.awt.Color(255, 255, 255));
-        chmTipoServicio.setForeground(new java.awt.Color(0, 0, 0));
         chmTipoServicio.setSelected(true);
-        chmTipoServicio.setText("Tipo de Servicio");
+        chmTipoServicio.setText("Gestión Tipo Servicio");
         mnuMantenimientos.add(chmTipoServicio);
 
         chmTipoHabitacion.setBackground(new java.awt.Color(255, 255, 255));
-        chmTipoHabitacion.setForeground(new java.awt.Color(0, 0, 0));
         chmTipoHabitacion.setSelected(true);
-        chmTipoHabitacion.setText("Tipos de Habitacion");
+        chmTipoHabitacion.setText("Gestión Tipos Habitación");
+        chmTipoHabitacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmTipoHabitacionActionPerformed(evt);
+            }
+        });
         mnuMantenimientos.add(chmTipoHabitacion);
 
         chmGestionPaises.setSelected(true);
-        chmGestionPaises.setText("Gestión de Países");
+        chmGestionPaises.setText("Gestión Países");
         chmGestionPaises.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chmGestionPaisesActionPerformed(evt);
@@ -166,21 +193,18 @@ public class Menu extends javax.swing.JFrame {
         mnuMantenimientos.add(chmGestionPaises);
 
         chmGestionPlanLealtad.setBackground(new java.awt.Color(255, 255, 255));
-        chmGestionPlanLealtad.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionPlanLealtad.setSelected(true);
-        chmGestionPlanLealtad.setText("Gestion de Planes de Lealtad");
+        chmGestionPlanLealtad.setText("Gestion Planes de Lealtad");
         mnuMantenimientos.add(chmGestionPlanLealtad);
 
         chmGestionClientes.setBackground(new java.awt.Color(255, 255, 255));
-        chmGestionClientes.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionClientes.setSelected(true);
-        chmGestionClientes.setText("Gestion de Clientes");
+        chmGestionClientes.setText("Gestion Clientes");
         mnuMantenimientos.add(chmGestionClientes);
 
         chmGestionEmpleados.setBackground(new java.awt.Color(255, 255, 255));
-        chmGestionEmpleados.setForeground(new java.awt.Color(0, 0, 0));
         chmGestionEmpleados.setSelected(true);
-        chmGestionEmpleados.setText("Gestion de Empleados");
+        chmGestionEmpleados.setText("Gestion Empleados");
         mnuMantenimientos.add(chmGestionEmpleados);
 
         jMenuBar1.add(mnuMantenimientos);
@@ -230,6 +254,10 @@ public class Menu extends javax.swing.JFrame {
     private void chmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmSalirActionPerformed
        System.exit(0);  
     }//GEN-LAST:event_chmSalirActionPerformed
+
+    private void chmTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoHabitacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chmTipoHabitacionActionPerformed
 
     /**
      * @param args the command line arguments

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+
 /**
  * Controlador para la gestión de hoteles
  */
@@ -159,8 +160,9 @@ public class HotelController {
         JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         return false;
     }
-}
-    public void cargarDatosEnTabla(DefaultTableModel modelo) {
+} 
+    public void cargarDatosEnTabla(DefaultTableModel modelo,String codigo) 
+    {
         modelo.setRowCount(0);
         Connection conn = null;
         PreparedStatement ps = null;
@@ -169,9 +171,17 @@ public class HotelController {
         try {
             conn = ConexionBD.getConnection();
             String sql = "SELECT A.id_hotel, A.nombre as nombre_hotel, A.id_pais, B.nombre as nombre_pais, A.ciudad, A.direccion FROM hotel A INNER JOIN pais B ON A.id_pais = B.id_pais";
-            ps = conn.prepareStatement(sql);
+            if (codigo!=null) 
+            {
+                sql += " WHERE A.id_hotel = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, codigo);
+            }
+            else
+            {   
+                ps = conn.prepareStatement(sql);
+            }
             rs = ps.executeQuery();
-
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("id_hotel"),
@@ -242,6 +252,4 @@ public class HotelController {
 
         return null;
     }
-
-
 }

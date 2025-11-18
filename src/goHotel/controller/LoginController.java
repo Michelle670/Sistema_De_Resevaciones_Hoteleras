@@ -111,7 +111,10 @@ public static String[] getUserInfo(String correo, String tipo) {
             String nombre = rs.getString("nombre");
             String rol = rs.getString("nombre_rol");
             
-            return new String[]{ nombre, rol };   // ← TUPLA
+            String textoNombre = "¡Bienvenido " + nombre +"!";
+            String textoRol = (rol != null ? "Rol: " + rol : "Rol: N/A");
+            
+            return new String[]{ textoNombre, textoRol };   // ← TUPLA
         } else {
             return null;
         }

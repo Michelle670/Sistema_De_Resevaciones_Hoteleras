@@ -20,7 +20,7 @@ public void cargarPaises(JComboBox<String> combo) {
         ResultSet rs = ps.executeQuery();
 
         combo.removeAllItems(); // limpiar combo por si acaso
-
+        combo.addItem("--- Ninguno ---");
         while (rs.next()) {
             combo.addItem(rs.getString("nombre"));
         }
