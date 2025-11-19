@@ -63,8 +63,6 @@ public class GestionPaises extends javax.swing.JFrame {
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
 
-        btnAgregar.setBackground(new java.awt.Color(255, 255, 255));
-        btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/agregar-usuario.png"))); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.setFocusable(false);
@@ -78,8 +76,6 @@ public class GestionPaises extends javax.swing.JFrame {
         });
         jToolBar1.add(btnAgregar);
 
-        btnEditar.setBackground(new java.awt.Color(255, 255, 255));
-        btnEditar.setForeground(new java.awt.Color(0, 0, 0));
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (3).png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setFocusable(false);
@@ -93,8 +89,6 @@ public class GestionPaises extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEditar);
 
-        BtnBuscar.setBackground(new java.awt.Color(255, 255, 255));
-        BtnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
         BtnBuscar.setText("Buscar");
         BtnBuscar.setFocusable(false);
@@ -108,8 +102,6 @@ public class GestionPaises extends javax.swing.JFrame {
         });
         jToolBar1.add(BtnBuscar);
 
-        btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
-        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (2).png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.setFocusable(false);
@@ -123,8 +115,6 @@ public class GestionPaises extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEliminar);
 
-        btnSalir.setBackground(new java.awt.Color(255, 255, 255));
-        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.setFocusable(false);
@@ -137,10 +127,6 @@ public class GestionPaises extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnSalir);
-
-        txtCodigoISO.setBackground(new java.awt.Color(255, 255, 255));
-
-        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
 
         jtPais.setBackground(new java.awt.Color(204, 204, 204));
         jtPais.setForeground(new java.awt.Color(51, 51, 51));
@@ -159,16 +145,11 @@ public class GestionPaises extends javax.swing.JFrame {
         jtPais.setSelectionBackground(new java.awt.Color(204, 204, 204));
         jScrollPane1.setViewportView(jtPais);
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Código(ISO):");
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nombre:");
 
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("ID:");
-
-        txtId.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/LogoGOHOTEL_1.jpeg"))); // NOI18N
 
