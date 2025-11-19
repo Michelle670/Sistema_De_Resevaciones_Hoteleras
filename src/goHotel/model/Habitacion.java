@@ -12,8 +12,8 @@ public class Habitacion
 //ATRIBUTOS   
 //==============================================================================
     private int idHabitacion;
-    private Hotel hotel;
-    private TipoHabitacion tipo;
+    private int idhotel;
+    private int idtipo;
     private int numero;
     private String estado;
 //==============================================================================
@@ -22,17 +22,17 @@ public class Habitacion
     public Habitacion() 
     {
         this.idHabitacion = 0;
-        this.hotel = new Hotel();
-        this.tipo = new TipoHabitacion();
+        this.idhotel = 0;
+        this.idtipo = 0;
         this.numero = 0;
         this.estado = "";
     }
 
-    public Habitacion(int idHabitacion, Hotel hotel, TipoHabitacion tipo, int numero, String estado) 
+    public Habitacion(int idHabitacion, int idhotel, int idtipo, int numero, String estado) 
     {
         this.idHabitacion = idHabitacion;
-        this.hotel = hotel;
-        this.tipo = tipo;
+        this.idhotel = idhotel;
+        this.idtipo = idtipo;
         this.numero = numero;
         this.estado = estado;
     }
@@ -51,24 +51,24 @@ public class Habitacion
         this.idHabitacion = idHabitacion;
     }
 
-    public Hotel getHotel() 
+    public int getHotel() 
     {
-        return hotel;
+        return idhotel;
     }
 
-    public void setHotel(Hotel hotel) 
+    public void setHotel(int idhotel) 
     {
-        this.hotel = hotel;
+        this.idhotel = idhotel;
     }
 
-    public TipoHabitacion getTipo() 
+    public int getTipo() 
     {
-        return tipo;
+        return idtipo;
     }
 
-    public void setTipo(TipoHabitacion tipo) 
+    public void setTipo(int tipo) 
     {
-        this.tipo = tipo;
+        this.idtipo = tipo;
     }
 
     public int getNumero() 
