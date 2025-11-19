@@ -7,12 +7,12 @@ import javax.swing.ImageIcon;
  *
  * @author soloa
  */
-public class Habitacion extends javax.swing.JFrame {
+public class GestionHabitacion extends javax.swing.JFrame {
 
     /**
      * Creates new form Habitacion
      */
-    public Habitacion() {
+    public GestionHabitacion() {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/cama-de-hotel.png")).getImage());
     }
@@ -268,20 +268,21 @@ public class Habitacion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Habitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionHabitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Habitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionHabitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Habitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionHabitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Habitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionHabitacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Habitacion().setVisible(true);
+                new GestionHabitacion().setVisible(true);
             }
         });
     }

@@ -1,6 +1,9 @@
 
 package goHotel.model;
 
+import goHotel.controller.ConexionBD;
+import java.sql.*;
+
 /**
  * AUTOR: GRUPO 3
  * PROYECTO
@@ -12,8 +15,8 @@ public class Habitacion
 //ATRIBUTOS   
 //==============================================================================
     private int idHabitacion;
-    private int idhotel;
-    private int idtipo;
+    private int idHotel;
+    private int idTipo;
     private int numero;
     private String estado;
 //==============================================================================
@@ -22,8 +25,8 @@ public class Habitacion
     public Habitacion() 
     {
         this.idHabitacion = 0;
-        this.idhotel = 0;
-        this.idtipo = 0;
+        this.idHotel = 0;
+        this.idTipo = 0;
         this.numero = 0;
         this.estado = "";
     }
@@ -31,8 +34,8 @@ public class Habitacion
     public Habitacion(int idHabitacion, int idhotel, int idtipo, int numero, String estado) 
     {
         this.idHabitacion = idHabitacion;
-        this.idhotel = idhotel;
-        this.idtipo = idtipo;
+        this.idHotel = idhotel;
+        this.idTipo = idtipo;
         this.numero = numero;
         this.estado = estado;
     }
@@ -53,22 +56,22 @@ public class Habitacion
 
     public int getHotel() 
     {
-        return idhotel;
+        return idHotel;
     }
 
     public void setHotel(int idhotel) 
     {
-        this.idhotel = idhotel;
+        this.idHotel = idhotel;
     }
 
     public int getTipo() 
     {
-        return idtipo;
+        return idTipo;
     }
 
     public void setTipo(int tipo) 
     {
-        this.idtipo = tipo;
+        this.idTipo = tipo;
     }
 
     public int getNumero() 
@@ -92,8 +95,34 @@ public class Habitacion
     }
     
     
+    //==============================================================================
+    // MÉTODO PARA AGREGAR HOTEL A LA BASE DE DATOS
+    //==============================================================================
     
-    
+    public boolean agregar() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        try{
+            conn = ConexionBD.getConnection();
+            String sql = "INSERT INTO habitacion (id_habitacion, id_hotel, numero, id_tipo, estado) VALUES (?, ?, ?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, this.idHabitacion);
+            ps.setInt(2, this.idHotel);
+            ps.setInt(3, this.numero);
+            ps.setInt(4, this.idTipo);
+            ps.setString(5, this.estado);
+            
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al agregar el hotel: " + e.getMessage());
+            return false;
+        } finally {
+            //try { if(ps != null) ps.close(); } catch(Exception e) {}
+            ConexionBD.cerrarConexion();
+        }
+    }
     
     
 }
