@@ -102,11 +102,9 @@ public class Menu extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jlCorreo.setForeground(new java.awt.Color(0, 0, 0));
         jlCorreo.setText("NombreUsuario");
         getContentPane().add(jlCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 0, 180, 30));
 
-        jlTipo.setForeground(new java.awt.Color(0, 0, 0));
         jlTipo.setText("RolAcceso");
         getContentPane().add(jlTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 160, 30));
 
@@ -130,13 +128,8 @@ public class Menu extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 580));
 
-        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
-
-        mnuReservas.setBackground(new java.awt.Color(255, 255, 255));
-        mnuReservas.setForeground(new java.awt.Color(0, 0, 0));
         mnuReservas.setText("RESERVAS");
 
-        chmGestionReservas.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionReservas.setSelected(true);
         chmGestionReservas.setText("Gestion Reservas");
         chmGestionReservas.setName("mnuGestionReservas"); // NOI18N
@@ -149,11 +142,8 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(mnuReservas);
 
-        mnuMantenimientos.setBackground(new java.awt.Color(255, 255, 255));
-        mnuMantenimientos.setForeground(new java.awt.Color(0, 0, 0));
         mnuMantenimientos.setText("MANTENIMIENTOS");
 
-        chmGestionHoteles.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionHoteles.setSelected(true);
         chmGestionHoteles.setText("Gestion Hoteles");
         chmGestionHoteles.addActionListener(new java.awt.event.ActionListener() {
@@ -163,17 +153,19 @@ public class Menu extends javax.swing.JFrame {
         });
         mnuMantenimientos.add(chmGestionHoteles);
 
-        chmGestionHabitaciones.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionHabitaciones.setSelected(true);
         chmGestionHabitaciones.setText("Gestion Habitaciones");
+        chmGestionHabitaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmGestionHabitacionesActionPerformed(evt);
+            }
+        });
         mnuMantenimientos.add(chmGestionHabitaciones);
 
-        chmTipoServicio.setBackground(new java.awt.Color(255, 255, 255));
         chmTipoServicio.setSelected(true);
         chmTipoServicio.setText("Gestión Tipo Servicio");
         mnuMantenimientos.add(chmTipoServicio);
 
-        chmTipoHabitacion.setBackground(new java.awt.Color(255, 255, 255));
         chmTipoHabitacion.setSelected(true);
         chmTipoHabitacion.setText("Gestión Tipos Habitación");
         chmTipoHabitacion.addActionListener(new java.awt.event.ActionListener() {
@@ -192,17 +184,14 @@ public class Menu extends javax.swing.JFrame {
         });
         mnuMantenimientos.add(chmGestionPaises);
 
-        chmGestionPlanLealtad.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionPlanLealtad.setSelected(true);
         chmGestionPlanLealtad.setText("Gestion Planes de Lealtad");
         mnuMantenimientos.add(chmGestionPlanLealtad);
 
-        chmGestionClientes.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionClientes.setSelected(true);
         chmGestionClientes.setText("Gestion Clientes");
         mnuMantenimientos.add(chmGestionClientes);
 
-        chmGestionEmpleados.setBackground(new java.awt.Color(255, 255, 255));
         chmGestionEmpleados.setSelected(true);
         chmGestionEmpleados.setText("Gestion Empleados");
         mnuMantenimientos.add(chmGestionEmpleados);
@@ -256,8 +245,14 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_chmSalirActionPerformed
 
     private void chmTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoHabitacionActionPerformed
-        // TODO add your handling code here:
+// TODO add your handling code here:
     }//GEN-LAST:event_chmTipoHabitacionActionPerformed
+
+    private void chmGestionHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionHabitacionesActionPerformed
+        GestionHabitacion gha = new GestionHabitacion();
+        gha.setVisible(true);
+        gha.setLocationRelativeTo(null);
+    }//GEN-LAST:event_chmGestionHabitacionesActionPerformed
 
     /**
      * @param args the command line arguments
