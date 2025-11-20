@@ -63,7 +63,7 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtIdHotel = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Habitación");
         setBackground(new java.awt.Color(255, 255, 255));
 
