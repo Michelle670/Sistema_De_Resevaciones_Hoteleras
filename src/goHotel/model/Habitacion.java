@@ -1,6 +1,9 @@
 
 package goHotel.model;
 
+import goHotel.controller.ConexionBD;
+import java.sql.*;
+
 /**
  * AUTOR: GRUPO 3
  * PROYECTO
@@ -12,8 +15,8 @@ public class Habitacion
 //ATRIBUTOS   
 //==============================================================================
     private int idHabitacion;
-    private Hotel hotel;
-    private TipoHabitacion tipo;
+    private int idHotel;
+    private int idTipo;
     private int numero;
     private String estado;
 //==============================================================================
@@ -22,17 +25,17 @@ public class Habitacion
     public Habitacion() 
     {
         this.idHabitacion = 0;
-        this.hotel = new Hotel();
-        this.tipo = new TipoHabitacion();
+        this.idHotel = 0;
+        this.idTipo = 0;
         this.numero = 0;
         this.estado = "";
     }
 
-    public Habitacion(int idHabitacion, Hotel hotel, TipoHabitacion tipo, int numero, String estado) 
+    public Habitacion(int idHabitacion, int idhotel, int idtipo, int numero, String estado) 
     {
         this.idHabitacion = idHabitacion;
-        this.hotel = hotel;
-        this.tipo = tipo;
+        this.idHotel = idhotel;
+        this.idTipo = idtipo;
         this.numero = numero;
         this.estado = estado;
     }
@@ -51,24 +54,24 @@ public class Habitacion
         this.idHabitacion = idHabitacion;
     }
 
-    public Hotel getHotel() 
+    public int getHotel() 
     {
-        return hotel;
+        return idHotel;
     }
 
-    public void setHotel(Hotel hotel) 
+    public void setHotel(int idhotel) 
     {
-        this.hotel = hotel;
+        this.idHotel = idhotel;
     }
 
-    public TipoHabitacion getTipo() 
+    public int getTipo() 
     {
-        return tipo;
+        return idTipo;
     }
 
-    public void setTipo(TipoHabitacion tipo) 
+    public void setTipo(int tipo) 
     {
-        this.tipo = tipo;
+        this.idTipo = tipo;
     }
 
     public int getNumero() 
@@ -92,8 +95,34 @@ public class Habitacion
     }
     
     
+    //==============================================================================
+    // MÉTODO PARA AGREGAR HOTEL A LA BASE DE DATOS
+    //==============================================================================
     
-    
+    public boolean agregar() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        try{
+            conn = ConexionBD.getConnection();
+            String sql = "INSERT INTO habitacion (id_habitacion, id_hotel, numero, id_tipo, estado) VALUES (?, ?, ?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, this.idHabitacion);
+            ps.setInt(2, this.idHotel);
+            ps.setInt(3, this.numero);
+            ps.setInt(4, this.idTipo);
+            ps.setString(5, this.estado);
+            
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al agregar el hotel: " + e.getMessage());
+            return false;
+        } finally {
+            //try { if(ps != null) ps.close(); } catch(Exception e) {}
+            ConexionBD.cerrarConexion();
+        }
+    }
     
     
 }
