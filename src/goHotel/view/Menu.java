@@ -5,6 +5,9 @@
 package goHotel.view;
 
 import goHotel.controller.LoginController;
+import goHotel.controller.ServicioController;
+import goHotel.model.ConsultasServicio;
+import goHotel.model.Servicio;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
@@ -164,6 +167,11 @@ public class Menu extends javax.swing.JFrame {
 
         chmTipoServicio.setSelected(true);
         chmTipoServicio.setText("Gestión Tipo Servicio");
+        chmTipoServicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmTipoServicioActionPerformed(evt);
+            }
+        });
         mnuMantenimientos.add(chmTipoServicio);
 
         chmTipoHabitacion.setSelected(true);
@@ -253,6 +261,15 @@ public class Menu extends javax.swing.JFrame {
         gha.setVisible(true);
         gha.setLocationRelativeTo(null);
     }//GEN-LAST:event_chmGestionHabitacionesActionPerformed
+
+    private void chmTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoServicioActionPerformed
+        Servicio m = new Servicio();
+        ConsultasServicio q = new ConsultasServicio();
+        GestionServicio v = new GestionServicio();
+        new ServicioController(m, q, v);
+        v.setLocationRelativeTo(null);
+        v.setVisible(true);
+    }//GEN-LAST:event_chmTipoServicioActionPerformed
 
     /**
      * @param args the command line arguments
