@@ -1,36 +1,31 @@
 
 package goHotel.view;
 import goHotel.controller.HotelController;
-import goHotel.controller.PaisController;
-import goHotel.model.Hotel;
+import goHotel.model.DAO.PaisDAO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
-
-
+//******************************************************************************
 /**
 * AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
  */
-public class GestionHoteles extends javax.swing.JFrame {
-    private HotelController controller;
-    private TableRowSorter<DefaultTableModel> sorter;
-    private TableModel modelo;
+//******************************************************************************
+
+public class GestionHoteles extends javax.swing.JFrame 
+{
+    public HotelController controller;
     /**
      * Creates new form GestionHoteles
      */
-    public GestionHoteles() {
+    public GestionHoteles() 
+    {
         initComponents();
         
         jtGestionHoteles.setDefaultEditor(Object.class, null);  // ← DESACTIVA EDICIÓN
-        controller = new HotelController();
-        PaisController pc = new PaisController();
-        pc.cargarPaises(jcPais);
+        PaisDAO pd = new PaisDAO();
+        pd.cargarPaises(jcPais);
         java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
         jtGestionHoteles.getTableHeader().setBackground(lightGray);
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
@@ -51,7 +46,7 @@ public class GestionHoteles extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
-        BtnBuscar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -115,20 +110,20 @@ public class GestionHoteles extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEditar);
 
-        BtnBuscar.setBackground(new java.awt.Color(255, 255, 255));
-        BtnBuscar.setForeground(new java.awt.Color(0, 0, 0));
-        BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
-        BtnBuscar.setText("Buscar");
-        BtnBuscar.setFocusable(false);
-        BtnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        BtnBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
-        BtnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        BtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setFocusable(false);
+        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnBuscarActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
-        jToolBar1.add(BtnBuscar);
+        jToolBar1.add(btnBuscar);
 
         btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
         btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
@@ -320,32 +315,25 @@ public class GestionHoteles extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
-        actualizarTabla();
     }//GEN-LAST:event_formWindowOpened
 
     private void jtGestionHotelesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtGestionHotelesMouseClicked
 
         int fila = jtGestionHoteles.getSelectedRow();
-
         if (fila == -1)
         return; // No seleccionó nada
-
         // Columna 0
         String codigo = jtGestionHoteles.getValueAt(fila, 0).toString();
         txtCodigo.setText(codigo);
-
         // Columna 1
         String nombre = jtGestionHoteles.getValueAt(fila, 1).toString();
         txtNombre.setText(nombre);
-
         //Columna 3
         String nombrePais = jtGestionHoteles.getValueAt(fila, 3).toString();
         jcPais.setSelectedItem(nombrePais);
-
         // Columna 4
         String ciudad = jtGestionHoteles.getValueAt(fila, 4).toString();
         txtCiudad.setText(ciudad);
-
         // Columna 5
         String direccion = jtGestionHoteles.getValueAt(fila, 5).toString();
         txtDireccion.setText(direccion);
@@ -353,73 +341,40 @@ public class GestionHoteles extends javax.swing.JFrame {
     }//GEN-LAST:event_jtGestionHotelesMouseClicked
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        int confirmacion = JOptionPane.showConfirmDialog(null,
-            "¿Está seguro de salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            this.dispose();
-        }
+
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarCampos();
-        actualizarTabla();
+   
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        String codigoTexto = txtCodigo.getText().trim();
 
-        if (codigoTexto.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                "Ingrese el código del hotel que desea eliminar",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int codigo = Integer.parseInt(codigoTexto);
-
-        controller.eliminarHotel(codigo, this);
-         limpiarCampos();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
-//        Hotel hotel = controller.buscarHotel(txtCodigo.getText());
-//        if (hotel != null) {
-//            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + txtCodigo));
-//
-//            txtCodigo.setText(String.valueOf(hotel.getIdHotel()));
-//            txtNombre.setText(hotel.getNombreHotel());
-//            // seleccionar el combo por idPais (asumimos que idPais empieza en 1 y el combo está en ese orden)
-//            int idPais = hotel.getIdPais();
-//            if (idPais > 0 && idPais <= jcPais.getItemCount()) {
-//                jcPais.setSelectedIndex(idPais - 1);
-//            } else {
-//                jcPais.setSelectedIndex(0); // fallback
-//            }
-//            txtCiudad.setText(hotel.getCiudad());
-//            txtDireccion.setText(hotel.getDireccion());
-//        }
-//{
-        DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
-        controller.cargarDatosEnTabla(modelo,txtCodigo.getText());
-        limpiarCampos();
-    }//GEN-LAST:event_BtnBuscarActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int idPais = jcPais.getSelectedIndex();
-        if (controller.editarHotel(txtCodigo.getText(), txtNombre.getText(), idPais, txtCiudad.getText(), txtDireccion.getText())) {
-            limpiarCampos();
-            actualizarTabla();
-        }
+ 
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        int idPais = jcPais.getSelectedIndex(); // mapeo temporal: primer ítem -> id 1
-        if (controller.registrarHotel(txtCodigo.getText(), txtNombre.getText(), idPais, txtCiudad.getText(), txtDireccion.getText())) {
-            limpiarCampos();
-            actualizarTabla();
-        }
+
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+private void ocultarColumna2() 
+{
+    jtGestionHoteles.getColumnModel().getColumn(2).setMinWidth(0);
+    jtGestionHoteles.getColumnModel().getColumn(2).setMaxWidth(0);
+    jtGestionHoteles.getColumnModel().getColumn(2).setWidth(0);
+}
+
+public void setController(HotelController controller) {
+    this.controller = controller;
+}
 
 public void limpiarCampos() {
     txtCodigo.setText("");
@@ -429,20 +384,13 @@ public void limpiarCampos() {
     txtDireccion.setText("");
     txtCodigo.requestFocus();
 }
-
-public void actualizarTabla() {
-    DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
-    controller.cargarDatosEnTabla(modelo,null);
-}
-
-
-private void ocultarColumna2() 
+public void actualizarTabla() 
 {
-    jtGestionHoteles.getColumnModel().getColumn(2).setMinWidth(0);
-    jtGestionHoteles.getColumnModel().getColumn(2).setMaxWidth(0);
-    jtGestionHoteles.getColumnModel().getColumn(2).setWidth(0);
+    if (controller != null) {
+        DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
+        controller.actualizarTabla();
+    }
 }
-
     /**
      * @param args the command line arguments
      */
@@ -477,14 +425,13 @@ private void ocultarColumna2()
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnBuscar;
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnSalir;
+    public javax.swing.JButton btnAgregar;
+    public javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnEditar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -495,11 +442,13 @@ private void ocultarColumna2()
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JComboBox<String> jcPais;
-    private javax.swing.JTable jtGestionHoteles;
-    private javax.swing.JTextField txtCiudad;
-    private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextArea txtDireccion;
-    private javax.swing.JTextField txtNombre;
+    public javax.swing.JComboBox<String> jcPais;
+    public javax.swing.JTable jtGestionHoteles;
+    public javax.swing.JTextField txtCiudad;
+    public javax.swing.JTextField txtCodigo;
+    public javax.swing.JTextArea txtDireccion;
+    public javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+   
 }

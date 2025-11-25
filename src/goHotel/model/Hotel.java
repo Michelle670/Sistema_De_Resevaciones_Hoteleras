@@ -1,28 +1,24 @@
 package goHotel.model;
-
-import goHotel.controller.ConexionBD;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+//******************************************************************************
 /**
- * AUTOR: GRUPO 3
+* AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
  */
+//******************************************************************************
 public class Hotel 
 {
-    //==============================================================================
-    //ATRIBUTOS   
-    //==============================================================================
+//==============================================================================
+//ATRIBUTOS   
+//==============================================================================
     private int idHotel;
     private String nombreHotel;
     private int idPais;
     private String ciudad;
     private String direccion;
-    //==============================================================================
-    //CONSTRUCTOR
-    //==============================================================================
+//==============================================================================
+//CONSTRUCTOR
+//==============================================================================
      public Hotel() 
      {
         this.idHotel = 0;
@@ -40,45 +36,9 @@ public class Hotel
         this.ciudad = ciudad;
         this.direccion = direccion;
     }
-    
-    //==============================================================================
-    // MÉTODO PARA AGREGAR HOTEL A LA BASE DE DATOS
-    //==============================================================================
-    public boolean agregar()
-    {
-        Connection conn = null;
-        PreparedStatement ps = null;
-
-        try
-        {
-            conn = ConexionBD.getConnection();
-            String sql = "INSERT INTO hotel (id_hotel, nombre, id_pais, ciudad, direccion) VALUES (?, ?, ?, ?, ?)";
-            ps = conn.prepareStatement(sql);
-
-            ps.setInt(1, this.idHotel);
-            ps.setString(2, this.nombreHotel);
-            ps.setInt(3, this.idPais);
-            ps.setString(4, this.ciudad);
-            ps.setString(5, this.direccion);
-
-            ps.executeUpdate();
-            return true;
-        }
-        catch(SQLException e)
-        {
-            System.out.println("Error al agregar el hotel: " + e.getMessage());
-            return false;
-        }
-        finally
-        {
-            //try { if(ps != null) ps.close(); } catch(Exception e) {}
-            ConexionBD.cerrarConexion();
-        }
-    }
-    
-    //==============================================================================
-    //GETTERS Y SETTERS
-    //==============================================================================   
+//==============================================================================
+//GETTERS Y SETTERS
+//==============================================================================   
     public String getDireccion() 
     {
         return direccion;

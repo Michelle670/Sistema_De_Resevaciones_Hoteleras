@@ -3,22 +3,29 @@ package goHotel.view;
 
 
 import goHotel.controller.LoginController;
+import goHotel.model.DAO.LoginDAO;
 import goHotel.view.Menu;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-
-/**
- *
- * @author soloa
- */
-public class Login extends javax.swing.JFrame {
-private LoginController controller = new LoginController();
-    public Login() {
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
+public class LoginView extends javax.swing.JFrame {
+private LoginDAO dao = new LoginDAO();
+public LoginController controller;
+    public LoginView() 
+    {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/privado.png")).getImage());
     }
-
+    
+    public void setController(LoginController controller)
+    {
+        this.controller = controller;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,64 +183,11 @@ private LoginController controller = new LoginController();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-   
-    String correo = txtCorreo.getText().trim();
-    String pass = new String(jPassword.getPassword());
-    boolean esEmpleado = jrEmpleado.isSelected();
-    String tipoUsuario = "";
-    
-        if (esEmpleado == true) 
-        {
-            tipoUsuario = "Empleado";
-        } else 
-        {
-           tipoUsuario = "Cliente";  
-        }
-        
-    // VALIDAR CORREO
-    if (!controller.validarCorreo(correo)) 
-    {
-        JOptionPane.showMessageDialog(this, "Correo inválido, debe contener '@' y un '.'.");
-        return;
-    }
 
-    // VALIDAR CONTRASEÑA
-    if (!controller.validarPassword(pass)) 
-    {
-        JOptionPane.showMessageDialog(this, "La contraseña debe tener mínimo 4 caracteres.");
-        return;
-    }
-
-    boolean loginCorrecto = false;
-
-    // SI ES EMPLEADO (login fijo)
-    if (esEmpleado) 
-    {
-        loginCorrecto = controller.loginEmpleado(correo, pass);
-    }
-    // SI ES CLIENTE (se valida en BD)
-    else 
-    {
-        loginCorrecto = controller.loginCliente(correo, pass);
-    }
-
-    if (loginCorrecto) 
-    {
-        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!");
-
-        Menu m = new Menu(txtCorreo.getText(),tipoUsuario);
-        m.setVisible(true);
-        m.setLocationRelativeTo(null);
-
-        this.dispose(); // cerrar ventana de login
-    } else 
-    {
-        JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.");
-    }
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-    System.exit(0);  
+ 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
@@ -265,35 +219,38 @@ private LoginController controller = new LoginController();
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new LoginView().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnOk;
+    public javax.swing.JButton btnCancelar;
+    public javax.swing.JButton btnOk;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPassword;
-    private javax.swing.JRadioButton jrEmpleado;
-    private javax.swing.JTextField txtCorreo;
+    public javax.swing.JPasswordField jPassword;
+    public javax.swing.JRadioButton jrEmpleado;
+    public javax.swing.JTextField txtCorreo;
     // End of variables declaration//GEN-END:variables
 }

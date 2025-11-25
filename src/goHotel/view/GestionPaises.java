@@ -4,7 +4,7 @@
  */
 package goHotel.view;
 
-import goHotel.controller.ConexionBD;
+import goHotel.model.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
