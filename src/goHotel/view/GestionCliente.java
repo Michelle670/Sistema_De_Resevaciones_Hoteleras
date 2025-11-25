@@ -4,6 +4,8 @@
  */
 package goHotel.view;
 
+import goHotel.model.DAO.ClienteDAO.ComboItem;
+
 /**
  *
  * @author israelapuy
@@ -111,14 +113,12 @@ public class GestionCliente extends javax.swing.JFrame {
             }
         });
 
-        cmbPlanLealtad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbPlanLealtad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbPlanLealtadActionPerformed(evt);
             }
         });
 
-        cmbPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbPais.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbPaisActionPerformed(evt);
@@ -411,8 +411,8 @@ public class GestionCliente extends javax.swing.JFrame {
     public javax.swing.JButton btnEliminar;
     public javax.swing.JButton btnLimpiar;
     public javax.swing.JButton btnSalir;
-    public javax.swing.JComboBox<String> cmbPais;
-    public javax.swing.JComboBox<String> cmbPlanLealtad;
+    public javax.swing.JComboBox<ComboItem> cmbPais;
+    public javax.swing.JComboBox<ComboItem> cmbPlanLealtad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

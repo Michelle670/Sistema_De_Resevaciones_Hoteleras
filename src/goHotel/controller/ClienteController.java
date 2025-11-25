@@ -4,10 +4,12 @@ package goHotel.controller;
 
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
+import goHotel.model.DAO.ClienteDAO.ComboItem;
 import goHotel.model.DAO.PaisDAO;
 import goHotel.view.GestionCliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,12 +33,11 @@ public class ClienteController implements ActionListener {
         this.vista.btnBuscar.addActionListener(this);
         this.vista.btnLimpiar.addActionListener(this);
         this.vista.btnSalir.addActionListener(this);
-        PaisDAO paisCtrl = new PaisDAO();
-        paisCtrl.cargarPaises(vista.cmbPais);
         
-        PlanLealtadController planCtrl = new PlanLealtadController();
-        planCtrl.cargarPlanes(vista.cmbPlanLealtad);
-        
+        vista.cmbPlanLealtad.setModel(new javax.swing.DefaultComboBoxModel<>());
+        vista.cmbPais.setModel(new javax.swing.DefaultComboBoxModel<>());
+        consultas.cargarPlanes(vista.cmbPlanLealtad);
+        consultas.cargarPaises(vista.cmbPais);
         consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
     }
     
@@ -61,7 +62,9 @@ public class ClienteController implements ActionListener {
     public void actionPerformed(ActionEvent e){
         //btnAgregar;
         if(e.getSource() == vista.btnAgregar){
-            
+            ComboItem planItem = (ComboItem) vista.cmbPlanLealtad.getSelectedItem();
+            ComboItem paisItem = (ComboItem) vista.cmbPais.getSelectedItem();
+            int idPais = vista.cmbPais.getSelectedIndex() + 1;
             if(vista.txtID.getText().trim().isEmpty()
                     || vista.txtNombre.getText().trim().isEmpty()
                     || vista.txtCorreo.getText().trim().isEmpty()
@@ -73,38 +76,40 @@ public class ClienteController implements ActionListener {
             }
             
             int id = Integer.parseInt(vista.txtID.getText().trim());
+            modelo.setIdPlan(planItem.getId());
             modelo.setIdCliente(id);
-            modelo.setIdPlan(vista.cmbPlanLealtad.getSelectedIndex());
             modelo.setNombre(vista.txtNombre.getText().trim());
             modelo.setCorreo(vista.txtCorreo.getText().trim());
             modelo.setContrasenna(vista.txtPassword.getText().trim());
-            modelo.setIdPais(Integer.parseInt(vista.cmbPais.getSelectedItem().toString()));
+            modelo.setIdPais(paisItem.getId());
             modelo.setPuntosLealtad(1000);
             
             if(consultas.registrarCliente(modelo)){
                 JOptionPane.showMessageDialog(null, "Cliente registrado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
             } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar servicio.");
+                JOptionPane.showMessageDialog(null, "Error al registrar cliente.");
             } 
         }
         
         //btnEditar;
         if (e.getSource() == vista.btnEditar) {
+            ComboItem planItem = (ComboItem) vista.cmbPlanLealtad.getSelectedItem();
+            ComboItem paisItem = (ComboItem) vista.cmbPais.getSelectedItem();
             int id = Integer.parseInt(vista.txtID.getText().trim());
             modelo.setIdCliente(id);
-            modelo.setIdPlan(Integer.parseInt(vista.cmbPlanLealtad.getSelectedItem().toString()));
+            modelo.setIdPlan(planItem.getId());
             modelo.setNombre(vista.txtNombre.getText().trim());
             modelo.setCorreo(vista.txtCorreo.getText().trim());
             modelo.setContrasenna(vista.txtPassword.getText().trim());
-            modelo.setIdPais(Integer.parseInt(vista.cmbPais.getSelectedItem().toString()));
+            modelo.setIdPais(paisItem.getId());
             modelo.setPuntosLealtad(1000);
 
             if (consultas.modificarCliente(modelo)) {
                 JOptionPane.showMessageDialog(null, "Cliente modificado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
             } else {
-                JOptionPane.showMessageDialog(null, "Error al modificar servicio.");
+                JOptionPane.showMessageDialog(null, "Error al modificar cliente.");
             }
         }
         
@@ -116,7 +121,7 @@ public class ClienteController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Servicio eliminado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
             } else {
-                JOptionPane.showMessageDialog(null, "Error al eliminar servicio.");
+                JOptionPane.showMessageDialog(null, "Error al eliminar cliente.");
             }
             limpiar();            
         }
@@ -129,12 +134,11 @@ public class ClienteController implements ActionListener {
                 
                 if(consultas.buscarCliente(modelo)){
                     vista.txtID.setText(String.valueOf(modelo.getIdCliente()));
-                    seleccionarPorValor(vista.cmbPlanLealtad, String.valueOf(modelo.getIdPlan()));
-                    vista.txtNombre.setText(modelo.getNombre());
+                    seleccionarPorId(vista.cmbPlanLealtad, modelo.getIdPlan());                    vista.txtNombre.setText(modelo.getNombre());
                     vista.txtCorreo.setText(modelo.getCorreo());
                     vista.txtPassword.setText(modelo.getContrasenna());
                     vista.cmbPais.setSelectedIndex(modelo.getIdPais());
-                    seleccionarPorValor(vista.cmbPais, String.valueOf(modelo.getIdPais()));
+                    seleccionarPorId(vista.cmbPais, modelo.getIdPais());
                     vista.lblPuntosAcumulados.setText(String.valueOf(modelo.getPuntosLealtad()));
                     JOptionPane.showMessageDialog(null, "Cliente encontrado.");
                 }else {
@@ -162,9 +166,10 @@ public class ClienteController implements ActionListener {
         }
     }
     
-    private void seleccionarPorValor(javax.swing.JComboBox<String> combo, String value) {
+    private void seleccionarPorId(JComboBox<ComboItem> combo, int idBuscado) {
         for (int i = 0; i < combo.getItemCount(); i++) {
-            if (value.equals(combo.getItemAt(i))) {
+            ComboItem it = combo.getItemAt(i);
+            if (it != null && it.getId() == idBuscado) {
                 combo.setSelectedIndex(i);
                 return;
             }

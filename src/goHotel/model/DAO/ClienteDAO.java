@@ -9,6 +9,7 @@ import goHotel.model.ConexionBD;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -175,18 +176,27 @@ public class ClienteDAO {
 
         try {
             conn = ConexionBD.getConnection();
-            String sql = "SELECT id_cliente, id_plan, Nombre, correo, password, id_pais, puntos_lealtad FROM cliente";
+            String sql = "SELECT A.id_cliente, "
+                    + "       PL.nivel  AS nombre_plan, "
+                    + "       A.Nombre   AS nombre_cliente, "
+                    + "       A.correo, "
+                    + "       A.password, "
+                    + "       P.nombre   AS nombre_pais, "
+                    + "       A.puntos_lealtad "
+                    + "FROM cliente A "
+                    + "INNER JOIN pais P ON A.id_pais = P.id_pais "
+                    + "INNER JOIN plan_lealtad PL ON A.id_plan = PL.id_plan";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("id_cliente"),
-                    rs.getInt("id_plan"),
-                    rs.getString("Nombre"),
+                    rs.getString("nombre_plan"),
+                    rs.getString("nombre_cliente"),
                     rs.getString("correo"),
                     rs.getString("password"),
-                    rs.getInt("id_pais"),
+                    rs.getString("nombre_pais"),
                     rs.getInt("puntos_lealtad")
                 };
                 modelo.addRow(fila);
@@ -211,4 +221,53 @@ public class ClienteDAO {
         }
     }
     
+    //Helpers;
+    
+    public class ComboItem {
+
+        private final int id;
+        private final String label;
+
+        public ComboItem(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        } // lo que se ve en el combo
+    }
+    
+    public void cargarPlanes(JComboBox<ComboItem> combo) {
+        combo.removeAllItems();
+        combo.addItem(new ComboItem(0, "--- Seleccione ---")); // opcional (id 0 NO válido)
+        try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT id_plan, nivel FROM plan_lealtad ORDER BY id_plan"); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                combo.addItem(new ComboItem(rs.getInt("id_plan"), rs.getString("nivel")));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error cargando planes: " + ex.getMessage());
+        }
+    }
+    
+    public void cargarPaises(JComboBox<ComboItem> combo) {
+        combo.removeAllItems();
+        combo.addItem(new ComboItem(0, "--- Seleccione ---")); // opcional (id 0 NO válido)
+        try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(
+                "SELECT id_pais, nombre FROM pais ORDER BY id_pais"); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                combo.addItem(new ComboItem(rs.getInt("id_pais"), rs.getString("nombre")));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error cargando países: " + ex.getMessage());
+        }
+    }
 }
