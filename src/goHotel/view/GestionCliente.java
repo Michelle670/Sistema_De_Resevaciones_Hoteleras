@@ -137,6 +137,11 @@ public class GestionCliente extends javax.swing.JFrame {
                 "ID", "Plan Lealtad", "Nombre", "Correo", "Password", "Pais", "Puntos"
             }
         ));
+        jtTablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtTablaClienteMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jtTablaCliente);
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
@@ -368,6 +373,41 @@ public class GestionCliente extends javax.swing.JFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void jtTablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtTablaClienteMouseClicked
+        int fila = jtTablaCliente.getSelectedRow();
+
+        if (fila == -1) {
+            return; // No seleccionó nada
+        }
+        // Columna 0
+        String id = jtTablaCliente.getValueAt(fila, 0).toString();
+        txtID.setText(id);
+
+        // Columna 1
+        String plan = jtTablaCliente.getValueAt(fila, 1).toString();
+        cmbPlanLealtad.setSelectedItem(plan);
+
+        // Columna 2
+        String nombre = jtTablaCliente.getValueAt(fila, 2).toString();
+        txtNombre.setText(nombre);
+
+        // Columna 3
+        String correo = jtTablaCliente.getValueAt(fila, 3).toString();
+        txtCorreo.setText(correo);
+
+        // Columna 4
+        String password = jtTablaCliente.getValueAt(fila, 4).toString();
+        txtPassword.setText(password);
+
+        // Columna 5 
+        String pais = jtTablaCliente.getValueAt(fila, 5).toString();
+        cmbPais.setSelectedItem(pais);
+
+        // Columna 6
+        String puntos = jtTablaCliente.getValueAt(fila, 6).toString();
+        lblPuntosAcumulados.setText(puntos);
+    }//GEN-LAST:event_jtTablaClienteMouseClicked
 
     /**
      * @param args the command line arguments
