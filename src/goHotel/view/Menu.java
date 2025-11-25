@@ -6,6 +6,7 @@ package goHotel.view;
 
 import goHotel.controller.ClienteController;
 import goHotel.controller.LoginController;
+import goHotel.controller.MenuController;
 import goHotel.controller.ServicioController;
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
  * SEMANA 9
  */
 public class Menu extends javax.swing.JFrame {
+    public MenuController controller;
 
     /**
      * Creates new form Menu
@@ -29,47 +31,16 @@ public class Menu extends javax.swing.JFrame {
     {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
-        String[] infoUsuario = LoginController.getUserInfo(correo, tipo);
-        if (tipo.equalsIgnoreCase("Cliente")) 
-        {
-            mnuMantenimientos.setVisible(false);
-            mnuLimpieza.setVisible(false);
-        }
-        jlCorreo.setText(infoUsuario[0]);
-        jlTipo.setText(infoUsuario[1]);
-        
-     
-        if (tipo.equalsIgnoreCase("Empleado")) 
-        {
-        String rol = infoUsuario[1].replace("Rol:", "").trim();
-        switch (rol) 
-        {
-        case "Admin":
-          mnuReservas.setVisible(true);
-          mnuMantenimientos.setVisible(true);  
-          mnuLimpieza.setVisible(true);
-          break;
-
-        case "Recepcion":
-          mnuMantenimientos.setVisible(false);  
-          mnuLimpieza.setVisible(false);
-          break;
-            
-        case "Limpieza":
-          mnuMantenimientos.setVisible(false);
-          mnuReservas.setVisible(false);
-          break;
-        default:
-            
-            break;
-    }
-        }
     }
     
     public Menu() {
         // Llama al principal con valores por defecto
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
+    }
+    
+    public void setController(MenuController controller) {
+        this.controller = controller;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -245,19 +216,15 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_chmGestionReservasActionPerformed
 
     private void chmGestionHotelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionHotelesActionPerformed
-       GestionHoteles gh = new GestionHoteles();
-       gh.setVisible(true);
-       gh.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_chmGestionHotelesActionPerformed
 
     private void chmGestionPaisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionPaisesActionPerformed
-       GestionPaises p = new GestionPaises();
-       p.setVisible(true);
-       p.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_chmGestionPaisesActionPerformed
 
     private void chmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmSalirActionPerformed
-       System.exit(0);  
+
     }//GEN-LAST:event_chmSalirActionPerformed
 
     private void chmTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoHabitacionActionPerformed
@@ -271,23 +238,11 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_chmGestionHabitacionesActionPerformed
 
     private void chmTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoServicioActionPerformed
-        Servicio m = new Servicio();
-        ServicioDAO q = new ServicioDAO();
-        GestionServicio v = new GestionServicio();
-        
-        new ServicioController(m, q, v);
-        v.setVisible(true);
-        v.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_chmTipoServicioActionPerformed
 
     private void chmGestionClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionClientesActionPerformed
-        Cliente m = new Cliente();
-        ClienteDAO q = new ClienteDAO();
-        GestionCliente v = new GestionCliente();
         
-        new ClienteController(m, q, v);
-        v.setVisible(true);
-        v.setLocationRelativeTo(null);
     }//GEN-LAST:event_chmGestionClientesActionPerformed
 
     /**
@@ -326,25 +281,25 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem chmGestionClientes;
-    private javax.swing.JCheckBoxMenuItem chmGestionEmpleados;
-    private javax.swing.JCheckBoxMenuItem chmGestionHabitaciones;
-    private javax.swing.JCheckBoxMenuItem chmGestionHoteles;
-    private javax.swing.JCheckBoxMenuItem chmGestionPaises;
-    private javax.swing.JCheckBoxMenuItem chmGestionPlanLealtad;
-    private javax.swing.JCheckBoxMenuItem chmGestionReservas;
-    private javax.swing.JCheckBoxMenuItem chmReporteOcupacion;
-    private javax.swing.JCheckBoxMenuItem chmSalir;
-    private javax.swing.JCheckBoxMenuItem chmTipoHabitacion;
-    private javax.swing.JCheckBoxMenuItem chmTipoServicio;
+    public javax.swing.JCheckBoxMenuItem chmGestionClientes;
+    public javax.swing.JCheckBoxMenuItem chmGestionEmpleados;
+    public javax.swing.JCheckBoxMenuItem chmGestionHabitaciones;
+    public javax.swing.JCheckBoxMenuItem chmGestionHoteles;
+    public javax.swing.JCheckBoxMenuItem chmGestionPaises;
+    public javax.swing.JCheckBoxMenuItem chmGestionPlanLealtad;
+    public javax.swing.JCheckBoxMenuItem chmGestionReservas;
+    public javax.swing.JCheckBoxMenuItem chmReporteOcupacion;
+    public javax.swing.JCheckBoxMenuItem chmSalir;
+    public javax.swing.JCheckBoxMenuItem chmTipoHabitacion;
+    public javax.swing.JCheckBoxMenuItem chmTipoServicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel jlCorreo;
-    private javax.swing.JLabel jlTipo;
-    private javax.swing.JMenu mnuLimpieza;
-    private javax.swing.JMenu mnuMantenimientos;
-    private javax.swing.JMenu mnuReservas;
-    private javax.swing.JMenu mnuSalir;
+    public javax.swing.JLabel jlCorreo;
+    public javax.swing.JLabel jlTipo;
+    public javax.swing.JMenu mnuLimpieza;
+    public javax.swing.JMenu mnuMantenimientos;
+    public javax.swing.JMenu mnuReservas;
+    public javax.swing.JMenu mnuSalir;
     // End of variables declaration//GEN-END:variables
 }

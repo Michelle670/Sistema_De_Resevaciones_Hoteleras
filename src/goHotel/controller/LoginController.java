@@ -2,10 +2,11 @@
 package goHotel.controller;
 
 
-import goHotel.model.ConexionBD;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import goHotel.model.DAO.LoginDAO;
+import goHotel.view.LoginView;
+import goHotel.view.Menu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,118 +15,115 @@ import javax.swing.JOptionPane;
  * SEMANA 9
  */
 
-public class LoginController 
+public class LoginController implements ActionListener
 {
-// ---------------------------
-// VALIDACIONES
-// ---------------------------
-    public boolean validarCorreo(String correo) 
-    {
-        if (correo == null) return false;
 
-        // Debe tener @ y .
+    private final LoginDAO dao;
+    private final LoginView vista;
+
+    public LoginController(LoginDAO dao, LoginView vista) {
+        this.dao = dao;
+        this.vista = vista;
+
+        // Registrar los listeners
+        this.vista.btnOk.addActionListener(this);
+        this.vista.btnCancelar.addActionListener(this);
+    }
+
+    public void iniciar() {
+        vista.setTitle("Login - GoHotel");
+        vista.setLocationRelativeTo(null);
+        vista.setVisible(true);
+    }
+
+    // Método para validar correo
+    public boolean validarCorreo(String correo) {
         return correo.contains("@") && correo.contains(".");
     }
 
+    // Método para validar contraseña
     public boolean validarPassword(String pass) {
-        if (pass == null) return false;
-
         return pass.length() >= 4;
     }
 
-
-    // ---------------------------
-    // LOGIN EMPLEADO 
-    // ---------------------------
+    // Método para login de empleado
     public boolean loginEmpleado(String correo, String pass) {
-
-    String sql = "SELECT password FROM empleado WHERE correo = ?";
-
-    try (Connection conn = ConexionBD.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setString(1, correo);
-
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            // contraseña almacenada en la BD
-            String password = rs.getString("password");
-
-            // Comparamos la contraseña ingresada con la de la BD
-            return pass.equals(password);
-        } else {
-            // si no encuentra el correo
-            return false;
-        }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
+        return dao.loginEmpleado(correo, pass);
     }
-}
-    // ---------------------------
-    // LOGIN CLIENTE 
-    // ---------------------------
+
+    // Método para login de cliente
     public boolean loginCliente(String correo, String pass) {
-        String sql = "SELECT * FROM cliente WHERE correo = ? AND password = ?";
+        return dao.loginCliente(correo, pass);
+    }
 
-        try (Connection conn = ConexionBD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-            ps.setString(1, correo);
-            ps.setString(2, pass);
+        //======================================================================
+        // BOTÓN OK (Login)
+        //======================================================================
+        if (e.getSource() == vista.btnOk) {
 
-            ResultSet rs = ps.executeQuery();
+            String correo = vista.txtCorreo.getText().trim();
+            String pass = new String(vista.jPassword.getPassword());
+            boolean esEmpleado = vista.jrEmpleado.isSelected();
+            String tipoUsuario = esEmpleado ? "Empleado" : "Cliente";
 
-            return rs.next(); // Si existe, el login es correcto
+            // VALIDAR CORREO
+            if (!validarCorreo(correo)) {
+                JOptionPane.showMessageDialog(vista, "Correo inválido, debe contener '@' y un '.'.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        } catch (Exception e) {
-            System.out.println("Error al validar cliente: " + e.getMessage());
-            return false;
+            // VALIDAR CONTRASEÑA
+            if (!validarPassword(pass)) {
+                JOptionPane.showMessageDialog(vista, "La contraseña debe tener mínimo 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            boolean loginCorrecto = false;
+
+            // SI ES EMPLEADO (login fijo)
+            if (esEmpleado) {
+                loginCorrecto = loginEmpleado(correo, pass);
+            } // SI ES CLIENTE (se valida en BD)
+            else {
+                loginCorrecto = loginCliente(correo, pass);
+            }
+
+            if (loginCorrecto) {
+                JOptionPane.showMessageDialog(vista, "¡Inicio de sesión exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                //Crear Menu con los parámetros
+                Menu vistaMenu = new Menu(correo, tipoUsuario);
+                MenuController menuController = new MenuController(vistaMenu, correo, tipoUsuario);
+                vistaMenu.setController(menuController);
+
+                // Iniciar el menú
+                menuController.iniciar();
+
+//                Menu m = new Menu(correo, tipoUsuario);
+//                m.setVisible(true);
+//                m.setLocationRelativeTo(null);
+//                
+                vista.dispose(); // cerrar ventana de login
+            } else {
+                JOptionPane.showMessageDialog(vista, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        //======================================================================
+        // BOTÓN CANCELAR
+        //======================================================================
+        if (e.getSource() == vista.btnCancelar) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    vista,
+                    "¿Está seguro que desea salir?",
+                    "Confirmar Salida",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
         }
     }
-    
-    // ---------------------------
-    //   Metodo GetUserInfo
-    // --------------------------- 
-public static String[] getUserInfo(String correo, String tipo) {
-
-    String sql;
-
-    if (tipo.equalsIgnoreCase("empleado")) {
-        sql = "SELECT A.nombre, B.nombre AS nombre_rol " +
-              "FROM empleado A " +
-              "INNER JOIN rol_empleado B ON A.id_rol = B.id_rol " +
-              "WHERE A.correo = ?";
-    } else {
-        sql = "SELECT nombre, null AS nombre_rol FROM cliente WHERE correo = ?";
-    }
-
-    try (Connection conn = ConexionBD.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setString(1, correo);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            String nombre = rs.getString("nombre");
-            String rol = rs.getString("nombre_rol");
-            
-            String textoNombre = "¡Bienvenido " + nombre +"!";
-            String textoRol = (rol != null ? "Rol: " + rol : "Rol: N/A");
-            
-            return new String[]{ textoNombre, textoRol };   // ← TUPLA
-        } else {
-            return null;
-        }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-    }
-}
-
-   
- 
 }

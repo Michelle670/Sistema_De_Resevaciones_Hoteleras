@@ -4,6 +4,7 @@ package goHotel.controller;
 
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
+import goHotel.model.DAO.PaisDAO;
 import goHotel.view.GestionCliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +31,7 @@ public class ClienteController implements ActionListener {
         this.vista.btnBuscar.addActionListener(this);
         this.vista.btnLimpiar.addActionListener(this);
         this.vista.btnSalir.addActionListener(this);
-        PaisController paisCtrl = new PaisController();
+        PaisDAO paisCtrl = new PaisDAO();
         paisCtrl.cargarPaises(vista.cmbPais);
         
         PlanLealtadController planCtrl = new PlanLealtadController();

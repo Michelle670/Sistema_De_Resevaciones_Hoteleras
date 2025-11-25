@@ -4,22 +4,28 @@ package gohotelapp;
  * PROYECTO
  * SEMANA 9
  *****************************************************************************/
+import goHotel.controller.LoginController;
 import goHotel.model.ConexionBD;
-import goHotel.view.Login;
-import goHotel.view.Menu;
+import goHotel.model.DAO.LoginDAO;
+import goHotel.view.LoginView;
 public class Principal 
 {
 
     public static void main(String[] args) 
     {
         
-       ConexionBD.getConnection();
-       
-       Login lg = new Login();
-       lg.setVisible(true);
-       lg.setLocationRelativeTo(null);
-       
-       
+        ConexionBD.getConnection();
+
+        // Crear instancias
+        LoginDAO dao = new LoginDAO();
+        LoginView vista = new LoginView();
+
+        // Crear controller y conectar
+        LoginController controller = new LoginController(dao, vista);
+        vista.setController(controller);
+
+        // Iniciar la aplicación
+        controller.iniciar();
         
     }
     
