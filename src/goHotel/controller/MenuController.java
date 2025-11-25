@@ -58,7 +58,8 @@ public class MenuController implements ActionListener {
     
     private void configurarPermisosPorRol() {
         // Si es Cliente, ocultar menús de empleado
-        if (tipoUsuario.equalsIgnoreCase("Cliente")) {
+         if (tipoUsuario.equalsIgnoreCase("Cliente")) 
+        {
             vista.mnuMantenimientos.setVisible(false);
             vista.mnuLimpieza.setVisible(false);
             return;
