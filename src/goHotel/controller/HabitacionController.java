@@ -1,12 +1,12 @@
 
 package goHotel.controller;
 
-import goHotel.model.ConexionBD;
+import goHotel.model.DAO.HabitacionDAO;
+import goHotel.model.EstadoHabitacion;
 import goHotel.model.Habitacion;
 import goHotel.view.GestionHabitacion;
-import java.sql.*;
-import java.util.logging.*;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,263 +15,159 @@ import javax.swing.table.DefaultTableModel;
  * PROYECTO
  * SEMANA 9
  */
-public class HabitacionController 
-{
-    public boolean registrarHabitacion(int idHabitacion, int idHotel, int idTipo, int numero, String estado){
-        try{
-            if (!validarHabitacion(idHabitacion, idHotel, idTipo, numero, estado)) {
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios y válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            
-            // Verificar si ya existe un hotel con ese código
-            if (buscarHabitacionPorID(idHabitacion) != null) {
-                JOptionPane.showMessageDialog(null, "Ya existe una habitación con ese ID", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            
-            Habitacion nuevaHabitacion = new Habitacion(idHabitacion, idHotel, idTipo, numero, estado.trim());
-            
-            if(nuevaHabitacion.agregar()){
-                JOptionPane.showMessageDialog(null, "Habitación agregada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                return true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Error: No se pudo agregar la habitación.", "Fallido", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+public class HabitacionController implements ActionListener{
+    private final Habitacion modelo;
+    private final HabitacionDAO consultas;
+    private final GestionHabitacion vista;
+
+    public HabitacionController(Habitacion modelo, HabitacionDAO consultas, GestionHabitacion vista) {
+        this.modelo = modelo;
+        this.consultas = consultas;
+        this.vista = vista;
+        this.vista.btnAgregar.addActionListener(this);
+        this.vista.btnEditar.addActionListener(this);
+        this.vista.btnEliminar.addActionListener(this);
+        this.vista.btnBuscar.addActionListener(this);
+        this.vista.btnLimpiar.addActionListener(this);
+        this.vista.btnSalir.addActionListener(this);
+        
+        consultas.cargarEstado(vista.cmbEstado);
+        consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
     }
     
-    public boolean editarHabitacion(int idHabitacion, int idHotel, int idTipo, int numero, String estado){
-        Connection conn = null;
-        PreparedStatement ps = null;
-
-        try {
-            if(idHabitacion <= 0){
-                JOptionPane.showMessageDialog(null, "Ingrese el código del hotel que va a editar", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
+    public void iniciar() {
+        vista.setTitle("Gestión de Hoteles");
+        vista.setLocationRelativeTo(null);
+        vista.txtIdHabitacion.setVisible(false);
+    }
+    
+    public void limpiar() {
+        vista.txtIdHabitacion.setText("");
+        vista.txtIdHotel.setText("");
+        vista.txtTipoHabitacion.setText("");
+        vista.txtNumero.setText("");
+        vista.cmbEstado.setSelectedIndex(0);
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e){
+        //btnAgregar
+        if(e.getSource() == vista.btnAgregar){
+            EstadoHabitacion estado = (EstadoHabitacion) vista.cmbEstado.getSelectedItem();
+            
+            if(vista.txtIdHabitacion.getText().trim().isEmpty() 
+                    || vista.txtIdHotel.getText().trim().isEmpty()
+                    || vista.txtTipoHabitacion.getText().trim().isEmpty()
+                    || vista.txtNumero.getText().trim().isEmpty()
+                    || estado == null){
+                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
+                return;   
             }
             
-            if(idHotel <= 0 || idTipo <= 0 || numero <= 0 || estado.trim().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
+            int idHa = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
+            modelo.setIdHabitacion(idHa);
+            int idHo = Integer.parseInt(vista.txtIdHotel.getText().trim());
+            modelo.setHotel(idHo);
+            int tipo = Integer.parseInt(vista.txtTipoHabitacion.getText().trim());
+            modelo.setTipo(tipo);
+            int numero = Integer.parseInt(vista.txtNumero.getText().trim());
+            modelo.setNumero(numero);
+            modelo.setEstado(estado.name());
             
-            conn = ConexionBD.getConnection();
-            String sql = "UPDATE habitacion SET id_hotel = ?, id_tipo = ?, numero = ?, estado = ? WHERE id_habitacion = ?";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, idHotel);
-            ps.setInt(2, idTipo);
-            ps.setInt(3, numero);
-            ps.setString(4, estado);
-            ps.setInt(5, idHabitacion);
-            
-            int filasActualizadas = ps.executeUpdate();
-            
-            if (filasActualizadas > 0) {
-                JOptionPane.showMessageDialog(null, "Habitacion actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                return true;
+            if (consultas.registrarHabitacion(modelo)) {
+                JOptionPane.showMessageDialog(null, "Habitación registrada.");
+                consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
             } else {
-                JOptionPane.showMessageDialog(null, "No existe una habitacion con ese ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return false;
+                JOptionPane.showMessageDialog(null, "Error al registrar cliente.");
             }
-
-            
-        }catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El código debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } catch (SQLException e) {
-            Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (SQLException e) {
-                Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            }
-            // NO cerramos conn porque es conexión global
         }
         
-    }
-    
-    public Habitacion buscarHabitacion(int idHabitacion){
-        try{
-            if(idHabitacion <= 0){
-                JOptionPane.showMessageDialog(null, "Código de habitación inválido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return null;
+        //btnEditar
+        if(e.getSource() == vista.btnEditar){
+            EstadoHabitacion estado = (EstadoHabitacion) vista.cmbEstado.getSelectedItem();
+
+            if (vista.txtIdHabitacion.getText().trim().isEmpty()
+                    || vista.txtIdHotel.getText().trim().isEmpty()
+                    || vista.txtTipoHabitacion.getText().trim().isEmpty()
+                    || vista.txtNumero.getText().trim().isEmpty()
+                    || estado == null) {
+                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
+                return;
             }
+
+            int idHa = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
+            modelo.setIdHabitacion(idHa);
+            int idHo = Integer.parseInt(vista.txtIdHotel.getText().trim());
+            modelo.setHotel(idHo);
+            int tipo = Integer.parseInt(vista.txtTipoHabitacion.getText().trim());
+            modelo.setTipo(tipo);
+            int numero = Integer.parseInt(vista.txtNumero.getText().trim());
+            modelo.setNumero(numero);
+            modelo.setEstado(estado.name());
             
-            Habitacion habitacion = buscarHabitacionPorID(idHabitacion);
-            
-            if(habitacion != null){
-                JOptionPane.showMessageDialog(null, "Habitación encontrada", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                return habitacion;
-            }else {
-                JOptionPane.showMessageDialog(null, "No se encontró la habitación", "Error", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }
-        }catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El código debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-    }
-    
-    public boolean eliminarHabitacion(int idHabitacion, GestionHabitacion vista){
-        try{
-            Connection conn = ConexionBD.getConnection();
-
-            String sql = "DELETE FROM habitacion WHERE id_habitacion = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ps.setInt(1, idHabitacion);
-
-            int filas = ps.executeUpdate();
-
-            ps.close();
-            
-            if (filas > 0) {
-                // Mostrar mensaje y actualizar UI desde controller
-                JOptionPane.showMessageDialog(vista, "Habitación eliminada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                vista.limpiarCampos();
-                vista.actualizarTabla();
-                return true;
+            if(consultas.editarHabitacion(modelo)){
+                JOptionPane.showMessageDialog(null, "Habitación modificada.");
+                consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
             } else {
-                JOptionPane.showMessageDialog(vista, "No existe una habitación con ese código", "Atención", JOptionPane.WARNING_MESSAGE);
-                return false;
-            }
-        }catch (SQLException e) {
-            Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-    }
-    
-    public void cargarDatosEnTabla(DefaultTableModel modelo, int idHabitacion) {
-        modelo.setRowCount(0);
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            conn = ConexionBD.getConnection();
-            String sql = "SELECT id_habitacion, id_hotel, id_tipo, numero, estado FROM habitacion";
-            if (idHabitacion > 0) {
-                sql += " WHERE id_habitacion = ?";
-                ps = conn.prepareStatement(sql);
-                ps.setInt(1, idHabitacion);
-            } else {
-                ps = conn.prepareStatement(sql);
-            }
-
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Object[] fila = {
-                    rs.getInt("id_habitacion"),
-                    rs.getInt("id_hotel"),
-                    rs.getInt("id_tipo"),
-                    rs.getInt("numero"),
-                    rs.getString("estado")
-                };
-                modelo.addRow(fila);
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("Error al cargar las habitaciones: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (SQLException e) {
-                Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            }
-            // No cerramos conn porque es conexión global
-        }
-    }
-    
-    private boolean validarHabitacion(int idHabitacion, int idHotel, int idTipo, int numero, String estado) {
-        if (idHabitacion <= 0 || idHotel <= 0 || idTipo <= 0 || numero <= 0) {
-            return false;
-        }
-        if (estado == null) {
-            return false;
-        }
-
-        for (String e : HabitacionConst.ESTADOS) {
-            if (e.equals(estado.trim())) {
-                return true;
+                JOptionPane.showMessageDialog(null, "Error al modificar habitación.");
             }
         }
-        return false;
-    }
-    
-    private Habitacion buscarHabitacionPorID(int idHabitacion){
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
         
-        try{
-            conn = ConexionBD.getConnection();
-            String sql = "SELECT id_habitacion, id_hotel, numero, id_tipo, estado FROM habitacion WHERE id_habitacion = ?";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, idHabitacion);
-            rs = ps.executeQuery();
+        //btnEliminar
+        if(e.getSource() == vista.btnEliminar){
+            modelo.setIdHabitacion(Integer.parseInt(vista.txtIdHabitacion.getText().trim()));
             
-            if (rs.next()) {
-                return new Habitacion(
-                        rs.getInt("id_habitacion"),
-                        rs.getInt("id_hotel"),
-                        rs.getInt("id_tipo"),
-                        rs.getInt("numero"),
-                        rs.getString("estado")
-                );
+            if(consultas.eliminarHabitacion(modelo)){
+                JOptionPane.showMessageDialog(null, "Habitación eliminada.");
+                consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar habitación.");
             }
-            
-        }catch (SQLException e) {
-            Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            return null;
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
+            limpiar();
+        }
+        
+        //btnBuscar
+        if(e.getSource() == vista.btnBuscar){
+            try{
+                int id = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
+                modelo.setIdHabitacion(id);
+                
+                if(consultas.buscarHabitacion(modelo)){
+                    vista.txtIdHabitacion.setText(String.valueOf(modelo.getIdHabitacion()));
+                    vista.txtIdHotel.setText(String.valueOf(modelo.getHotel()));
+                    vista.txtTipoHabitacion.setText(String.valueOf(modelo.getTipo()));
+                    vista.txtNumero.setText(String.valueOf(modelo.getNumero()));
+                    
+                    String estadoBD = modelo.getEstado();
+
+                    try {
+                        EstadoHabitacion estadoEnum = EstadoHabitacion.valueOf(estadoBD);
+                        vista.cmbEstado.setSelectedItem(estadoEnum);
+                    } catch (IllegalArgumentException ex) {
+                        vista.cmbEstado.setSelectedItem(EstadoHabitacion.DISPONIBLE);
+                    }
+                    
+                    JOptionPane.showMessageDialog(null, "Habitación encontrada.");
                 }
-            } catch (SQLException e) {
-                Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
-            }
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (SQLException e) {
-                Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
+                
+            }catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "El ID debe ser un número válido.");
             }
         }
-
-        return null;
-    }
-    
-    public void cargarEstado(JComboBox<String> combo) {
-        combo.removeAllItems();
-        for (String estado : HabitacionConst.ESTADOS) {
-            combo.addItem(estado);
+        
+        //btnLimpiar
+        if(e.getSource() == vista.btnLimpiar){
+            limpiar();
+            consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
         }
-        combo.setSelectedItem(HabitacionConst.ESTADO_PENDIENTE);
+        
+        if (e.getSource() == vista.btnSalir){
+            int confirmacion = JOptionPane.showConfirmDialog(null,
+                    "¿Está seguro de salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                vista.dispose();
+            }
+        }
     }
     
-    public final class HabitacionConst {
-
-        public static final String ESTADO_LIMPIA = "Limpia";
-        public static final String ESTADO_PENDIENTE = "Pendiente";
-        public static final String[] ESTADOS = {ESTADO_LIMPIA, ESTADO_PENDIENTE};
-    }
 }

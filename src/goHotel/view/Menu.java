@@ -232,9 +232,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_chmTipoHabitacionActionPerformed
 
     private void chmGestionHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionHabitacionesActionPerformed
-        GestionHabitacion gha = new GestionHabitacion();
-        gha.setVisible(true);
-        gha.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_chmGestionHabitacionesActionPerformed
 
     private void chmTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoServicioActionPerformed

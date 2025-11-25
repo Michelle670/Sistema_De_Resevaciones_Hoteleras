@@ -1,8 +1,6 @@
 
 package goHotel.model;
 
-import java.sql.*;
-
 /**
  * AUTOR: GRUPO 3
  * PROYECTO
@@ -92,49 +90,4 @@ public class Habitacion
     {
         this.estado = estado;
     }
-    
-    
-    //==============================================================================
-    // MÉTODO PARA AGREGAR HOTEL A LA BASE DE DATOS
-    //==============================================================================
-    
-    public boolean agregar() {
-        Connection conn = null;
-        PreparedStatement ps = null;
-
-        try {
-            conn = ConexionBD.getConnection();
-            String sql = "INSERT INTO habitacion (id_habitacion, id_hotel, id_tipo, numero, estado) VALUES (?, ?, ?, ?, ?)";
-            ps = conn.prepareStatement(sql);
-
-            ps.setInt(1, this.idHabitacion);
-            ps.setInt(2, this.idHotel);
-            ps.setInt(3, this.idTipo);
-            ps.setInt(4, this.numero);
-
-            // Validamos y normalizamos el estado antes de insertarlo
-            String estadoValido = (this.estado != null && this.estado.trim().equalsIgnoreCase("Limpia"))
-                    ? "Limpia"
-                    : "Pendiente"; // si es nulo o cualquier otra cosa, queda como "Pendiente"
-            ps.setString(5, estadoValido);
-
-            ps.executeUpdate();
-            return true;
-
-        } catch (SQLException e) {
-            System.out.println("Error al agregar la habitación: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (Exception e) {
-                System.out.println("Error al cerrar PreparedStatement: " + e.getMessage());
-            }
-            ConexionBD.cerrarConexion();
-        }
-    }
-    
-    
 }

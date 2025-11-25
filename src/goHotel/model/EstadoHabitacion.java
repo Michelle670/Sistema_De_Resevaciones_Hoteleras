@@ -10,8 +10,19 @@ package goHotel.model;
  */
 public enum EstadoHabitacion 
 {
-  DISPONIBLE,
-  OCUPADA,
-  EN_LIMPIEZA,
-  FUERA_DE_SERVICIO
+    DISPONIBLE("Disponible"),
+    OCUPADA("Ocupada"),
+    EN_LIMPIEZA("En limpieza"),
+    FUERA_DE_SERVICIO("Fuera de servicio");
+
+    private final String label;
+
+    EstadoHabitacion(String label) {
+        this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        return label;
+    }
 }

@@ -342,24 +342,33 @@ public class GestionHoteles extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-public void limpiarCampos() {
-
-}
-
-public void actualizarTabla() {
-
-}
-
-
-private void ocultarColumna2() 
-{
-    jtGestionHoteles.getColumnModel().getColumn(2).setMinWidth(0);
-    jtGestionHoteles.getColumnModel().getColumn(2).setMaxWidth(0);
-    jtGestionHoteles.getColumnModel().getColumn(2).setWidth(0);
-}
     public void setController(HotelController controller) {
         this.controller = controller;
     }
+
+    public void limpiarCampos() {
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        jcPais.setSelectedIndex(0);
+        txtCiudad.setText("");
+        txtDireccion.setText("");
+        txtCodigo.requestFocus();
+    }
+
+    public void actualizarTabla() {
+        if (controller != null) {
+            DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
+            controller.actualizarTabla();
+        }
+    }
+
+
+    private void ocultarColumna2() {
+        jtGestionHoteles.getColumnModel().getColumn(2).setMinWidth(0);
+        jtGestionHoteles.getColumnModel().getColumn(2).setMaxWidth(0);
+        jtGestionHoteles.getColumnModel().getColumn(2).setWidth(0);
+    }
+
     /**
      * @param args the command line arguments
      */

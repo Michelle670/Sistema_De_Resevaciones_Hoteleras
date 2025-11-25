@@ -3,15 +3,13 @@ package goHotel.view;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
-import goHotel.controller.HabitacionController;
-import javax.swing.JOptionPane;
+import goHotel.model.EstadoHabitacion;
 
 /**
  *
  * @author soloa
  */
 public class GestionHabitacion extends javax.swing.JFrame {
-    private HabitacionController controller;
 
 
     /**
@@ -19,12 +17,7 @@ public class GestionHabitacion extends javax.swing.JFrame {
      */
     public GestionHabitacion() {
         initComponents();
-        jtHabitaciones.setDefaultEditor(Object.class, null);
-        controller = new HabitacionController();
-        controller.cargarEstado(cmbEstado);
-        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
-        jtHabitaciones.getTableHeader().setBackground(lightGray);
-        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/cama-de-hotel.png")).getImage());
+        
     }
 
     /**
@@ -37,6 +30,13 @@ public class GestionHabitacion extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnAgregar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -52,13 +52,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
         txtTipoHabitacion = new javax.swing.JTextField();
         cmbEstado = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jToolBar1 = new javax.swing.JToolBar();
-        btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        BtnBuscar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
         txtNumero = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtIdHotel = new javax.swing.JTextField();
@@ -68,6 +61,87 @@ public class GestionHabitacion extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
+        jToolBar1.setRollover(true);
+
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/agregar-usuario.png"))); // NOI18N
+        btnAgregar.setText("Agregar");
+        btnAgregar.setFocusable(false);
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnAgregar);
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (3).png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.setFocusable(false);
+        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEditar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnEditar);
+
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setFocusable(false);
+        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnBuscar);
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (2).png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setFocusable(false);
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnEliminar);
+
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setFocusable(false);
+        btnLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnLimpiar);
+
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
+        btnSalir.setText("Salir");
+        btnSalir.setFocusable(false);
+        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnSalir);
 
         jTabbedPane2.setBackground(new java.awt.Color(204, 204, 204));
         jTabbedPane2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -85,6 +159,11 @@ public class GestionHabitacion extends javax.swing.JFrame {
                 "ID Habitacion", "ID Hotel", "ID Tipo", "Número", "Estado"
             }
         ));
+        jtHabitaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtHabitacionesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtHabitaciones);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -144,7 +223,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
             }
         });
 
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------", "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbEstadoActionPerformed(evt);
@@ -152,87 +230,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
         });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/LogoGOHOTEL_1.jpeg"))); // NOI18N
-
-        jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
-        jToolBar1.setRollover(true);
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/agregar-usuario.png"))); // NOI18N
-        btnAgregar.setText("Agregar");
-        btnAgregar.setFocusable(false);
-        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMaximumSize(new java.awt.Dimension(60, 60));
-        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnAgregar);
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (3).png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.setFocusable(false);
-        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEditar.setMaximumSize(new java.awt.Dimension(60, 60));
-        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnEditar);
-
-        BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
-        BtnBuscar.setText("Buscar");
-        BtnBuscar.setFocusable(false);
-        BtnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        BtnBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
-        BtnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        BtnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnBuscarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(BtnBuscar);
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (2).png"))); // NOI18N
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setFocusable(false);
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setMaximumSize(new java.awt.Dimension(60, 60));
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnEliminar);
-
-        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.setFocusable(false);
-        btnLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
-        btnLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnLimpiar);
-
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
-        btnSalir.setText("Salir");
-        btnSalir.setFocusable(false);
-        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir.setMaximumSize(new java.awt.Dimension(60, 60));
-        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnSalir);
 
         txtNumero.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtNumero.addActionListener(new java.awt.event.ActionListener() {
@@ -332,35 +329,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {
-        actualizarTabla();
-    }           
-    
-    private void jtGestionHabitacionMouseClicked(java.awt.event.MouseEvent evt) {
-        int fila = jtHabitaciones.getSelectedRow();
-        
-        if (fila == -1) {
-            return; // No seleccionó nada
-        }
-        
-        int idHabitacion = getIntFromTable(fila, 0);
-        txtIdHabitacion.setText(String.valueOf(idHabitacion));
-        
-        int idHotel = getIntFromTable(fila, 1);
-        txtIdHotel.setText(String.valueOf(idHotel));
-        
-        int idTipo = getIntFromTable(fila, 2);
-        txtTipoHabitacion.setText(String.valueOf(idTipo));
-        
-        int numero = getIntFromTable(fila, 3);
-        txtNumero.setText(String.valueOf(numero));
-        
-        String estado = getStringFromTable(fila, 4);
-        if (estado != null) {
-            cmbEstado.setSelectedItem(estado);
-        }
-    }
-    
     private int getIntFromTable(int row, int col) {
         Object v = jtHabitaciones.getValueAt(row, col);
         if (v == null) {
@@ -399,211 +367,59 @@ public class GestionHabitacion extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbEstadoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        try {
-            if (txtIdHabitacion.getText().trim().isEmpty()
-                    || txtIdHotel.getText().trim().isEmpty()
-                    || txtTipoHabitacion.getText().trim().isEmpty()
-                    || txtNumero.getText().trim().isEmpty()
-                    || cmbEstado.getSelectedItem() == null
-                    || cmbEstado.getSelectedItem().toString().equals("-------")) {
 
-                JOptionPane.showMessageDialog(this,
-                        "Todos los campos son obligatorios.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int idHabitacion = Integer.parseInt(txtIdHabitacion.getText().trim());
-            int idHotel = Integer.parseInt(txtIdHotel.getText().trim());
-            int idTipo = Integer.parseInt(txtTipoHabitacion.getText().trim());
-            int numero = Integer.parseInt(txtNumero.getText().trim());
-            String estado = cmbEstado.getSelectedItem().toString();
-
-            boolean registrado = controller.registrarHabitacion(idHabitacion, idHotel, idTipo, numero, estado);
-            
-            if (registrado) {
-                limpiarCampos();
-                actualizarTabla();
-            }
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Los campos numéricos deben contener solo números válidos.",
-                    "Error de formato",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Ocurrió un error al intentar agregar la habitación: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        try {
-            if (txtIdHabitacion.getText().trim().isEmpty()
-                    || txtIdHotel.getText().trim().isEmpty()
-                    || txtTipoHabitacion.getText().trim().isEmpty()
-                    || txtNumero.getText().trim().isEmpty()
-                    || cmbEstado.getSelectedItem() == null
-                    || cmbEstado.getSelectedItem().toString().equals("-------")) {
 
-                JOptionPane.showMessageDialog(this,
-                        "Todos los campos son obligatorios para editar una habitación.",
-                        "Error de validación",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int idHabitacion = Integer.parseInt(txtIdHabitacion.getText().trim());
-            int idHotel = Integer.parseInt(txtIdHotel.getText().trim());
-            int idTipo = Integer.parseInt(txtTipoHabitacion.getText().trim());
-            int numero = Integer.parseInt(txtNumero.getText().trim());
-            String estado = cmbEstado.getSelectedItem().toString();
-
-            if (idHabitacion <= 0 || idHotel <= 0 || idTipo <= 0 || numero <= 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Los campos numéricos deben ser mayores a 0.",
-                        "Error de validación",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int confirm = JOptionPane.showConfirmDialog(this,
-                    "¿Desea guardar los cambios de esta habitación?",
-                    "Confirmar edición",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (confirm != JOptionPane.YES_OPTION) {
-                return; // Cancela la operación
-            }
-
-            boolean actualizado = controller.editarHabitacion(idHabitacion, idHotel, idTipo, numero, estado);
-
-            if (actualizado) {
-                limpiarCampos();
-                actualizarTabla();
-            }
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Los campos numéricos deben contener solo números válidos.",
-                    "Error de formato",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Ocurrió un error al editar la habitación: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
-        try {
-        String textoId = txtIdHabitacion.getText().trim();
-        int idHabitacion = 0; // valor por defecto para mostrar todas
-
-        if (!textoId.isEmpty()) {
-            idHabitacion = Integer.parseInt(textoId);
-            if (idHabitacion <= 0) {
-                JOptionPane.showMessageDialog(this,
-                        "El ID de la habitación debe ser mayor a 0.",
-                        "Error de validación",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-
-        // Cargar datos en la tabla
-        DefaultTableModel modelo = (DefaultTableModel) jtHabitaciones.getModel();
-        controller.cargarDatosEnTabla(modelo, idHabitacion);
-
-        // Limpiar campos si quieres dejar el formulario vacío después
-        limpiarCampos();
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-                "El ID debe ser un número válido.",
-                "Error de formato",
-                JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-                "Ocurrió un error al buscar la habitación: " + e.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_BtnBuscarActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        String txt = txtIdHabitacion.getText().trim();
-
-        if (txt.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Ingrese el código de la habitación que desea eliminar",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int idHabitacion;
-        try {
-            idHabitacion = Integer.parseInt(txt);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "El código de la habitación debe ser un número válido",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (idHabitacion <= 0) {
-            JOptionPane.showMessageDialog(this,
-                    "El código de la habitación debe ser mayor que 0",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int resp = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de eliminar la habitación con ID " + idHabitacion + "?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-
-        if (resp != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        // El controller ya limpia campos y actualiza la tabla internamente
-        controller.eliminarHabitacion(idHabitacion, this);
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        limpiarCampos();
-        actualizarTabla();
+
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        int confirmacion = JOptionPane.showConfirmDialog(null,
-                "¿Está seguro de salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            this.dispose();
-        }
+
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    public void limpiarCampos() {
-        txtIdHabitacion.setText("");
-        txtIdHotel.setText("");
-        txtTipoHabitacion.setText("");
-        txtNumero.setText("");
-        cmbEstado.setSelectedIndex(0);
-    }
-    
-    public void actualizarTabla() {
-        DefaultTableModel modelo = (DefaultTableModel) jtHabitaciones.getModel();
-        controller.cargarDatosEnTabla(modelo, 0);
-    }
-    /**
+    private void jtHabitacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtHabitacionesMouseClicked
+        int fila = jtHabitaciones.getSelectedRow();
+
+        if (fila == -1) {
+            return; // No seleccionó nada
+        }
+
+        int idHabitacion = getIntFromTable(fila, 0);
+        txtIdHabitacion.setText(String.valueOf(idHabitacion));
+
+        int idHotel = getIntFromTable(fila, 1);
+        txtIdHotel.setText(String.valueOf(idHotel));
+
+        int idTipo = getIntFromTable(fila, 2);
+        txtTipoHabitacion.setText(String.valueOf(idTipo));
+
+        int numero = getIntFromTable(fila, 3);
+        txtNumero.setText(String.valueOf(numero));
+
+        String estado = getStringFromTable(fila, 4);
+        if (estado != null) {
+            try {
+                cmbEstado.setSelectedItem(EstadoHabitacion.valueOf(estado));
+            } catch (Exception ex) {
+                cmbEstado.setSelectedItem(EstadoHabitacion.DISPONIBLE);
+            }
+        }
+    }//GEN-LAST:event_jtHabitacionesMouseClicked
+   
+        /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -640,13 +456,13 @@ public class GestionHabitacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnBuscar;
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnSalir;
-    private javax.swing.JComboBox<String> cmbEstado;
+    public javax.swing.JButton btnAgregar;
+    public javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnEditar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnSalir;
+    public javax.swing.JComboBox<EstadoHabitacion> cmbEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -661,10 +477,10 @@ public class GestionHabitacion extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTable jtHabitaciones;
-    private javax.swing.JTextField txtIdHabitacion;
-    private javax.swing.JTextField txtIdHotel;
-    private javax.swing.JTextField txtNumero;
-    private javax.swing.JTextField txtTipoHabitacion;
+    public javax.swing.JTable jtHabitaciones;
+    public javax.swing.JTextField txtIdHabitacion;
+    public javax.swing.JTextField txtIdHotel;
+    public javax.swing.JTextField txtNumero;
+    public javax.swing.JTextField txtTipoHabitacion;
     // End of variables declaration//GEN-END:variables
 }

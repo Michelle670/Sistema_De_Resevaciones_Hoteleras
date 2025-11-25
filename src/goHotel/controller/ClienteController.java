@@ -5,7 +5,6 @@ package goHotel.controller;
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.ClienteDAO.ComboItem;
-import goHotel.model.DAO.PaisDAO;
 import goHotel.view.GestionCliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,7 +63,6 @@ public class ClienteController implements ActionListener {
         if(e.getSource() == vista.btnAgregar){
             ComboItem planItem = (ComboItem) vista.cmbPlanLealtad.getSelectedItem();
             ComboItem paisItem = (ComboItem) vista.cmbPais.getSelectedItem();
-            int idPais = vista.cmbPais.getSelectedIndex() + 1;
             if(vista.txtID.getText().trim().isEmpty()
                     || vista.txtNombre.getText().trim().isEmpty()
                     || vista.txtCorreo.getText().trim().isEmpty()

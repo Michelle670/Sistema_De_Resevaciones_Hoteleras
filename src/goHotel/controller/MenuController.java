@@ -6,12 +6,15 @@ package goHotel.controller;
 
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
+import goHotel.model.DAO.HabitacionDAO;
 import goHotel.model.DAO.HotelDAO;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.DAO.ServicioDAO;
+import goHotel.model.Habitacion;
 import goHotel.model.Hotel;
 import goHotel.model.Servicio;
 import goHotel.view.GestionCliente;
+import goHotel.view.GestionHabitacion;
 import goHotel.view.GestionHoteles;
 import goHotel.view.GestionPaises;
 import goHotel.view.GestionServicio;
@@ -151,8 +154,14 @@ public class MenuController implements ActionListener{
     }
 
     private void abrirGestionHabitaciones() {
-        JOptionPane.showMessageDialog(vista, "Módulo en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
-        // TODO: Implementar cuando esté listo
+        Habitacion m = new Habitacion();
+        HabitacionDAO q = new HabitacionDAO();
+        GestionHabitacion v = new GestionHabitacion();
+        
+        new HabitacionController(m, q, v);
+        v.setVisible(true);
+        v.setLocationRelativeTo(null);
+        
     }
     
     private void abrirGestionServicio(){
