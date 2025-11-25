@@ -4,7 +4,7 @@
  */
 package goHotel.controller;
 
-import goHotel.model.DAO.ServicioDAO;
+import goHotel.model.ServicioDAO;
 import goHotel.model.Servicio;
 import goHotel.view.GestionServicio;
 import java.awt.event.ActionEvent;
