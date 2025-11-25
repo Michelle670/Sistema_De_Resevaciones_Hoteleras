@@ -9,7 +9,7 @@ import goHotel.controller.LoginController;
 import goHotel.controller.ServicioController;
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
-import goHotel.model.ServicioDAO;
+import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.Servicio;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
