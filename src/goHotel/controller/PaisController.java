@@ -1,5 +1,6 @@
 
 package goHotel.controller;
+import goHotel.model.ConexionBD;
 import goHotel.model.Pais;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

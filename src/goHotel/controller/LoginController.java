@@ -2,6 +2,7 @@
 package goHotel.controller;
 
 
+import goHotel.model.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

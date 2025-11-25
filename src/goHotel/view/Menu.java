@@ -8,8 +8,8 @@ import goHotel.controller.ClienteController;
 import goHotel.controller.LoginController;
 import goHotel.controller.ServicioController;
 import goHotel.model.Cliente;
-import goHotel.model.ClienteConsultas;
-import goHotel.model.ServicioConsultas;
+import goHotel.model.DAO.ClienteDAO;
+import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.Servicio;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -272,7 +272,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void chmTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoServicioActionPerformed
         Servicio m = new Servicio();
-        ServicioConsultas q = new ServicioConsultas();
+        ServicioDAO q = new ServicioDAO();
         GestionServicio v = new GestionServicio();
         
         new ServicioController(m, q, v);
@@ -282,7 +282,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void chmGestionClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionClientesActionPerformed
         Cliente m = new Cliente();
-        ClienteConsultas q = new ClienteConsultas();
+        ClienteDAO q = new ClienteDAO();
         GestionCliente v = new GestionCliente();
         
         new ClienteController(m, q, v);

@@ -4,7 +4,7 @@ package gohotelapp;
  * PROYECTO
  * SEMANA 9
  *****************************************************************************/
-import goHotel.controller.ConexionBD;
+import goHotel.model.ConexionBD;
 import goHotel.view.Login;
 import goHotel.view.Menu;
 public class Principal 

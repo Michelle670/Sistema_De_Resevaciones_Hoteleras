@@ -1,6 +1,6 @@
 package goHotel.controller;
 
-import goHotel.controller.ConexionBD;
+import goHotel.model.ConexionBD;
 import goHotel.model.Hotel;
 import goHotel.view.GestionHoteles;
 import java.sql.Connection;

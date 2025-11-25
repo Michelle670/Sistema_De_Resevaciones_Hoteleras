@@ -1,4 +1,4 @@
-package goHotel.controller;
+package goHotel.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

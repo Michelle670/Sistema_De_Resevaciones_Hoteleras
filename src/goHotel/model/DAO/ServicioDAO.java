@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package goHotel.model;
+package goHotel.model.DAO;
 
-import goHotel.controller.ConexionBD;
+import goHotel.model.ConexionBD;
+import goHotel.model.Servicio;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author israelapuy
  */
-public class ServicioConsultas {
+public class ServicioDAO {
     public boolean registrarServicio(Servicio servicio){
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -158,7 +159,7 @@ public class ServicioConsultas {
                 modelo.addRow(fila);
             }
         } catch (SQLException e) {
-            Logger.getLogger(ServicioConsultas.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ServicioDAO.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al cargar los servicios: " + e.getMessage());
         } finally {
             try {
@@ -172,7 +173,7 @@ public class ServicioConsultas {
                     conn.close();
                 }
             } catch (SQLException e) {
-                Logger.getLogger(ServicioConsultas.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ServicioDAO.class.getName()).log(Level.SEVERE, null, e);
             }
         }
     }

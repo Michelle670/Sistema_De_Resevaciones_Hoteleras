@@ -3,7 +3,7 @@ package goHotel.controller;
 
 
 import goHotel.model.Cliente;
-import goHotel.model.ClienteConsultas;
+import goHotel.model.DAO.ClienteDAO;
 import goHotel.view.GestionCliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,10 +17,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClienteController implements ActionListener {
     private final Cliente modelo;
-    private final ClienteConsultas consultas;
+    private final ClienteDAO consultas;
     private final GestionCliente vista;
 
-    public ClienteController(Cliente modelo, ClienteConsultas consultas, GestionCliente vista) {
+    public ClienteController(Cliente modelo, ClienteDAO consultas, GestionCliente vista) {
         this.modelo = modelo;
         this.consultas = consultas;
         this.vista = vista;

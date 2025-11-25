@@ -1,7 +1,6 @@
 
 package goHotel.model;
 
-import goHotel.controller.ConexionBD;
 import java.sql.*;
 
 /**
