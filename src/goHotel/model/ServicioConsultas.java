@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author israelapuy
  */
-public class ConsultasServicio {
+public class ServicioConsultas {
     public boolean registrarServicio(Servicio servicio){
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -29,7 +29,13 @@ public class ConsultasServicio {
             ps.setString(3, servicio.getDescripcion());
             ps.executeUpdate();
             return true;
-        } catch (SQLException e) {
+        }catch (SQLIntegrityConstraintViolationException e) {
+            JOptionPane.showMessageDialog(null,
+                    "El ID ingresado (" + servicio.getIdServicio() + ") ya está registrado.\n"
+                    + "Por favor, use otro ID o edite el servicio existente.",
+                    "Error de duplicado", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }catch (SQLException e) {
             System.err.println(e);
             return false;
         } finally {
@@ -116,12 +122,6 @@ public class ConsultasServicio {
                 return true;
             }
             return false;
-        }catch (SQLIntegrityConstraintViolationException e) {
-            JOptionPane.showMessageDialog(null,
-                    "El ID ingresado (" + servicio.getIdServicio() + ") ya está registrado.\n"
-                    + "Por favor, use otro ID o edite el servicio existente.",
-                    "Error de duplicado", JOptionPane.ERROR_MESSAGE);
-            return false;
         }catch (SQLException e) {
             System.err.println(e);
             return false;
@@ -138,7 +138,7 @@ public class ConsultasServicio {
     }
     
     public void cargarDatosEnTabla(DefaultTableModel modelo) {
-        modelo.setRowCount(0); // Limpia la tabla antes de cargar nuevos datos
+        modelo.setRowCount(0);
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -158,7 +158,7 @@ public class ConsultasServicio {
                 modelo.addRow(fila);
             }
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasServicio.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(ServicioConsultas.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al cargar los servicios: " + e.getMessage());
         } finally {
             try {
@@ -172,7 +172,7 @@ public class ConsultasServicio {
                     conn.close();
                 }
             } catch (SQLException e) {
-                Logger.getLogger(ConsultasServicio.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(ServicioConsultas.class.getName()).log(Level.SEVERE, null, e);
             }
         }
     }

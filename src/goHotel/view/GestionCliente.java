@@ -45,11 +45,11 @@ public class GestionCliente extends javax.swing.JFrame {
         cmbPais = new javax.swing.JComboBox<>();
         lblPuntosAcumulados = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jtTablaCliente = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
-        BtnBuscar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -125,8 +125,8 @@ public class GestionCliente extends javax.swing.JFrame {
             }
         });
 
-        jTable2.setBackground(new java.awt.Color(204, 204, 204));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jtTablaCliente.setBackground(new java.awt.Color(204, 204, 204));
+        jtTablaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -137,7 +137,7 @@ public class GestionCliente extends javax.swing.JFrame {
                 "ID", "Plan Lealtad", "Nombre", "Correo", "Password", "Pais", "Puntos"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jtTablaCliente);
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
@@ -147,6 +147,11 @@ public class GestionCliente extends javax.swing.JFrame {
         btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAgregar.setMaximumSize(new java.awt.Dimension(60, 60));
         btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnAgregar);
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (3).png"))); // NOI18N
@@ -155,15 +160,25 @@ public class GestionCliente extends javax.swing.JFrame {
         btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEditar.setMaximumSize(new java.awt.Dimension(60, 60));
         btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnEditar);
 
-        BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
-        BtnBuscar.setText("Buscar");
-        BtnBuscar.setFocusable(false);
-        BtnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        BtnBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
-        BtnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(BtnBuscar);
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.setFocusable(false);
+        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnBuscar);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (2).png"))); // NOI18N
         btnEliminar.setText("Eliminar");
@@ -171,6 +186,11 @@ public class GestionCliente extends javax.swing.JFrame {
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEliminar.setMaximumSize(new java.awt.Dimension(60, 60));
         btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnEliminar);
 
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
@@ -179,6 +199,11 @@ public class GestionCliente extends javax.swing.JFrame {
         btnLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
         btnLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnLimpiar);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
@@ -187,6 +212,11 @@ public class GestionCliente extends javax.swing.JFrame {
         btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalir.setMaximumSize(new java.awt.Dimension(60, 60));
         btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnSalir);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -315,6 +345,30 @@ public class GestionCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbPaisActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -351,14 +405,14 @@ public class GestionCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnBuscar;
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton btnSalir;
-    private javax.swing.JComboBox<String> cmbPais;
-    private javax.swing.JComboBox<String> cmbPlanLealtad;
+    public javax.swing.JButton btnAgregar;
+    public javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnEditar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnSalir;
+    public javax.swing.JComboBox<String> cmbPais;
+    public javax.swing.JComboBox<String> cmbPlanLealtad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -370,13 +424,13 @@ public class GestionCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JToolBar jToolBar1;
+    public javax.swing.JTable jtTablaCliente;
     private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblPuntosAcumulados;
-    private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtPassword;
+    public javax.swing.JLabel lblPuntosAcumulados;
+    public javax.swing.JTextField txtCorreo;
+    public javax.swing.JTextField txtID;
+    public javax.swing.JTextField txtNombre;
+    public javax.swing.JTextField txtPassword;
     // End of variables declaration//GEN-END:variables
 }

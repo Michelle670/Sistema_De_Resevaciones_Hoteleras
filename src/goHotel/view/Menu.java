@@ -4,9 +4,12 @@
  */
 package goHotel.view;
 
+import goHotel.controller.ClienteController;
 import goHotel.controller.LoginController;
 import goHotel.controller.ServicioController;
-import goHotel.model.ConsultasServicio;
+import goHotel.model.Cliente;
+import goHotel.model.ClienteConsultas;
+import goHotel.model.ServicioConsultas;
 import goHotel.model.Servicio;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -198,6 +201,11 @@ public class Menu extends javax.swing.JFrame {
 
         chmGestionClientes.setSelected(true);
         chmGestionClientes.setText("Gestion Clientes");
+        chmGestionClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmGestionClientesActionPerformed(evt);
+            }
+        });
         mnuMantenimientos.add(chmGestionClientes);
 
         chmGestionEmpleados.setSelected(true);
@@ -264,12 +272,23 @@ public class Menu extends javax.swing.JFrame {
 
     private void chmTipoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoServicioActionPerformed
         Servicio m = new Servicio();
-        ConsultasServicio q = new ConsultasServicio();
+        ServicioConsultas q = new ServicioConsultas();
         GestionServicio v = new GestionServicio();
+        
         new ServicioController(m, q, v);
-        v.setLocationRelativeTo(null);
         v.setVisible(true);
+        v.setLocationRelativeTo(null);
     }//GEN-LAST:event_chmTipoServicioActionPerformed
+
+    private void chmGestionClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionClientesActionPerformed
+        Cliente m = new Cliente();
+        ClienteConsultas q = new ClienteConsultas();
+        GestionCliente v = new GestionCliente();
+        
+        new ClienteController(m, q, v);
+        v.setVisible(true);
+        v.setLocationRelativeTo(null);
+    }//GEN-LAST:event_chmGestionClientesActionPerformed
 
     /**
      * @param args the command line arguments

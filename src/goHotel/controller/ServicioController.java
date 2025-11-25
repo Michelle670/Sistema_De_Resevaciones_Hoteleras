@@ -4,7 +4,7 @@
  */
 package goHotel.controller;
 
-import goHotel.model.ConsultasServicio;
+import goHotel.model.ServicioConsultas;
 import goHotel.model.Servicio;
 import goHotel.view.GestionServicio;
 import java.awt.event.ActionEvent;
@@ -18,10 +18,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ServicioController implements ActionListener{
     private final Servicio modelo;
-    private final ConsultasServicio consultas;
+    private final ServicioConsultas consultas;
     private final GestionServicio vista;
 
-    public ServicioController(Servicio modelo, ConsultasServicio consultas, GestionServicio vista) {
+    public ServicioController(Servicio modelo, ServicioConsultas consultas, GestionServicio vista) {
         this.modelo = modelo;
         this.consultas = consultas;
         this.vista = vista;
@@ -47,9 +47,9 @@ public class ServicioController implements ActionListener{
         vista.txtDescripcion.setText("");
     }
     
+    @Override
     public void actionPerformed(ActionEvent e) {
         //btnAgregar;
-        
         if(e.getSource() == vista.btnAgregar){
             
             if (vista.txtID.getText().trim().isEmpty()

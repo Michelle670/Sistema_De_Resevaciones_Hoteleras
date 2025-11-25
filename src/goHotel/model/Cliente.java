@@ -11,109 +11,95 @@ public class Cliente
 //==============================================================================
 //ATRIBUTOS   
 //==============================================================================
-    private String idCliente;
-    private PlanLealtad plan;
+    private int idCliente;
+    private int idPlan;
     private String nombre;
     private String correo;
     private String contrasenna;
-    private String pais;
+    private int idPais;
     private int puntosLealtad;
 //==============================================================================
 //CONSTRUCTOR
 //==============================================================================   
     public Cliente() 
     {
-        this.idCliente = "";
-        this.plan = new PlanLealtad();
+        this.idCliente = 0;
+        this.idPlan = 0;
         this.nombre = "";
         this.correo = "";
         this.contrasenna = "";
-        this.pais = "";
+        this.idPais = 0;
         this.puntosLealtad = 0;
     }
      
-    public Cliente(String idCliente, PlanLealtad plan, String nombre, String correo, String contrasenna, String pais, int puntosLealtad) 
+    public Cliente(int idCliente, int idPlan, String nombre, String correo, String contrasenna, int idPais, int puntosLealtad) 
     {
         this.idCliente = idCliente;
-        this.plan = plan;
+        this.idPlan = idPlan;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasenna = contrasenna;
-        this.pais = pais;
+        this.idPais = idPais;
         this.puntosLealtad = puntosLealtad;
     }
 //==============================================================================
 //GETTERS Y SETTERS
 //==============================================================================    
 
-    public String getIdCliente() 
-    {
+    public int getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(String idCliente) 
-    {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
 
-    public PlanLealtad getPlan() 
-    {
-        return plan;
+    public int getIdPlan() {
+        return idPlan;
     }
 
-    public void setPlan(PlanLealtad plan) 
-    {
-        this.plan = plan;
+    public void setIdPlan(int idPlan) {
+        this.idPlan = idPlan;
     }
 
-    public String getNombre() 
-    {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) 
-    {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getCorreo() 
-    {
+    public String getCorreo() {
         return correo;
     }
 
-    public void setCorreo(String correo) 
-    {
+    public void setCorreo(String correo) {
         this.correo = correo;
     }
 
-    public String getContrasenna() 
-    {
+    public String getContrasenna() {
         return contrasenna;
     }
 
-    public void setContrasenna(String contrasenna) 
-    {
+    public void setContrasenna(String contrasenna) {
         this.contrasenna = contrasenna;
     }
 
-    public String getPais() 
-    {
-        return pais;
+    public int getIdPais() {
+        return idPais;
     }
 
-    public void setPais(String pais) 
-    {  
-        this.pais = pais;
+    public void setIdPais(int idPais) {
+        this.idPais = idPais;
     }
 
-    public int getPuntosLealtad() 
-    {
+    public int getPuntosLealtad() {
         return puntosLealtad;
     }
 
-    public void setPuntosLealtad(int puntosLealtad) 
-    {
+    public void setPuntosLealtad(int puntosLealtad) {
         this.puntosLealtad = puntosLealtad;
     }
-    
+
 }
