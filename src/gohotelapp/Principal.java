@@ -5,8 +5,12 @@ package gohotelapp;
  * SEMANA 9
  *****************************************************************************/
 import goHotel.controller.LoginController;
+import goHotel.controller.ReservaController;
 import goHotel.model.ConexionBD;
 import goHotel.model.DAO.LoginDAO;
+import goHotel.model.DAO.ReservaDAO;
+import goHotel.model.Reserva;
+import goHotel.view.GestionReserva;
 import goHotel.view.LoginView;
 import goHotel.view.ReservaBuscarHabitacion;
 public class Principal 
@@ -18,22 +22,32 @@ public class Principal
        ConexionBD.getConnection();
        
         // Crear instancias
-        LoginDAO dao = new LoginDAO();
-        LoginView vista = new LoginView();
-        
-        // Crear controller y conectar
-        LoginController controller = new LoginController(dao, vista);
-        vista.setController(controller);
-        
-        // Iniciar la aplicación
-        controller.iniciar();
-       
-     
-        
-        
-       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
-       rh.setVisible(true);
-       rh.setLocationRelativeTo(null);
+//        LoginDAO dao = new LoginDAO();
+//        LoginView vista = new LoginView();
+//        
+//        // Crear controller y conectar
+//        LoginController controller = new LoginController(dao, vista);
+//        vista.setController(controller);
+//        
+//        // Iniciar la aplicación
+//        controller.iniciar();
+      
+//       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
+//       rh.setVisible(true);
+//       rh.setLocationRelativeTo(null);
+
+
+//         GestionReserva gr = new  GestionReserva();
+//         gr.setVisible(true);
+//         gr.setLocationRelativeTo(null);
+
+
+    GestionReserva vista = new GestionReserva();
+    Reserva modelo = new Reserva();
+    ReservaDAO consultas = new ReservaDAO();
+    
+    ReservaController controlador = new ReservaController(modelo, consultas, vista);
+    controlador.iniciar(); // Esto abre la ventana y actualiza la tabla
     }
     
 }
