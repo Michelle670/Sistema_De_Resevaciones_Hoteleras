@@ -1,5 +1,6 @@
 
 package goHotel.controller;
+
 /*****************************************************************************
  * AUTOR: GRUPO 3
  * PROYECTO
@@ -7,5 +8,4 @@ package goHotel.controller;
  *****************************************************************************/
 public class PaisController 
 {
-
 }

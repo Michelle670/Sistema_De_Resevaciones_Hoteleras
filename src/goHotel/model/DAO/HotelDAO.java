@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package goHotel.model.DAO;
 import goHotel.controller.HotelController;
 import goHotel.model.ConexionBD;
@@ -95,7 +98,6 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
                 JOptionPane.showMessageDialog(null, "Ingrese el código del hotel que va a editar", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-
             int idHotel = Integer.parseInt(codigoTexto.trim());
 
             if (nombre.trim().isEmpty() || ciudad.trim().isEmpty() || direccion.trim().isEmpty()) 
@@ -114,7 +116,6 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
             ps.setInt(5, idHotel);
 
             int filasActualizadas = ps.executeUpdate();
-
             if (filasActualizadas > 0) 
             {
                 JOptionPane.showMessageDialog(null, "Hotel actualizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -124,7 +125,6 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
                 JOptionPane.showMessageDialog(null, "No existe un hotel con ese ID", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-
         } catch (NumberFormatException e) 
         {
             JOptionPane.showMessageDialog(null, "El código debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
@@ -177,6 +177,7 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
             return null;
         }
     }
+    
     //==========================================================================
     // ELIMINAR HOTEL
     //==========================================================================
@@ -221,7 +222,7 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
+        
         try 
         {
             conn = ConexionBD.getConnection();
@@ -273,6 +274,7 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
             // NO cerramos conn porque es conexión global
         }
     }
+    
     //==========================================================================
     // BUSCAR HOTEL POR CODIGO
     //==========================================================================
@@ -325,5 +327,4 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
 
         return null;
     }
-    
 }

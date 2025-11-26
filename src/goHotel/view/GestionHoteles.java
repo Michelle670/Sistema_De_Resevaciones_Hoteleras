@@ -80,8 +80,6 @@ public class GestionHoteles extends javax.swing.JFrame
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
 
-        btnAgregar.setBackground(new java.awt.Color(255, 255, 255));
-        btnAgregar.setForeground(new java.awt.Color(0, 0, 0));
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/agregar-usuario.png"))); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.setFocusable(false);
@@ -95,8 +93,6 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jToolBar1.add(btnAgregar);
 
-        btnEditar.setBackground(new java.awt.Color(255, 255, 255));
-        btnEditar.setForeground(new java.awt.Color(0, 0, 0));
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (3).png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setFocusable(false);
@@ -109,6 +105,7 @@ public class GestionHoteles extends javax.swing.JFrame
             }
         });
         jToolBar1.add(btnEditar);
+
 
         btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
         btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
@@ -125,8 +122,6 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jToolBar1.add(btnBuscar);
 
-        btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
-        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (2).png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.setFocusable(false);
@@ -140,8 +135,6 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jToolBar1.add(btnEliminar);
 
-        btnLimpiar.setBackground(new java.awt.Color(255, 255, 255));
-        btnLimpiar.setForeground(new java.awt.Color(0, 0, 0));
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
         btnLimpiar.setFocusable(false);
@@ -155,8 +148,6 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jToolBar1.add(btnLimpiar);
 
-        btnSalir.setBackground(new java.awt.Color(255, 255, 255));
-        btnSalir.setForeground(new java.awt.Color(0, 0, 0));
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.setFocusable(false);
@@ -170,26 +161,15 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jToolBar1.add(btnSalir);
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Código:");
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nombre:");
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Ciudad:");
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("País:");
 
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Dirección:");
-
-        txtCodigo.setBackground(new java.awt.Color(255, 255, 255));
-
-        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
-
-        txtCiudad.setBackground(new java.awt.Color(255, 255, 255));
 
         jtGestionHoteles.setBackground(new java.awt.Color(204, 204, 204));
         jtGestionHoteles.setForeground(new java.awt.Color(51, 51, 51));
@@ -213,14 +193,10 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jScrollPane1.setViewportView(jtGestionHoteles);
 
-        txtDireccion.setBackground(new java.awt.Color(255, 255, 255));
         txtDireccion.setColumns(20);
-        txtDireccion.setForeground(new java.awt.Color(0, 0, 0));
         txtDireccion.setRows(5);
         jScrollPane2.setViewportView(txtDireccion);
 
-        jcPais.setBackground(new java.awt.Color(255, 255, 255));
-        jcPais.setForeground(new java.awt.Color(0, 0, 0));
         jcPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------", "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/LogoGOHOTEL_1.jpeg"))); // NOI18N
@@ -345,7 +321,7 @@ public class GestionHoteles extends javax.swing.JFrame
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-   
+
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -357,8 +333,7 @@ public class GestionHoteles extends javax.swing.JFrame
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
- 
-        
+
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed

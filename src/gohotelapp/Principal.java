@@ -18,36 +18,25 @@ public class Principal
 
     public static void main(String[] args) 
     {
-        
        ConexionBD.getConnection();
        
         // Crear instancias
-//        LoginDAO dao = new LoginDAO();
-//        LoginView vista = new LoginView();
-//        
-//        // Crear controller y conectar
-//        LoginController controller = new LoginController(dao, vista);
-//        vista.setController(controller);
-//        
-//        // Iniciar la aplicación
-//        controller.iniciar();
-      
+        LoginDAO dao = new LoginDAO();
+        LoginView vista = new LoginView();
+        
+        // Crear controller y conectar
+        LoginController controller = new LoginController(dao, vista);
+        vista.setController(controller);
+        
+        // Iniciar la aplicación
+        controller.iniciar();
+       
+     
+        
+        
 //       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
 //       rh.setVisible(true);
 //       rh.setLocationRelativeTo(null);
-
-
-//         GestionReserva gr = new  GestionReserva();
-//         gr.setVisible(true);
-//         gr.setLocationRelativeTo(null);
-
-
-    GestionReserva vista = new GestionReserva();
-    Reserva modelo = new Reserva();
-    ReservaDAO consultas = new ReservaDAO();
-    
-    ReservaController controlador = new ReservaController(modelo, consultas, vista);
-    controlador.iniciar(); // Esto abre la ventana y actualiza la tabla
     }
     
 }

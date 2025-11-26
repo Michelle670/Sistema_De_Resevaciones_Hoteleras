@@ -1,5 +1,6 @@
 
 package goHotel.controller;
+
 import goHotel.model.DAO.LoginDAO;
 import goHotel.view.LoginView;
 import goHotel.view.Menu;
@@ -27,6 +28,7 @@ public class LoginController implements ActionListener
         this.vista.btnOk.addActionListener(this);
         this.vista.btnCancelar.addActionListener(this);
     }
+
     
     public void iniciar()
     {
@@ -62,18 +64,17 @@ public class LoginController implements ActionListener
         // BOTÓN OK (Login)
         //======================================================================
         if (e.getSource() == vista.btnOk) {
-            
             String correo = vista.txtCorreo.getText().trim();
             String pass = new String(vista.jPassword.getPassword());
             boolean esEmpleado = vista.jrEmpleado.isSelected();
             String tipoUsuario = esEmpleado ? "Empleado" : "Cliente";
-            
+
             // VALIDAR CORREO
             if (!validarCorreo(correo)) {
                 JOptionPane.showMessageDialog(vista, "Correo inválido, debe contener '@' y un '.'.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             // VALIDAR CONTRASEÑA
             if (!validarPassword(pass)) {
                 JOptionPane.showMessageDialog(vista, "La contraseña debe tener mínimo 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -127,7 +128,3 @@ public class LoginController implements ActionListener
         }
     }
 }
-    
- 
-
-

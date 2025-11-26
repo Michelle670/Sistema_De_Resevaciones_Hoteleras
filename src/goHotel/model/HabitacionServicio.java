@@ -6,7 +6,7 @@ package goHotel.model;
  * PROYECTO
  * SEMANA 9
  */
-public class Habitacion_Servicio 
+public class HabitacionServicio 
 {
 //==============================================================================
 //ATRIBUTOS   
@@ -16,7 +16,7 @@ public class Habitacion_Servicio
 //==============================================================================
 //CONSTRUCTOR
 //==============================================================================  
-     public Habitacion_Servicio() 
+     public HabitacionServicio() 
      {
         this.habitacion = new Habitacion();
         this.servicio = new Servicio();
@@ -24,7 +24,7 @@ public class Habitacion_Servicio
 //==============================================================================
 //GETTERS Y SETTERS
 //============================================================================== 
-    public Habitacion_Servicio(Habitacion habitacion, Servicio servicio) 
+    public HabitacionServicio(Habitacion habitacion, Servicio servicio) 
     {
         this.habitacion = habitacion;
         this.servicio = servicio;
@@ -45,13 +45,5 @@ public class Habitacion_Servicio
     public void setHabitacion(Habitacion habitacion) {
         this.habitacion = habitacion;
     }
-   
-
-   
-   
-   
-   
-   
-  
    
 }

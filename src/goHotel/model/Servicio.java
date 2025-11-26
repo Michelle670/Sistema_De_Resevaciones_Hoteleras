@@ -11,7 +11,7 @@ public class Servicio
 //==============================================================================
 //ATRIBUTOS   
 //==============================================================================   
-    private String idServicio;
+    private int idServicio;
     private String nombreServicio;
     private String descripcion;
 //==============================================================================
@@ -19,12 +19,12 @@ public class Servicio
 //==============================================================================
     public Servicio() 
     {
-        this.idServicio = "";
+        this.idServicio = 0;
         this.nombreServicio = "";
         this.descripcion = "";
     }
 
-    public Servicio(String idServicio, String nombreServicio, String descripcion) 
+    public Servicio(int idServicio, String nombreServicio, String descripcion) 
     {
         this.idServicio = idServicio;
         this.nombreServicio = nombreServicio;
@@ -34,12 +34,12 @@ public class Servicio
 //==============================================================================
 //GETTERS Y SETTERS
 //============================================================================== 
-    public String getIdServicio() 
+    public int getIdServicio() 
     {
         return idServicio;
     }
 
-    public void setIdServicio(String idServicio) 
+    public void setIdServicio(int idServicio) 
     {
         this.idServicio = idServicio;
     }
