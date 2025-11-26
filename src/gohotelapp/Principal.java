@@ -26,13 +26,13 @@ public class Principal
         
         // Iniciar la aplicación
         controller.iniciar();
-       
-     
-        
-        
-       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
-       rh.setVisible(true);
-       rh.setLocationRelativeTo(null);
+//       
+//     
+//        
+//        
+//       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
+//       rh.setVisible(true);
+//       rh.setLocationRelativeTo(null);
     }
     
 }
