@@ -1,7 +1,5 @@
 package goHotel.view;
 
-
-
 import goHotel.controller.LoginController;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.view.Menu;
@@ -62,11 +60,9 @@ public LoginController controller;
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (4).png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Correo:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Contraseña:");
 
         btnOk.setBackground(new java.awt.Color(0, 204, 102));
@@ -89,7 +85,6 @@ public LoginController controller;
             }
         });
 
-        txtCorreo.setBackground(new java.awt.Color(255, 255, 255));
         txtCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCorreoActionPerformed(evt);
@@ -98,15 +93,12 @@ public LoginController controller;
 
         jrEmpleado.setBackground(new java.awt.Color(255, 255, 255));
         jrEmpleado.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jrEmpleado.setForeground(new java.awt.Color(0, 0, 0));
         jrEmpleado.setText("Es Empleado");
         jrEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jrEmpleadoActionPerformed(evt);
             }
         });
-
-        jPassword.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 204, 102));
@@ -187,7 +179,7 @@ public LoginController controller;
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
- 
+
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
@@ -227,8 +219,6 @@ public LoginController controller;
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

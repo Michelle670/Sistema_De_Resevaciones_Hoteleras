@@ -11,7 +11,7 @@ public class TipoHabitacion
 //==============================================================================
 //ATRIBUTOS   
 //==============================================================================
-    private String idTipo;
+    private int idTipo;
     private String nombreTipo;
     private String descripcion;
     private int capacidad;
@@ -20,14 +20,14 @@ public class TipoHabitacion
 //CONSTRUCTOR
 //==============================================================================
     public TipoHabitacion() {
-        this.idTipo = "";
+        this.idTipo = 0;
         this.nombreTipo = "";
         this.descripcion = "";
         this.capacidad = 0;
         this.precioBase = 0.0;
     }
 
-    public TipoHabitacion(String idTipo, String nombreTipo, String descripcion, int capacidad, double precioBase) 
+    public TipoHabitacion(int idTipo, String nombreTipo, String descripcion, int capacidad, double precioBase) 
     {
         this.idTipo = idTipo;
         this.nombreTipo = nombreTipo;
@@ -39,12 +39,12 @@ public class TipoHabitacion
 //GETTERS Y SETTERS
 //============================================================================== 
 
-    public String getIdTipo() 
+    public int getIdTipo() 
     {
         return idTipo;
     }
 
-    public void setIdTipo(String idTipo) 
+    public void setIdTipo(int idTipo) 
     {
         this.idTipo = idTipo;
     }
