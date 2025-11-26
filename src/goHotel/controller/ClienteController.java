@@ -132,7 +132,8 @@ public class ClienteController implements ActionListener {
                 
                 if(consultas.buscarCliente(modelo)){
                     vista.txtID.setText(String.valueOf(modelo.getIdCliente()));
-                    seleccionarPorId(vista.cmbPlanLealtad, modelo.getIdPlan());                    vista.txtNombre.setText(modelo.getNombre());
+                    seleccionarPorId(vista.cmbPlanLealtad, modelo.getIdPlan());                    
+                    vista.txtNombre.setText(modelo.getNombre());
                     vista.txtCorreo.setText(modelo.getCorreo());
                     vista.txtPassword.setText(modelo.getContrasenna());
                     vista.cmbPais.setSelectedIndex(modelo.getIdPais());

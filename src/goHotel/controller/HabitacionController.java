@@ -2,6 +2,7 @@
 package goHotel.controller;
 
 import goHotel.model.DAO.HabitacionDAO;
+import goHotel.model.DAO.HabitacionDAO.ComboItemH;
 import goHotel.model.DAO.HabitacionServicioDAO;
 import goHotel.model.EstadoHabitacion;
 import goHotel.model.Habitacion;
@@ -11,6 +12,7 @@ import goHotel.view.GestionHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -43,6 +45,9 @@ public class HabitacionController implements ActionListener{
         
         consultas.cargarEstado(vista.cmbEstado);
         consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
+                
+        consultas.cargarHoteles(vista.cmbIdHotel);
+        consultas.cargarTiposHabitacion(vista.cmbIdTipo);
         
         servicioDAO.cargarServicios(vista.cmbServicios);
     }
@@ -55,21 +60,23 @@ public class HabitacionController implements ActionListener{
     
     public void limpiar() {
         vista.txtIdHabitacion.setText("");
-        vista.txtIdHotel.setText("");
-        vista.txtTipoHabitacion.setText("");
+        vista.cmbIdHotel.setSelectedIndex(0);
+        vista.cmbIdTipo.setSelectedIndex(0);
         vista.txtNumero.setText("");
-        vista.cmbEstado.setSelectedIndex(0);
+        vista.cmbIdHotel.setSelectedIndex(0);
     }
     
     @Override
     public void actionPerformed(ActionEvent e){
         //btnAgregar
         if(e.getSource() == vista.btnAgregar){
+            ComboItemH idHotelPlan = (ComboItemH) vista.cmbIdHotel.getSelectedItem();
+            ComboItemH idTipoPlan = (ComboItemH) vista.cmbIdTipo.getSelectedItem();
             EstadoHabitacion estado = (EstadoHabitacion) vista.cmbEstado.getSelectedItem();
             
             if(vista.txtIdHabitacion.getText().trim().isEmpty() 
-                    || vista.txtIdHotel.getText().trim().isEmpty()
-                    || vista.txtTipoHabitacion.getText().trim().isEmpty()
+                    || vista.cmbIdHotel.getSelectedIndex() == 0
+                    || vista.cmbIdTipo.getSelectedIndex() == 0
                     || vista.txtNumero.getText().trim().isEmpty()
                     || estado == null){
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
@@ -78,10 +85,8 @@ public class HabitacionController implements ActionListener{
             
             int idHa = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
             modelo.setIdHabitacion(idHa);
-            int idHo = Integer.parseInt(vista.txtIdHotel.getText().trim());
-            modelo.setHotel(idHo);
-            int tipo = Integer.parseInt(vista.txtTipoHabitacion.getText().trim());
-            modelo.setTipo(tipo);
+            modelo.setHotel(idHotelPlan.getId());
+            modelo.setTipo(idTipoPlan.getId());
             int numero = Integer.parseInt(vista.txtNumero.getText().trim());
             modelo.setNumero(numero);
             modelo.setEstado(estado.name());
@@ -96,11 +101,13 @@ public class HabitacionController implements ActionListener{
         
         //btnEditar
         if(e.getSource() == vista.btnEditar){
+            ComboItemH idHotelPlan = (ComboItemH) vista.cmbIdHotel.getSelectedItem();
+            ComboItemH idTipoPlan = (ComboItemH) vista.cmbIdTipo.getSelectedItem();
             EstadoHabitacion estado = (EstadoHabitacion) vista.cmbEstado.getSelectedItem();
 
             if (vista.txtIdHabitacion.getText().trim().isEmpty()
-                    || vista.txtIdHotel.getText().trim().isEmpty()
-                    || vista.txtTipoHabitacion.getText().trim().isEmpty()
+                    || vista.cmbIdHotel.getSelectedIndex() == 0
+                    || vista.cmbIdTipo.getSelectedIndex() == 0
                     || vista.txtNumero.getText().trim().isEmpty()
                     || estado == null) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
@@ -109,14 +116,12 @@ public class HabitacionController implements ActionListener{
 
             int idHa = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
             modelo.setIdHabitacion(idHa);
-            int idHo = Integer.parseInt(vista.txtIdHotel.getText().trim());
-            modelo.setHotel(idHo);
-            int tipo = Integer.parseInt(vista.txtTipoHabitacion.getText().trim());
-            modelo.setTipo(tipo);
+            modelo.setHotel(idHotelPlan.getId());
+            modelo.setTipo(idTipoPlan.getId());
             int numero = Integer.parseInt(vista.txtNumero.getText().trim());
             modelo.setNumero(numero);
             modelo.setEstado(estado.name());
-            
+
             if(consultas.editarHabitacion(modelo)){
                 JOptionPane.showMessageDialog(null, "Habitación modificada.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
@@ -146,17 +151,17 @@ public class HabitacionController implements ActionListener{
                 
                 if(consultas.buscarHabitacion(modelo)){
                     vista.txtIdHabitacion.setText(String.valueOf(modelo.getIdHabitacion()));
-                    vista.txtIdHotel.setText(String.valueOf(modelo.getHotel()));
-                    vista.txtTipoHabitacion.setText(String.valueOf(modelo.getTipo()));
+                    seleccionarPorId(vista.cmbIdHotel, modelo.getHotel());
+                    seleccionarPorId(vista.cmbIdTipo, modelo.getTipo());
                     vista.txtNumero.setText(String.valueOf(modelo.getNumero()));
                     
                     String estadoBD = modelo.getEstado();
 
                     try {
                         EstadoHabitacion estadoEnum = EstadoHabitacion.valueOf(estadoBD);
-                        vista.cmbEstado.setSelectedItem(estadoEnum);
+                        vista.cmbIdHotel.setSelectedItem(estadoEnum);
                     } catch (IllegalArgumentException ex) {
-                        vista.cmbEstado.setSelectedItem(EstadoHabitacion.DISPONIBLE);
+                        vista.cmbIdHotel.setSelectedItem(EstadoHabitacion.DISPONIBLE);
                     }
                     cargarServiciosAsignados(id);
                     JOptionPane.showMessageDialog(null, "Habitación encontrada.");
@@ -236,6 +241,17 @@ public class HabitacionController implements ActionListener{
             String nombre = servicioDAO.obtenerNombreServicio(idServ); // método simple en ServicioDAO
             m.addRow(new Object[]{idServ, nombre});
         }
+    }
+    
+    private void seleccionarPorId(JComboBox<ComboItemH> combo, int idBuscado) {
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            ComboItemH it = combo.getItemAt(i);
+            if (it != null && it.getId() == idBuscado) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+        combo.setSelectedIndex(0);
     }
     
 }

@@ -37,10 +37,23 @@ public class HabitacionDAO extends ConexionBD{
             return true;
             
         }catch (SQLIntegrityConstraintViolationException e) {
-            JOptionPane.showMessageDialog(null,
-                    "El ID ingresado (" + habitacion.getIdHabitacion() + ") ya está registrado.\n"
-                    + "Por favor, use otro ID o edite la habitación existente.",
-                    "Error de duplicado", JOptionPane.ERROR_MESSAGE);
+            String msg = e.getMessage().toLowerCase();
+
+            if (msg.contains("duplicate")) {
+                JOptionPane.showMessageDialog(null,
+                        "El ID ingresado (" + habitacion.getIdHabitacion() + ") ya está registrado.\n"
+                        + "Por favor, use otro ID o edite la habitación existente.",
+                        "Error de duplicado", JOptionPane.ERROR_MESSAGE);
+            } else if (msg.contains("foreign key")) {
+                JOptionPane.showMessageDialog(null,
+                        "El ID de hotel o tipo no existe en la base de datos.\n"
+                        + "Verifique id_hotel e id_tipo antes de agregar.",
+                        "Error de llave foránea", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Error de integridad: " + e.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
             return false;
         } catch (SQLException e) {
             System.err.println("Error SQL al registrar habitación: " + e.getMessage());
@@ -177,12 +190,16 @@ public class HabitacionDAO extends ConexionBD{
 
         try {
             conn = ConexionBD.getConnection();
-            String sql = "SELECT id_habitacion, "
-                    + "id_hotel, "
-                    + "id_tipo, "
-                    + "numero, "
-                    + "estado "
-                    + "FROM habitacion";
+            String sql = "SELECT h.id_habitacion, "
+                    + "       h.id_hotel, "
+                    + "       ho.nombre AS hotel_nombre, "
+                    + "       h.id_tipo, "
+                    + "       th.nombre AS tipo_nombre, "
+                    + "       h.numero, "
+                    + "       h.estado "
+                    + "FROM habitacion h "
+                    + "JOIN hotel ho ON h.id_hotel = ho.id_hotel "
+                    + "JOIN tipo_habitacion th ON h.id_tipo = th.id_tipo";
             
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -190,8 +207,10 @@ public class HabitacionDAO extends ConexionBD{
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("id_habitacion"),
-                    rs.getInt("id_hotel"),
-                    rs.getInt("id_tipo"),
+                    rs.getInt("id_hotel"), // <- hidden
+                    rs.getString("hotel_nombre"), // visible
+                    rs.getInt("id_tipo"), // <- hidden
+                    rs.getString("tipo_nombre"), // visible
                     rs.getInt("numero"),
                     rs.getString("estado")
                 };
@@ -224,37 +243,61 @@ public class HabitacionDAO extends ConexionBD{
     }
     
     //Helpers
-//    public class ComboItem {
-//
-//        private final int id;
-//        private final String label;
-//
-//        public ComboItem(int id, String label) {
-//            this.id = id;
-//            this.label = label;
-//        }
-//
-//        public int getId() {
-//            return id;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return label;
-//        }
-//    }
-//    
-//    public void cargarPlanes(JComboBox<ComboItem> combo) {
-//        combo.removeAllItems();
-//        combo.addItem(new ComboItem(0, "--- Seleccione ---")); // opcional (id 0 NO válido)
-//        try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(
-//                "SELECT id_plan, nivel FROM plan_lealtad ORDER BY id_plan"); ResultSet rs = ps.executeQuery()) {
-//
-//            while (rs.next()) {
-//                combo.addItem(new ComboItem(rs.getInt("id_plan"), rs.getString("nivel")));
-//            }
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Error cargando planes: " + ex.getMessage());
-//        }
-//    }
+    public class ComboItemH {
+
+        private final int id;
+        private final String label;
+
+        public ComboItemH(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
+    }
+    
+    public void cargarTiposHabitacion(JComboBox<ComboItemH> combo) {
+        combo.removeAllItems();
+        combo.addItem(new ComboItemH(0, "--- Seleccione ---"));
+
+        String sql = "SELECT id_tipo, nombre FROM tipo_habitacion ORDER BY id_tipo";
+
+        try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                combo.addItem(new ComboItemH(
+                        rs.getInt("id_tipo"),
+                        rs.getString("nombre")
+                ));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error cargando tipos: " + ex.getMessage());
+        }
+    }
+    
+    public void cargarHoteles(JComboBox<ComboItemH> combo) {
+        combo.removeAllItems();
+        combo.addItem(new ComboItemH(0, "--- Seleccione ---"));
+
+        String sql = "SELECT id_hotel, nombre FROM hotel ORDER BY id_hotel";
+
+        try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                combo.addItem(new ComboItemH(
+                        rs.getInt("id_hotel"),
+                        rs.getString("nombre")
+                ));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error cargando hoteles: " + ex.getMessage());
+        }
+    }
 }

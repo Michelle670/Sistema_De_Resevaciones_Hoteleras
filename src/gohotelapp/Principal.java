@@ -30,9 +30,9 @@ public class Principal
      
         
         
-       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
-       rh.setVisible(true);
-       rh.setLocationRelativeTo(null);
+//       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
+//       rh.setVisible(true);
+//       rh.setLocationRelativeTo(null);
     }
     
 }

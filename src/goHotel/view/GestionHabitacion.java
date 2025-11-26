@@ -1,10 +1,13 @@
 
 package goHotel.view;
 
+import goHotel.controller.HabitacionController;
+import goHotel.model.DAO.HabitacionDAO;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import goHotel.model.EstadoHabitacion;
 import goHotel.model.DAO.ServicioDAO;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -19,6 +22,15 @@ public class GestionHabitacion extends javax.swing.JFrame {
     public GestionHabitacion() {
         initComponents();
         
+        // ocultar columna id_hotel (col 1)
+        jtHabitaciones.getColumnModel().getColumn(1).setMinWidth(0);
+        jtHabitaciones.getColumnModel().getColumn(1).setMaxWidth(0);
+        jtHabitaciones.getColumnModel().getColumn(1).setWidth(0);
+
+// ocultar columna id_tipo (col 3)
+        jtHabitaciones.getColumnModel().getColumn(3).setMinWidth(0);
+        jtHabitaciones.getColumnModel().getColumn(3).setMaxWidth(0);
+        jtHabitaciones.getColumnModel().getColumn(3).setWidth(0);
     }
 
     /**
@@ -53,14 +65,14 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtIdHabitacion = new javax.swing.JTextField();
-        txtTipoHabitacion = new javax.swing.JTextField();
-        cmbEstado = new javax.swing.JComboBox<>();
+        cmbIdHotel = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtIdHotel = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         cmbServicios = new javax.swing.JComboBox<>();
+        cmbEstado = new javax.swing.JComboBox<>();
+        cmbIdTipo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Habitación");
@@ -183,13 +195,13 @@ public class GestionHabitacion extends javax.swing.JFrame {
 
         jtHabitaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID Habitacion", "ID Hotel", "ID Tipo", "Número", "Estado"
+                "ID Habitacion", "ID Hotel", "Hotel", "ID Tipo", "Tipo", "Número", "Estado"
             }
         ));
         jtHabitaciones.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -205,7 +217,7 @@ public class GestionHabitacion extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -254,16 +266,9 @@ public class GestionHabitacion extends javax.swing.JFrame {
             }
         });
 
-        txtTipoHabitacion.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtTipoHabitacion.addActionListener(new java.awt.event.ActionListener() {
+        cmbIdHotel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTipoHabitacionActionPerformed(evt);
-            }
-        });
-
-        cmbEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbEstadoActionPerformed(evt);
+                cmbIdHotelActionPerformed(evt);
             }
         });
 
@@ -278,16 +283,21 @@ public class GestionHabitacion extends javax.swing.JFrame {
 
         jLabel6.setText("ID Hotel:");
 
-        txtIdHotel.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtIdHotel.addActionListener(new java.awt.event.ActionListener() {
+        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel7.setText("Servicios:");
+
+        cmbEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdHotelActionPerformed(evt);
+                cmbEstadoActionPerformed(evt);
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel7.setText("Sevicios:");
+        cmbIdTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbIdTipoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -316,21 +326,21 @@ public class GestionHabitacion extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtIdHotel)))
+                                .addComponent(cmbIdHotel, 0, 154, Short.MAX_VALUE)))
                         .addGap(67, 67, 67)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel7))
-                        .addGap(29, 29, 29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtTipoHabitacion)
-                            .addComponent(cmbEstado, 0, 161, Short.MAX_VALUE)
+                            .addComponent(cmbIdTipo, 0, 175, Short.MAX_VALUE)
+                            .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmbServicios, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,13 +353,17 @@ public class GestionHabitacion extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtIdHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdHotel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbIdTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(cmbIdHotel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -407,21 +421,13 @@ public class GestionHabitacion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdHabitacionActionPerformed
 
-    private void txtTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoHabitacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTipoHabitacionActionPerformed
-
-    private void txtIdHotelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdHotelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdHotelActionPerformed
-
     private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumeroActionPerformed
 
-    private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
+    private void cmbIdHotelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbIdHotelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbEstadoActionPerformed
+    }//GEN-LAST:event_cmbIdHotelActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
@@ -457,21 +463,21 @@ public class GestionHabitacion extends javax.swing.JFrame {
         int idHabitacion = getIntFromTable(fila, 0);
         txtIdHabitacion.setText(String.valueOf(idHabitacion));
 
-        int idHotel = getIntFromTable(fila, 1);
-        txtIdHotel.setText(String.valueOf(idHotel));
+        int idHotel = getIntFromTable(fila, 1);   // hidden
+        seleccionarPorId(cmbIdHotel, idHotel);
 
-        int idTipo = getIntFromTable(fila, 2);
-        txtTipoHabitacion.setText(String.valueOf(idTipo));
+        int idTipo = getIntFromTable(fila, 3);    // hidden
+        seleccionarPorId(cmbIdTipo, idTipo);
 
-        int numero = getIntFromTable(fila, 3);
+        int numero = getIntFromTable(fila, 5);
         txtNumero.setText(String.valueOf(numero));
 
-        String estado = getStringFromTable(fila, 4);
+        String estado = getStringFromTable(fila, 6);
         if (estado != null) {
             try {
-                cmbEstado.setSelectedItem(EstadoHabitacion.valueOf(estado));
+                cmbIdHotel.setSelectedItem(EstadoHabitacion.valueOf(estado));
             } catch (Exception ex) {
-                cmbEstado.setSelectedItem(EstadoHabitacion.DISPONIBLE);
+                cmbIdHotel.setSelectedItem(EstadoHabitacion.DISPONIBLE);
             }
         }
     }//GEN-LAST:event_jtHabitacionesMouseClicked
@@ -487,7 +493,28 @@ public class GestionHabitacion extends javax.swing.JFrame {
     private void jtServiciosAsignadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtServiciosAsignadosMouseClicked
         //controller.cargarServiciosAsignados(idHabitacionSeleccionada);
     }//GEN-LAST:event_jtServiciosAsignadosMouseClicked
-   
+
+    private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbEstadoActionPerformed
+
+    private void cmbIdTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbIdTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbIdTipoActionPerformed
+
+    private void seleccionarPorId(
+            JComboBox<HabitacionDAO.ComboItemH> combo, int idBuscado) {
+
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            HabitacionDAO.ComboItemH it = combo.getItemAt(i);
+            if (it != null && it.getId() == idBuscado) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+        combo.setSelectedIndex(0);
+    }
+    
         /**
      * @param args the command line arguments
      */
@@ -534,6 +561,8 @@ public class GestionHabitacion extends javax.swing.JFrame {
     public javax.swing.JButton btnQuitarServicio;
     public javax.swing.JButton btnSalir;
     public javax.swing.JComboBox<EstadoHabitacion> cmbEstado;
+    public javax.swing.JComboBox<HabitacionDAO.ComboItemH> cmbIdHotel;
+    public javax.swing.JComboBox<HabitacionDAO.ComboItemH> cmbIdTipo;
     public javax.swing.JComboBox<ServicioDAO.ComboItem> cmbServicios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -553,8 +582,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
     public javax.swing.JTable jtHabitaciones;
     public javax.swing.JTable jtServiciosAsignados;
     public javax.swing.JTextField txtIdHabitacion;
-    public javax.swing.JTextField txtIdHotel;
     public javax.swing.JTextField txtNumero;
-    public javax.swing.JTextField txtTipoHabitacion;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,7 @@
 
 package goHotel.controller;
 
-import goHotel.view.ReservaBuscarHabitacion_old;
+import goHotel.view.ReservaBuscarHabitacion;
 
 /**
  * AUTOR: GRUPO 3
