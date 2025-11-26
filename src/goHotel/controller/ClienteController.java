@@ -116,7 +116,7 @@ public class ClienteController implements ActionListener {
             modelo.setIdCliente(Integer.parseInt(vista.txtID.getText().trim()));
             
             if(consultas.eliminarCliente(modelo)){
-                JOptionPane.showMessageDialog(null, "Servicio eliminado.");
+                JOptionPane.showMessageDialog(null, "Cliente eliminado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
             } else {
                 JOptionPane.showMessageDialog(null, "Error al eliminar cliente.");

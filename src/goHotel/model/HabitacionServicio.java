@@ -46,12 +46,4 @@ public class HabitacionServicio
         this.habitacion = habitacion;
     }
    
-
-   
-   
-   
-   
-   
-  
-   
 }
