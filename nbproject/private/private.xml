@@ -7,6 +7,9 @@
             <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/GestionReserva.java</file>
             <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/DAO/ReservaDAO.java</file>
             <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/ReservaController.java</file>
+            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/DAO/HotelDAO.java</file>
+            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/HotelController.java</file>
+            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/ReservaBuscarHabitacion.java</file>
         </group>
     </open-files>
 </project-private>
