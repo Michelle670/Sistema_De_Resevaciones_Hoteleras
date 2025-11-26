@@ -8,7 +8,7 @@ import goHotel.controller.LoginController;
 import goHotel.model.ConexionBD;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.view.LoginView;
-import goHotel.view.ReservaBuscarHabitacion;
+//import goHotel.view.ReservaBuscarHabitacion_old;
 public class Principal 
 {
 

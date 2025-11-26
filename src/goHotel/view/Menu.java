@@ -27,7 +27,10 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
  
      */
-    
+    public Menu(String correo, String tipo) {
+        initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
+    }
     
     public Menu() {
         // Llama al principal con valores por defecto
