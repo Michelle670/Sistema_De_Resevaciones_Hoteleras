@@ -3,6 +3,7 @@ package goHotel.controller;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.Reserva;
 import goHotel.view.GestionReserva;
+import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -19,12 +20,15 @@ public class ReservaController implements ActionListener
     private final Reserva modelo;
     private final ReservaDAO consultas;
     private final GestionReserva vista;
+    private final ReservaBuscarHabitacion vistaReservaBuscar;
     
-    public ReservaController(Reserva modelo, ReservaDAO consultas, GestionReserva vista) 
+    public ReservaController(Reserva modelo, ReservaDAO consultas, GestionReserva vista,ReservaBuscarHabitacion vistaReservaBuscar) 
     {
         this.modelo = modelo;
         this.consultas = consultas;
         this.vista = vista;
+        this.vistaReservaBuscar = vistaReservaBuscar;
+        
         
 //GESTION RESERVA
         this.vista.btnAgregar.addActionListener(this);
@@ -39,6 +43,9 @@ public class ReservaController implements ActionListener
         this.vista.txtEstado.addActionListener(this);
         this.vista.txtCliente.addActionListener(this);
         this.vista.txtPais.addActionListener(this);
+//RESERVA BUSCAR HABITACION
+//        this.vista.cbNombresHoteles.addActionListener(this);
+
     }
     
     public void iniciar() 
@@ -51,7 +58,7 @@ public class ReservaController implements ActionListener
     
     public void actualizarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) vista.jtGestionReserva.getModel();
-        consultas.cargarDatosEnTabla(modelo,null,null,null,null,null,null);
+        consultas.cargarDatosEnTabla(modelo,"CARGA",0,null,null,null,0,null);
     }
     
     @Override
@@ -80,10 +87,22 @@ public class ReservaController implements ActionListener
         //======================================================================
         // BOTÓN BUSCAR
         //======================================================================
-        if (e.getSource() == vista.btnBuscar) {
+        if (e.getSource() == vista.btnBuscar)
+        {
         DefaultTableModel modelo = (DefaultTableModel) vista.jtGestionReserva.getModel();
-        consultas.cargarDatosEnTabla(modelo,vista.txtID.getText(),vista.txtHotel.getText(),vista.txtHabitacion.getText(),vista.txtCliente.getText(),vista.txtEstado.getText(),vista.txtPais.getText());
-        
+        int habitacion = vista.txtHabitacion.getText().isEmpty() ? 0 : Integer.parseInt(vista.txtHabitacion.getText());
+        int idReserva = vista.txtID.getText().isEmpty() ? 0 : Integer.parseInt(vista.txtID.getText());
+        consultas.cargarDatosEnTabla(
+            modelo,
+            "BUSQUEDA",
+            idReserva,
+            vista.txtEstado.getText(),     // 4. estadoReserva
+            vista.txtPais.getText(),       // 5. nombrePais
+            vista.txtHotel.getText(),      // 6. nombreHotel
+            habitacion,                    // 7. numHabitacion
+            vista.txtCliente.getText()     // 8. nombreCliente
+        );
+        //consultas.cargarDatosEnTabla(modelo,"CARGA",0,null,null,null,0,null);
             
             
         }

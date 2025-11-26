@@ -289,7 +289,7 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnBuscar)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
@@ -362,12 +362,12 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnQuitar;
-    private javax.swing.JComboBox<String> cbNombresHoteles;
-    private javax.swing.JComboBox<String> cbServicios;
-    private javax.swing.JButton jButton1;
+    public javax.swing.JButton btnAgregar;
+    public javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnQuitar;
+    public javax.swing.JComboBox<String> cbNombresHoteles;
+    public javax.swing.JComboBox<String> cbServicios;
+    public javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -382,11 +382,11 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSpinner jSpinner1;
+    public javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private com.toedter.calendar.JDateChooser jdateFechaEntrada;
-    private com.toedter.calendar.JDateChooser jdateFechaSalida;
-    private javax.swing.JTable jtReservaBuscarHabitacion;
+    public javax.swing.JTable jTable2;
+    public com.toedter.calendar.JDateChooser jdateFechaEntrada;
+    public com.toedter.calendar.JDateChooser jdateFechaSalida;
+    public javax.swing.JTable jtReservaBuscarHabitacion;
     // End of variables declaration//GEN-END:variables
 }
