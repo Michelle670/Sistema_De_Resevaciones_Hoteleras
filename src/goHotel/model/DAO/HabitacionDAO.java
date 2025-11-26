@@ -39,7 +39,7 @@ public class HabitacionDAO extends ConexionBD{
         }catch (SQLIntegrityConstraintViolationException e) {
             JOptionPane.showMessageDialog(null,
                     "El ID ingresado (" + habitacion.getIdHabitacion() + ") ya está registrado.\n"
-                    + "Por favor, use otro ID o edite la habitació existente.",
+                    + "Por favor, use otro ID o edite la habitación existente.",
                     "Error de duplicado", JOptionPane.ERROR_MESSAGE);
             return false;
         } catch (SQLException e) {

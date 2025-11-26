@@ -9,6 +9,7 @@ import goHotel.model.Servicio;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -176,6 +177,59 @@ public class ServicioDAO {
                 Logger.getLogger(ServicioDAO.class.getName()).log(Level.SEVERE, null, e);
             }
         }
+    }
+    
+    public static class ComboItem {
+
+        private final int id;
+        private final String label;
+
+        public ComboItem(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
+    }
+
+    public void cargarServicios(JComboBox<ComboItem> combo) {
+        combo.removeAllItems();
+        combo.addItem(new ComboItem(0, "--- Seleccione ---"));
+        String sql = "SELECT id_servicio, nombre FROM servicio ORDER BY nombre";
+
+        try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                combo.addItem(new ComboItem(
+                        rs.getInt("id_servicio"),
+                        rs.getString("nombre")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error cargando servicios: " + e.getMessage());
+        }
+    }
+    
+    public String obtenerNombreServicio(int idServicio) {
+        String sql = "SELECT nombre FROM servicio WHERE id_servicio=?";
+        try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idServicio);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("nombre");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return "";
     }
 }
     

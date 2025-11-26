@@ -2,11 +2,15 @@
 package goHotel.controller;
 
 import goHotel.model.DAO.HabitacionDAO;
+import goHotel.model.DAO.HabitacionServicioDAO;
 import goHotel.model.EstadoHabitacion;
 import goHotel.model.Habitacion;
+import goHotel.model.DAO.ServicioDAO;
+import goHotel.model.DAO.ServicioDAO.ComboItem;
 import goHotel.view.GestionHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +23,9 @@ public class HabitacionController implements ActionListener{
     private final Habitacion modelo;
     private final HabitacionDAO consultas;
     private final GestionHabitacion vista;
+    
+    private final ServicioDAO servicioDAO = new ServicioDAO();
+    private final HabitacionServicioDAO habServDAO = new HabitacionServicioDAO();
 
     public HabitacionController(Habitacion modelo, HabitacionDAO consultas, GestionHabitacion vista) {
         this.modelo = modelo;
@@ -31,8 +38,13 @@ public class HabitacionController implements ActionListener{
         this.vista.btnLimpiar.addActionListener(this);
         this.vista.btnSalir.addActionListener(this);
         
+        this.vista.btnAsignarServicio.addActionListener(this);
+        this.vista.btnQuitarServicio.addActionListener(this);
+        
         consultas.cargarEstado(vista.cmbEstado);
         consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
+        
+        servicioDAO.cargarServicios(vista.cmbServicios);
     }
     
     public void iniciar() {
@@ -146,7 +158,7 @@ public class HabitacionController implements ActionListener{
                     } catch (IllegalArgumentException ex) {
                         vista.cmbEstado.setSelectedItem(EstadoHabitacion.DISPONIBLE);
                     }
-                    
+                    cargarServiciosAsignados(id);
                     JOptionPane.showMessageDialog(null, "Habitación encontrada.");
                 }
                 
@@ -161,12 +173,68 @@ public class HabitacionController implements ActionListener{
             consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
         }
         
+        //btnSalir
         if (e.getSource() == vista.btnSalir){
             int confirmacion = JOptionPane.showConfirmDialog(null,
                     "¿Está seguro de salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 vista.dispose();
             }
+        }
+        
+        if (e.getSource() == vista.btnAsignarServicio) {
+            asignarServicio();
+        }
+
+        if (e.getSource() == vista.btnQuitarServicio) {
+            quitarServicio();
+        }
+    }
+    
+    private void asignarServicio() {
+        int idHabitacion = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
+
+        ComboItem servItem = (ComboItem) vista.cmbServicios.getSelectedItem();
+        if (servItem == null || servItem.getId() == 0) {
+            JOptionPane.showMessageDialog(null, "Seleccione un servicio válido.");
+            return;
+        }
+
+        boolean ok = habServDAO.asignarServicio(idHabitacion, servItem.getId());
+        if (ok) {
+            JOptionPane.showMessageDialog(null, "Servicio asignado.");
+            cargarServiciosAsignados(idHabitacion);
+        } else {
+            JOptionPane.showMessageDialog(null, "Ese servicio ya estaba asignado.");
+        }
+    }
+
+    private void quitarServicio() {
+        int idHabitacion = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
+
+        int fila = vista.jtServiciosAsignados.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione un servicio asignado.");
+            return;
+        }
+
+        int idServicio = (int) vista.jtServiciosAsignados.getValueAt(fila, 0);
+
+        if (habServDAO.quitarServicio(idHabitacion, idServicio)) {
+            JOptionPane.showMessageDialog(null, "Servicio removido.");
+            cargarServiciosAsignados(idHabitacion);
+        }
+    }
+
+    public void cargarServiciosAsignados(int idHabitacion) {
+        DefaultTableModel m = (DefaultTableModel) vista.jtServiciosAsignados.getModel();
+        m.setRowCount(0);
+
+        List<Integer> ids = habServDAO.obtenerServiciosDeHabitacion(idHabitacion);
+
+        for (Integer idServ : ids) {
+            String nombre = servicioDAO.obtenerNombreServicio(idServ); // método simple en ServicioDAO
+            m.addRow(new Object[]{idServ, nombre});
         }
     }
     
