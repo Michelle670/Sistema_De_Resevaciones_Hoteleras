@@ -8,7 +8,7 @@ import goHotel.controller.LoginController;
 import goHotel.model.ConexionBD;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.view.LoginView;
-//import goHotel.view.ReservaBuscarHabitacion_old;
+import goHotel.view.ReservaBuscarHabitacion;
 public class Principal 
 {
 
@@ -26,13 +26,13 @@ public class Principal
         
         // Iniciar la aplicación
         controller.iniciar();
-//       
-//     
-//        
-//        
-//       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
-//       rh.setVisible(true);
-//       rh.setLocationRelativeTo(null);
+       
+     
+        
+        
+       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
+       rh.setVisible(true);
+       rh.setLocationRelativeTo(null);
     }
     
 }
