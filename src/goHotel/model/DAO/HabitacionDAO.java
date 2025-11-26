@@ -113,29 +113,53 @@ public class HabitacionDAO extends ConexionBD{
     }
     
     public boolean eliminarHabitacion(Habitacion habitacion) {
-        PreparedStatement ps = null;
+        PreparedStatement ps1 = null;
+        PreparedStatement ps2 = null;
         Connection conn = ConexionBD.getConnection();
 
-        String sql = "DELETE from habitacion WHERE id_habitacion=?";
+        String sql1 = "DELETE FROM habitacion_servicio WHERE id_habitacion = ?";
+        String sql2 = "DELETE from habitacion WHERE id_habitacion=?";
         
         try {
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, habitacion.getIdHabitacion());
+            ps1 = conn.prepareStatement(sql1);
+            ps1.setInt(1, habitacion.getIdHabitacion());
+            ps1.executeUpdate();
             
-            int rows = ps.executeUpdate();
+            ps2 = conn.prepareStatement(sql2);
+            ps2.setInt(1, habitacion.getIdHabitacion());
+            
+            int rows = ps2.executeUpdate();
             return rows > 0;
 
         }catch (SQLException e) {
             System.err.println(e);
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                System.err.println(ex);
+            }
             return false;
+
         } finally {
             try {
-                if (ps != null) {
-                    ps.close();
+                if (ps1 != null) {
+                    ps1.close();
                 }
-                conn.close();
             } catch (SQLException e) {
-                System.err.println(e);
+            }
+            try {
+                if (ps2 != null) {
+                    ps2.close();
+                }
+            } catch (SQLException e) {
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
             }
         }
             
