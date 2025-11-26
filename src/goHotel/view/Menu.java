@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package goHotel.view;
 
 import goHotel.controller.ClienteController;
@@ -12,8 +8,12 @@ import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.Servicio;
+import goHotel.controller.HotelController;
+import goHotel.model.DAO.HotelDAO;
+import goHotel.model.DAO.LoginDAO;
+import goHotel.model.Hotel;
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
+
 
 /**
 * AUTOR: GRUPO 3
@@ -27,11 +27,7 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
  
      */
-    public Menu(String correo, String tipo) 
-    {
-        initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
-    }
+    
     
     public Menu() {
         // Llama al principal con valores por defecto
@@ -39,9 +35,10 @@ public class Menu extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/list.png")).getImage());
     }
     
-    public void setController(MenuController controller) {
+    public void setController(MenuController controller){
         this.controller = controller;
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -212,23 +209,23 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chmGestionReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionReservasActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_chmGestionReservasActionPerformed
 
-    private void chmGestionHotelesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionHotelesActionPerformed
-
-    }//GEN-LAST:event_chmGestionHotelesActionPerformed
+    private void chmGestionHotelesActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+       
+    }                                                 
 
     private void chmGestionPaisesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionPaisesActionPerformed
-
+     
     }//GEN-LAST:event_chmGestionPaisesActionPerformed
 
     private void chmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmSalirActionPerformed
-
+    
     }//GEN-LAST:event_chmSalirActionPerformed
 
     private void chmTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoHabitacionActionPerformed
-// TODO add your handling code here:
+     
     }//GEN-LAST:event_chmTipoHabitacionActionPerformed
 
     private void chmGestionHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionHabitacionesActionPerformed

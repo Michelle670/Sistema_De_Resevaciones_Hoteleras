@@ -5,20 +5,22 @@ import goHotel.model.DAO.PaisDAO;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
-
-
+//******************************************************************************
 /**
 * AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
  */
-public class GestionHoteles extends javax.swing.JFrame {
-    public HotelController controller;
+//******************************************************************************
 
+public class GestionHoteles extends javax.swing.JFrame 
+{
+    public HotelController controller;
     /**
      * Creates new form GestionHoteles
      */
-    public GestionHoteles() {
+    public GestionHoteles() 
+    {
         initComponents();
         
         jtGestionHoteles.setDefaultEditor(Object.class, null);  // ← DESACTIVA EDICIÓN
@@ -104,6 +106,9 @@ public class GestionHoteles extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEditar);
 
+
+        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.setFocusable(false);
@@ -286,32 +291,25 @@ public class GestionHoteles extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
-        actualizarTabla();
     }//GEN-LAST:event_formWindowOpened
 
     private void jtGestionHotelesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtGestionHotelesMouseClicked
 
         int fila = jtGestionHoteles.getSelectedRow();
-
         if (fila == -1)
         return; // No seleccionó nada
-
         // Columna 0
         String codigo = jtGestionHoteles.getValueAt(fila, 0).toString();
         txtCodigo.setText(codigo);
-
         // Columna 1
         String nombre = jtGestionHoteles.getValueAt(fila, 1).toString();
         txtNombre.setText(nombre);
-
         //Columna 3
         String nombrePais = jtGestionHoteles.getValueAt(fila, 3).toString();
         jcPais.setSelectedItem(nombrePais);
-
         // Columna 4
         String ciudad = jtGestionHoteles.getValueAt(fila, 4).toString();
         txtCiudad.setText(ciudad);
-
         // Columna 5
         String direccion = jtGestionHoteles.getValueAt(fila, 5).toString();
         txtDireccion.setText(direccion);
@@ -342,33 +340,32 @@ public class GestionHoteles extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public void setController(HotelController controller) {
-        this.controller = controller;
+private void ocultarColumna2() 
+{
+    jtGestionHoteles.getColumnModel().getColumn(2).setMinWidth(0);
+    jtGestionHoteles.getColumnModel().getColumn(2).setMaxWidth(0);
+    jtGestionHoteles.getColumnModel().getColumn(2).setWidth(0);
+}
+
+public void setController(HotelController controller) {
+    this.controller = controller;
+}
+
+public void limpiarCampos() {
+    txtCodigo.setText("");
+    txtNombre.setText("");
+    jcPais.setSelectedIndex(0);
+    txtCiudad.setText("");
+    txtDireccion.setText("");
+    txtCodigo.requestFocus();
+}
+public void actualizarTabla() 
+{
+    if (controller != null) {
+        DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
+        controller.actualizarTabla();
     }
-
-    public void limpiarCampos() {
-        txtCodigo.setText("");
-        txtNombre.setText("");
-        jcPais.setSelectedIndex(0);
-        txtCiudad.setText("");
-        txtDireccion.setText("");
-        txtCodigo.requestFocus();
-    }
-
-    public void actualizarTabla() {
-        if (controller != null) {
-            DefaultTableModel modelo = (DefaultTableModel) jtGestionHoteles.getModel();
-            controller.actualizarTabla();
-        }
-    }
-
-
-    private void ocultarColumna2() {
-        jtGestionHoteles.getColumnModel().getColumn(2).setMinWidth(0);
-        jtGestionHoteles.getColumnModel().getColumn(2).setMaxWidth(0);
-        jtGestionHoteles.getColumnModel().getColumn(2).setWidth(0);
-    }
-
+}
     /**
      * @param args the command line arguments
      */
@@ -403,7 +400,6 @@ public class GestionHoteles extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAgregar;
     public javax.swing.JButton btnBuscar;
@@ -428,4 +424,6 @@ public class GestionHoteles extends javax.swing.JFrame {
     public javax.swing.JTextArea txtDireccion;
     public javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+   
 }

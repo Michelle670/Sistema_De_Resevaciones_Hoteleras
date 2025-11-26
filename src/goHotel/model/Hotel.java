@@ -1,14 +1,18 @@
 package goHotel.model;
+
 /**
- * AUTOR: GRUPO 3
+* AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
  */
-public class Hotel {
+
+//******************************************************************************
+public class Hotel 
+{
 //==============================================================================
 //ATRIBUTOS   
 //==============================================================================
-
+    
     private int idHotel;
     private String nombreHotel;
     private int idPais;
@@ -18,7 +22,8 @@ public class Hotel {
 //CONSTRUCTOR
 //==============================================================================
 
-    public Hotel() {
+     public Hotel() 
+     {
         this.idHotel = 0;
         this.nombreHotel = "";
         this.idPais = 0;
@@ -36,8 +41,8 @@ public class Hotel {
 //==============================================================================
 //GETTERS Y SETTERS
 //==============================================================================   
-
-    public String getDireccion() {
+    public String getDireccion() 
+    {
         return direccion;
     }
 

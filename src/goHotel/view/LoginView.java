@@ -2,25 +2,28 @@ package goHotel.view;
 
 import goHotel.controller.LoginController;
 import goHotel.model.DAO.LoginDAO;
+import goHotel.view.Menu;
 import javax.swing.ImageIcon;
-
-/**
- *
- * @author soloa
- */
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
 public class LoginView extends javax.swing.JFrame {
-    private LoginDAO dao = new LoginDAO();
-
-private LoginController controller;
-    public LoginView() {
+private LoginDAO dao = new LoginDAO();
+public LoginController controller;
+    public LoginView() 
+    {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/privado.png")).getImage());
     }
     
-    public void setController(LoginController controller) {
+    public void setController(LoginController controller)
+    {
         this.controller = controller;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package goHotel.controller;
 
 import goHotel.model.Cliente;
@@ -23,11 +19,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author israelapuy
- */
-public class MenuController implements ActionListener{
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
+public class MenuController implements ActionListener {
+    
     private final Menu vista;
     private final String correoUsuario;
     private final String tipoUsuario;
@@ -66,10 +64,11 @@ public class MenuController implements ActionListener{
             vista.jlTipo.setText(infoUsuario[1]);
         }
     }
-
+    
     private void configurarPermisosPorRol() {
         // Si es Cliente, ocultar menús de empleado
-        if (tipoUsuario.equalsIgnoreCase("Cliente")) {
+         if (tipoUsuario.equalsIgnoreCase("Cliente")) 
+        {
             vista.mnuMantenimientos.setVisible(false);
             vista.mnuLimpieza.setVisible(false);
             return;
@@ -112,7 +111,7 @@ public class MenuController implements ActionListener{
                 break;
         }
     }
-
+    
     // =========================================================================
     // MÉTODOS PARA ABRIR VENTANAS
     // =========================================================================
@@ -120,19 +119,18 @@ public class MenuController implements ActionListener{
         Hotel modelo = new Hotel();
         HotelDAO dao = new HotelDAO();
         GestionHoteles vistaHoteles = new GestionHoteles();
-
+        
         HotelController controller = new HotelController(modelo, dao, vistaHoteles);
         vistaHoteles.setController(controller);
-
+        
         controller.iniciar();
     }
-
+    
     private void abrirGestionPaises() {
         GestionPaises vistaPaises = new GestionPaises();
         vistaPaises.setVisible(true);
         vistaPaises.setLocationRelativeTo(null);
     }
-
     private void abrirGestionReservas() {
         JOptionPane.showMessageDialog(vista, "Módulo en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
         // TODO: Implementar cuando esté listo
@@ -176,42 +174,42 @@ public class MenuController implements ActionListener{
     
     private void salirDelSistema() {
         int confirmacion = JOptionPane.showConfirmDialog(
-                vista,
-                "¿Está seguro que desea salir del sistema?",
-                "Confirmar Salida",
-                JOptionPane.YES_NO_OPTION
+            vista,
+            "¿Está seguro que desea salir del sistema?",
+            "Confirmar Salida",
+            JOptionPane.YES_NO_OPTION
         );
         if (confirmacion == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }
-
+    
     // =========================================================================
     // MANEJADOR DE EVENTOS
     // =========================================================================
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        
         if (e.getSource() == vista.chmGestionHoteles) {
             abrirGestionHoteles();
         }
-
+        
         if (e.getSource() == vista.chmGestionPaises) {
             abrirGestionPaises();
         }
-
+        
         if (e.getSource() == vista.chmGestionReservas) {
             abrirGestionReservas();
         }
-
+        
         if (e.getSource() == vista.chmGestionClientes) {
             abrirGestionClientes();
         }
-
+        
         if (e.getSource() == vista.chmGestionEmpleados) {
             abrirGestionEmpleados();
         }
-
+        
         if (e.getSource() == vista.chmGestionHabitaciones) {
             abrirGestionHabitaciones();
         }
@@ -219,9 +217,9 @@ public class MenuController implements ActionListener{
         if (e.getSource() == vista.chmTipoServicio){
             abrirGestionServicio();
         }
-
+        
         if (e.getSource() == vista.chmSalir) {
             salirDelSistema();
         }
     }
-}
+} 
