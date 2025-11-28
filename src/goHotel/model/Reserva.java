@@ -1,5 +1,8 @@
 
 package goHotel.model;
+
+import java.time.LocalDate;
+
 /**
  * AUTOR: GRUPO 3
  * PROYECTO
@@ -10,142 +13,124 @@ public class Reserva
 //==============================================================================
 //ATRIBUTOS 
 //==============================================================================    
-    private String idReserva;
-    private Cliente cliente;
-    private Habitacion habitacion;
-    private String fechaEntrada;
-    private String fechaSalida;
-    private String fechaCreacion;
-    private String fechaModificacion;
-    private Empleado creadoPor;
-    private Empleado modificadoPor;
+    private int idReserva;
+    private int idPais;
+    private String nombreHotel;
+    private String nombrePais;
+    private String nombreCliente;
+    private int    numHabitacion;
+    private LocalDate fechaEntrada;
+    private LocalDate fechaSalida;
+
 
 //==============================================================================
 //CONSTRUCTOR
 //==============================================================================   
-    public Reserva() {
-        this.idReserva = "";
-        this.cliente = new Cliente();
-        this.habitacion = new Habitacion();
-        this.fechaEntrada = "";
-        this.fechaSalida = "";
-        this.fechaCreacion = "";
-        this.fechaModificacion = "";
-        this.creadoPor = new Empleado();
-        this.modificadoPor = new Empleado();
-    }
+      public Reserva() 
+      {
+        this.idReserva = 0;
+        this.idPais = 0;
+        this.nombreHotel = "";
+        this.nombrePais = "";
+        this.nombreCliente = "";
+        this.numHabitacion = 0;
+        this.fechaEntrada = null;
+        this.fechaSalida = null;
+    } 
 
-    
-    public Reserva(String idReserva, Cliente cliente, Habitacion habitacion, 
-                   String fechaEntrada, String fechaSalida, 
-                   String fechaCreacion, String fechaModificacion, 
-                   Empleado creadoPor, Empleado modificadoPor) {
-        
+       public Reserva(int idReserva, int idPais, String nombreHotel, String nombrePais, String nombreCliente, int numHabitacion, LocalDate fechaEntrada, LocalDate fechaSalida)
+       {
         this.idReserva = idReserva;
-        this.cliente = cliente;
-        this.habitacion = habitacion;
+        this.idPais = idPais;
+        this.nombreHotel = nombreHotel;
+        this.nombrePais = nombrePais;
+        this.nombreCliente = nombreCliente;
+        this.numHabitacion = numHabitacion;
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = fechaModificacion;
-        this.creadoPor = creadoPor;
-        this.modificadoPor = modificadoPor;
     }
-
-
 //==============================================================================
 //GETTERS Y SETTERS
 //============================================================================== 
 
-    public String getIdReserva() 
+    public int getIdReserva() 
     {
         return idReserva;
     }
 
-    public void setIdReserva(String idReserva) 
+    public void setIdReserva(int idReserva) 
     {
         this.idReserva = idReserva;
     }
 
-    public Cliente getCliente() 
+    public int getIdPais() 
     {
-        return cliente;
+        return idPais;
     }
 
-    public void setCliente(Cliente cliente)
+    public void setIdPais(int idPais) 
     {
-        this.cliente = cliente;
+        this.idPais = idPais;
     }
 
-    public Habitacion getHabitacion() 
+    public String getNombreHotel() 
     {
-        return habitacion;
+        return nombreHotel;
     }
 
-    public void setHabitacion(Habitacion habitacion)
+    public void setNombreHotel(String nombreHotel) 
     {
-        this.habitacion = habitacion;
+        this.nombreHotel = nombreHotel;
     }
 
-    public String getFechaEntrada() 
+    public String getNombrePais() 
+    {
+        return nombrePais;
+    }
+
+    public void setNombrePais(String nombrePais) 
+    {
+        this.nombrePais = nombrePais;
+    }
+
+    public String getNombreCliente() 
+    {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) 
+    {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public int getNumHabitacion() 
+    {
+        return numHabitacion;
+    }
+
+    public void setNumHabitacion(int numHabitacion)
+    {
+        this.numHabitacion = numHabitacion;
+    }
+
+    public LocalDate getFechaEntrada()
     {
         return fechaEntrada;
     }
 
-    public void setFechaEntrada(String fechaEntrada) 
+    public void setFechaEntrada(LocalDate fechaEntrada)
     {
         this.fechaEntrada = fechaEntrada;
     }
 
-    public String getFechaSalida() 
+    public LocalDate getFechaSalida() 
     {
         return fechaSalida;
     }
 
-    public void setFechaSalida(String fechaSalida) 
+    public void setFechaSalida(LocalDate fechaSalida) 
     {
         this.fechaSalida = fechaSalida;
     }
 
-    public String getFechaCreacion() 
-    {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(String fechaCreacion) 
-    {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public String getFechaModificacion() 
-    {
-        return fechaModificacion;
-    }
-
-    public void setFechaModificacion(String fechaModificacion) 
-    {
-        this.fechaModificacion = fechaModificacion;
-    }
-
-    public Empleado getCreadoPor() 
-    {
-        return creadoPor;
-    }
-
-    public void setCreadoPor(Empleado creadoPor) 
-    {
-        this.creadoPor = creadoPor;
-    }
-
-    public Empleado getModificadoPor()
-    {
-        return modificadoPor;
-    }
-
-    public void setModificadoPor(Empleado modificadoPor)
-    {
-        this.modificadoPor = modificadoPor;
-    }
-
-    
 }

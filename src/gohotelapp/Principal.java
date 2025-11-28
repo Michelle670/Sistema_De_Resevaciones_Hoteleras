@@ -5,8 +5,12 @@ package gohotelapp;
  * SEMANA 9
  *****************************************************************************/
 import goHotel.controller.LoginController;
+import goHotel.controller.ReservaController;
 import goHotel.model.ConexionBD;
 import goHotel.model.DAO.LoginDAO;
+import goHotel.model.DAO.ReservaDAO;
+import goHotel.model.Reserva;
+import goHotel.view.GestionReserva;
 import goHotel.view.LoginView;
 import goHotel.view.ReservaBuscarHabitacion;
 public class Principal 
@@ -26,13 +30,7 @@ public class Principal
         
         // Iniciar la aplicación
         controller.iniciar();
-       
-     
         
-        
-//       ReservaBuscarHabitacion rh = new ReservaBuscarHabitacion();
-//       rh.setVisible(true);
-//       rh.setLocationRelativeTo(null);
     }
     
 }

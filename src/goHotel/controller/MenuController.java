@@ -1,20 +1,23 @@
 package goHotel.controller;
-
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.HabitacionDAO;
 import goHotel.model.DAO.HotelDAO;
 import goHotel.model.DAO.LoginDAO;
+import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.Habitacion;
 import goHotel.model.Hotel;
+import goHotel.model.Reserva;
 import goHotel.model.Servicio;
 import goHotel.view.GestionCliente;
 import goHotel.view.GestionHabitacion;
 import goHotel.view.GestionHoteles;
 import goHotel.view.GestionPaises;
+import goHotel.view.GestionReserva;
 import goHotel.view.GestionServicio;
 import goHotel.view.Menu;
+import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
@@ -30,7 +33,8 @@ public class MenuController implements ActionListener {
     private final String correoUsuario;
     private final String tipoUsuario;
 
-    public MenuController(Menu vista, String correo, String tipo) {
+    public MenuController(Menu vista, String correo, String tipo) 
+    {
         this.vista = vista;
         this.correoUsuario = correo;
         this.tipoUsuario = tipo;
@@ -132,8 +136,20 @@ public class MenuController implements ActionListener {
         vistaPaises.setLocationRelativeTo(null);
     }
     private void abrirGestionReservas() {
-        JOptionPane.showMessageDialog(vista, "Módulo en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
-        // TODO: Implementar cuando esté listo
+        Reserva modelo = new Reserva();
+        ReservaDAO consultas = new ReservaDAO();
+        GestionReserva vista = new GestionReserva(correoUsuario,tipoUsuario);
+
+// Crear el controlador
+        ReservaController controller = new ReservaController(modelo, consultas, vista,correoUsuario,tipoUsuario.toUpperCase());
+
+// Asignar el controlador a la vista
+        vista.setController(controller);
+
+// Iniciar la ventana
+        controller.iniciar();
+    
+
     }
 
     private void abrirGestionClientes() {
