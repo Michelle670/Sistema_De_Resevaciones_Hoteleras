@@ -40,7 +40,7 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jsNumPersonas = new javax.swing.JSpinner();
         jdateFechaSalida = new com.toedter.calendar.JDateChooser();
         jdateFechaEntrada = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
@@ -54,10 +54,11 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        btnReservar = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        btnCancelar = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -72,7 +73,7 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Búsqueda de Habitación");
         setResizable(false);
 
@@ -162,11 +163,11 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(0, 204, 102));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/calendario.png"))); // NOI18N
-        jButton1.setText("Reservar");
+        btnReservar.setBackground(new java.awt.Color(0, 204, 102));
+        btnReservar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReservar.setForeground(new java.awt.Color(255, 255, 255));
+        btnReservar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/calendario.png"))); // NOI18N
+        btnReservar.setText("Reservar");
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -180,6 +181,12 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
             }
         ));
         jScrollPane3.setViewportView(jTable2);
+
+        btnCancelar.setBackground(new java.awt.Color(0, 204, 102));
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cancelar (1).png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -219,7 +226,7 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jdateFechaSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jSpinner1))))
+                                    .addComponent(jsNumPersonas))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
@@ -234,10 +241,12 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
+                        .addGap(213, 213, 213)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(257, 257, 257)
-                        .addComponent(jButton1))
+                        .addGap(80, 80, 80)
+                        .addComponent(btnReservar)
+                        .addGap(79, 79, 79)
+                        .addComponent(btnCancelar))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -261,7 +270,7 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jsNumPersonas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -289,9 +298,10 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReservar)
                     .addComponent(btnBuscar)
-                    .addComponent(jButton1))
+                    .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -364,10 +374,11 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAgregar;
     public javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
     public javax.swing.JButton btnQuitar;
+    public javax.swing.JButton btnReservar;
     public javax.swing.JComboBox<String> cbNombresHoteles;
     public javax.swing.JComboBox<String> cbServicios;
-    public javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -382,11 +393,11 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    public javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
     public javax.swing.JTable jTable2;
     public com.toedter.calendar.JDateChooser jdateFechaEntrada;
     public com.toedter.calendar.JDateChooser jdateFechaSalida;
+    public javax.swing.JSpinner jsNumPersonas;
     public javax.swing.JTable jtReservaBuscarHabitacion;
     // End of variables declaration//GEN-END:variables
 }
