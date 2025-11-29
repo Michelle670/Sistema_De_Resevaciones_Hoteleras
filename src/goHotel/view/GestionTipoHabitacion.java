@@ -26,6 +26,7 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         iblogo = new javax.swing.JLabel();
         IBIDtipo = new javax.swing.JLabel();
@@ -304,23 +305,24 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
     private javax.swing.JLabel IbCapacidad;
     private javax.swing.JLabel IbPrecioBase;
     private javax.swing.JLabel Ibdescrip;
-    private javax.swing.JButton btAgregar;
-    private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btEditar;
-    private javax.swing.JButton btEliminar;
-    private javax.swing.JButton btSalir;
+    public javax.swing.JButton btAgregar;
+    public javax.swing.JButton btBuscar;
+    public javax.swing.JButton btEditar;
+    public javax.swing.JButton btEliminar;
+    public javax.swing.JButton btSalir;
     private javax.swing.JLabel iblogo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpCapacidad;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JSpinner jSpCapacidad;
+    public javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JScrollPane tablaTipos;
-    private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNOMBRE;
-    private javax.swing.JTextField txtPrecioBase;
-    private javax.swing.JTextArea txtareaDescrip;
+    public javax.swing.JTextField txtID;
+    public javax.swing.JTextField txtNOMBRE;
+    public javax.swing.JTextField txtPrecioBase;
+    public javax.swing.JTextArea txtareaDescrip;
     // End of variables declaration//GEN-END:variables
 }

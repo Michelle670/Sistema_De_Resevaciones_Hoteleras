@@ -315,15 +315,15 @@ public class GestionEmpleado extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane TABLA;
-    private javax.swing.JButton btAgregar;
-    private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btEditar;
-    private javax.swing.JButton btEliminar;
-    private javax.swing.JButton btSalir;
-    private javax.swing.JComboBox<String> cbRol;
+    public javax.swing.JButton btAgregar;
+    public javax.swing.JButton btBuscar;
+    public javax.swing.JButton btEditar;
+    public javax.swing.JButton btEliminar;
+    public javax.swing.JButton btSalir;
+    public javax.swing.JComboBox<String> cbRol;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTable jTable3;
+    public javax.swing.JPasswordField jPasswordField1;
+    public javax.swing.JTable jTable3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblLogo;
@@ -331,8 +331,8 @@ public class GestionEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblRol;
     private javax.swing.JLabel lblid;
-    private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtNombre;
+    public javax.swing.JTextField txtCorreo;
+    public javax.swing.JTextField txtId;
+    public javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
