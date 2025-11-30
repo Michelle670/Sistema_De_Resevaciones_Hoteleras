@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /*****************************************************************************
  * AUTOR: GRUPO 3
@@ -63,6 +64,7 @@ public class ReservaController implements ActionListener
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
         actualizarTabla();
+        ajustarColumnas();
     }
     
     
@@ -74,14 +76,17 @@ public class ReservaController implements ActionListener
     {
         DefaultTableModel modelo = (DefaultTableModel) vista.jtGestionReserva.getModel();
         consultas.cargarDatosEnTabla(modelo,"CARGA",0,null,null,null,0,null,correoUsuario,tipoUsuario);
+     
     }
 //==============================================================================  
 // CARGAR DATOS DE LA TABLA A LOS CAMPOS DE FILTRO
 //==============================================================================
-    private void cargarDatosDeTabla() {
+    private void cargarDatosDeTabla() 
+    {
         int filaSeleccionada = vista.jtGestionReserva.getSelectedRow();
         
-        if (filaSeleccionada != -1) {
+        if (filaSeleccionada != -1) 
+        {
             vista.txtID.setText(vista.jtGestionReserva.getValueAt(filaSeleccionada, 0).toString());
             vista.txtEstado.setText(vista.jtGestionReserva.getValueAt(filaSeleccionada, 1).toString());
             vista.txtPais.setText(vista.jtGestionReserva.getValueAt(filaSeleccionada, 2).toString());
@@ -93,7 +98,8 @@ public class ReservaController implements ActionListener
 //==============================================================================  
 // LIMPIAR CAMPOS DE FILTRO
 //==============================================================================
-    private void limpiarCampos() {
+    private void limpiarCampos() 
+    {
         vista.txtID.setText("");
         vista.txtEstado.setText("");
         vista.txtPais.setText("");
@@ -185,7 +191,8 @@ public class ReservaController implements ActionListener
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
             
-            if (confirmacion == JOptionPane.YES_OPTION) {
+            if (confirmacion == JOptionPane.YES_OPTION) 
+            {
                 if (consultas.eliminar(idReserva)) {
                     JOptionPane.showMessageDialog(vista, 
                         "Reserva eliminada exitosamente", 
@@ -193,7 +200,8 @@ public class ReservaController implements ActionListener
                         JOptionPane.INFORMATION_MESSAGE);
                     actualizarTabla();
                     limpiarCampos();
-                } else {
+                } else 
+                {
                     JOptionPane.showMessageDialog(vista, 
                         "Error al eliminar la reserva", 
                         "Error", 
@@ -204,11 +212,12 @@ public class ReservaController implements ActionListener
             
             
         }
-        
+    
         //======================================================================
         // BOTÓN LIMPIAR
         //======================================================================
-        if (e.getSource() == vista.btnLimpiar) {
+        if (e.getSource() == vista.btnLimpiar) 
+        {
             actualizarTabla();
             vista.jtGestionReserva.clearSelection();
         }
@@ -231,4 +240,16 @@ public class ReservaController implements ActionListener
         }
         
     } 
+    
+    private void ajustarColumnas() 
+    {
+    TableColumnModel columnModel = vista.jtGestionReserva.getColumnModel();
+    columnModel.getColumn(0).setPreferredWidth(40);
+    columnModel.getColumn(2).setPreferredWidth(40); 
+    columnModel.getColumn(5).setPreferredWidth(40);
+    columnModel.getColumn(6).setPreferredWidth(100);
+    columnModel.getColumn(7).setPreferredWidth(90);
+    columnModel.getColumn(8).setPreferredWidth(90);
+    }
+
     }
