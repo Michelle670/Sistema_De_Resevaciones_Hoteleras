@@ -132,7 +132,8 @@ public class HabitacionController implements ActionListener{
         
         //btnEliminar
         if(e.getSource() == vista.btnEliminar){
-            modelo.setIdHabitacion(Integer.parseInt(vista.txtIdHabitacion.getText().trim()));
+            int id = Integer.parseInt(vista.txtIdHabitacion.getText().trim());
+            modelo.setIdHabitacion(id);
             
             if(consultas.eliminarHabitacion(modelo)){
                 JOptionPane.showMessageDialog(null, "Habitación eliminada.");
@@ -140,6 +141,7 @@ public class HabitacionController implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(null, "Error al eliminar habitación.");
             }
+            cargarServiciosAsignados(id);
             limpiar();
         }
         
