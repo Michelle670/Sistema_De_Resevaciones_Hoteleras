@@ -1,20 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package goHotel.view;
 
-/**
- *
- * @author Michelle
- */
-public class GestionRol extends javax.swing.JFrame {
+import goHotel.controller.EmpleadoController;
+import goHotel.controller.RolController;
 
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
+public class GestionRol extends javax.swing.JFrame {
+     private RolController controlador;
     /**
      * Creates new form GestionRol
      */
     public GestionRol() {
         initComponents();
+    }
+
+     public void setControlador(RolController controlador) {
+         this.controlador = controlador;
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+                int fila = jTable2.getSelectedRow();
+
+                if (fila != -1) {
+
+                    txtNombreRol.setText(jTable2.getValueAt(fila, 1).toString());
+
+                    String estado = jTable2.getValueAt(fila, 2).toString();
+                    cbEstado.setSelectedItem(estado);
+
+                    controlador.setIdRolSeleccionado(
+                            Integer.parseInt(jTable2.getValueAt(fila, 0).toString())
+                    );
+                }
+            }
+        });
     }
 
     /**
@@ -28,10 +51,8 @@ public class GestionRol extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         lblLogo = new javax.swing.JLabel();
-        cbAdministrador = new javax.swing.JComboBox<>();
         cbEstado = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtNombreRol = new javax.swing.JTextField();
         Tabla1 = new javax.swing.JToolBar();
@@ -50,15 +71,6 @@ public class GestionRol extends javax.swing.JFrame {
 
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/LogoGOHOTEL_1.jpeg"))); // NOI18N
 
-        cbAdministrador.setEditable(true);
-        cbAdministrador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sí", "No" }));
-        cbAdministrador.setToolTipText("");
-        cbAdministrador.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbAdministradorActionPerformed(evt);
-            }
-        });
-
         cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
         cbEstado.setToolTipText("");
         cbEstado.addActionListener(new java.awt.event.ActionListener() {
@@ -68,8 +80,6 @@ public class GestionRol extends javax.swing.JFrame {
         });
 
         jLabel5.setText("Estado:");
-
-        jLabel3.setText("Administrador:");
 
         jLabel2.setText("Nombre del Rol:");
 
@@ -129,11 +139,11 @@ public class GestionRol extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Tipo", "Admin", "Estado"
+                "Id_Rol", "Nombre del rol", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -148,7 +158,7 @@ public class GestionRol extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Tabla1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Tabla1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblLogo))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -161,12 +171,9 @@ public class GestionRol extends javax.swing.JFrame {
                                 .addGap(81, 81, 81)
                                 .addComponent(txtNombreRol, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(67, 67, 67)
-                                .addComponent(cbAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(110, 110, 110)
+                                .addGap(21, 21, 21)
                                 .addComponent(jLabel5)
-                                .addGap(48, 48, 48)
+                                .addGap(176, 176, 176)
                                 .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(59, 59, 59)
@@ -186,8 +193,6 @@ public class GestionRol extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cbAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
@@ -222,10 +227,6 @@ public class GestionRol extends javax.swing.JFrame {
     private void cbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbEstadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbEstadoActionPerformed
-
-    private void cbAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAdministradorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbAdministradorActionPerformed
 
     private void btSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalirActionPerformed
         // TODO add your handling code here:
@@ -274,10 +275,8 @@ public class GestionRol extends javax.swing.JFrame {
     public javax.swing.JButton btEditar;
     public javax.swing.JButton btEliminar;
     public javax.swing.JButton btSalir;
-    private javax.swing.JComboBox<String> cbAdministrador;
     public javax.swing.JComboBox<String> cbEstado;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     public javax.swing.JTable jTable2;

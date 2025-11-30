@@ -1,21 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package goHotel.view;
 
-/**
- *
- * @author Michelle
- */
-public class GestionTipoHabitacion extends javax.swing.JFrame {
+import goHotel.controller.TipoHabitacionController;
 
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
+public class GestionTipoHabitacion extends javax.swing.JFrame {
+    private TipoHabitacionController controlador;
     /**
      * Creates new form GestionTipoHabitacion
      */
     public GestionTipoHabitacion() {
         initComponents();
     }
+    public void setControlador(TipoHabitacionController controlador) {
+    this.controlador = controlador;
+
+    jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+            int fila = jTable1.getSelectedRow();
+
+            if (fila != -1) {
+                txtID.setText(jTable1.getValueAt(fila, 0).toString());
+                txtNOMBRE.setText(jTable1.getValueAt(fila, 1).toString());
+                txtareaDescrip.setText(jTable1.getValueAt(fila, 2).toString());
+                jSpCapacidad.setValue(Integer.parseInt(jTable1.getValueAt(fila, 3).toString()));
+                txtPrecioBase.setText(jTable1.getValueAt(fila, 4).toString());
+
+                controlador.setIdSeleccionado(
+                    Integer.parseInt(jTable1.getValueAt(fila, 0).toString())
+                );
+            }
+        }
+    });
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

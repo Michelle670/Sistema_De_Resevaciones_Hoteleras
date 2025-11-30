@@ -1,7 +1,6 @@
 package goHotel.model.DAO;
 
 import goHotel.model.ConexionBD;
-import goHotel.model.ConexionBD;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -9,8 +8,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
  */
-public class ConsultasEmpleado {
-
+public class EmpleadoDAO {
+  
     // ---------------------------
     // AGREGAR EMPLEADO
     // ---------------------------

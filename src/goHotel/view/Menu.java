@@ -1,6 +1,7 @@
 package goHotel.view;
 
 import goHotel.controller.ClienteController;
+import goHotel.controller.EmpleadoController;
 import goHotel.controller.LoginController;
 import goHotel.controller.MenuController;
 import goHotel.controller.ServicioController;
@@ -9,6 +10,8 @@ import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.Servicio;
 import goHotel.controller.HotelController;
+import goHotel.controller.RolController;
+import goHotel.controller.TipoHabitacionController;
 import goHotel.model.DAO.HotelDAO;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.Hotel;
@@ -66,6 +69,7 @@ public class Menu extends javax.swing.JFrame {
         chmGestionPaises = new javax.swing.JCheckBoxMenuItem();
         chmGestionPlanLealtad = new javax.swing.JCheckBoxMenuItem();
         chmGestionClientes = new javax.swing.JCheckBoxMenuItem();
+        chmGestionRoles = new javax.swing.JCheckBoxMenuItem();
         chmGestionEmpleados = new javax.swing.JCheckBoxMenuItem();
         mnuLimpieza = new javax.swing.JMenu();
         chmReporteOcupacion = new javax.swing.JCheckBoxMenuItem();
@@ -179,8 +183,22 @@ public class Menu extends javax.swing.JFrame {
         });
         mnuMantenimientos.add(chmGestionClientes);
 
+        chmGestionRoles.setSelected(true);
+        chmGestionRoles.setText("Gestion Roles");
+        chmGestionRoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmGestionRolesActionPerformed(evt);
+            }
+        });
+        mnuMantenimientos.add(chmGestionRoles);
+
         chmGestionEmpleados.setSelected(true);
         chmGestionEmpleados.setText("Gestion Empleados");
+        chmGestionEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chmGestionEmpleadosActionPerformed(evt);
+            }
+        });
         mnuMantenimientos.add(chmGestionEmpleados);
 
         jMenuBar1.add(mnuMantenimientos);
@@ -228,7 +246,12 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_chmSalirActionPerformed
 
     private void chmTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoHabitacionActionPerformed
-     
+        GestionTipoHabitacion vista = new GestionTipoHabitacion();
+        TipoHabitacionController control = new TipoHabitacionController(vista);
+        vista.setControlador(control);
+        control.iniciar();
+        vista.setVisible(true);
+        vista.setLocationRelativeTo(null);
     }//GEN-LAST:event_chmTipoHabitacionActionPerformed
 
     private void chmGestionHabitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionHabitacionesActionPerformed
@@ -242,6 +265,23 @@ public class Menu extends javax.swing.JFrame {
     private void chmGestionClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionClientesActionPerformed
         
     }//GEN-LAST:event_chmGestionClientesActionPerformed
+
+    private void chmGestionRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionRolesActionPerformed
+        GestionRol vista = new GestionRol();
+        RolController control = new RolController(vista);
+        vista.setControlador(control);
+        control.iniciar();
+        vista.setVisible(true);
+        vista.setLocationRelativeTo(null);
+    }//GEN-LAST:event_chmGestionRolesActionPerformed
+
+    private void chmGestionEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionEmpleadosActionPerformed
+        GestionEmpleado vista = new GestionEmpleado();
+        EmpleadoController control = new EmpleadoController(vista);
+        control.iniciar();
+        vista.setVisible(true);
+        vista.setLocationRelativeTo(null);
+    }//GEN-LAST:event_chmGestionEmpleadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,6 +326,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JCheckBoxMenuItem chmGestionPaises;
     public javax.swing.JCheckBoxMenuItem chmGestionPlanLealtad;
     public javax.swing.JCheckBoxMenuItem chmGestionReservas;
+    public javax.swing.JCheckBoxMenuItem chmGestionRoles;
     public javax.swing.JCheckBoxMenuItem chmReporteOcupacion;
     public javax.swing.JCheckBoxMenuItem chmSalir;
     public javax.swing.JCheckBoxMenuItem chmTipoHabitacion;

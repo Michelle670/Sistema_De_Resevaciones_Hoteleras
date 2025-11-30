@@ -3,7 +3,7 @@ package goHotel.controller;
 /**
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
  */
-import goHotel.model.DAO.ConsultasTipoHabitación;
+import goHotel.model.DAO.TipoHabitaciónDAO;
 import goHotel.model.TipoHabitacion;
 import goHotel.view.GestionTipoHabitacion;
 import java.awt.event.ActionEvent;
@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class TipoHabitacionController implements ActionListener {
 
     private final GestionTipoHabitacion vista;
-    private final ConsultasTipoHabitación consultas = new ConsultasTipoHabitación();
+    private final TipoHabitaciónDAO consultas = new TipoHabitaciónDAO();
     private int idSeleccionado = 0;
 
     public TipoHabitacionController(GestionTipoHabitacion vista) {

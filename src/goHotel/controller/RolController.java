@@ -3,7 +3,7 @@ package goHotel.controller;
 /**
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
  */
-import goHotel.model.DAO.ConsultasRol;
+import goHotel.model.DAO.RolDAO;
 import goHotel.view.GestionRol;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +19,7 @@ public class RolController implements ActionListener {
 
     private final GestionRol vista;
     private int idRolSeleccionado = 0;
-    private final ConsultasRol consultas = new ConsultasRol();
+    private final RolDAO consultas = new RolDAO();
 
     public RolController(GestionRol vista) {
         this.vista = vista;

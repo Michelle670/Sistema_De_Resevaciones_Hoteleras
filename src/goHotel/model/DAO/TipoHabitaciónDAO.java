@@ -2,6 +2,8 @@ package goHotel.model.DAO;
 
 import goHotel.model.ConexionBD;
 import goHotel.model.ConexionBD;
+import goHotel.model.ConexionBD;
+import goHotel.model.TipoHabitacion;
 import goHotel.model.TipoHabitacion;
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
  */
-public class ConsultasTipoHabitación {
+public class TipoHabitaciónDAO {
 
     // ---------------------------
     // AGREGAR TIPO DE HABITACIÓN 

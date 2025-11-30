@@ -1,27 +1,22 @@
+
 package goHotel.model.DAO;
-import goHotel.model.ConexionBD;
+
 import goHotel.model.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * AUTOR: GRUPO 3
- * PROYECTO
- * SEMANA 9
+ *
+ * @author Michelle
  */
-
-public class ConsultasRol extends ConexionBD {
-    
-    // ------------------------------------------------------
-    // REGISTRAR UN ROL NUEVO
-    // ------------------------------------------------------
-
+public class RolDAO extends ConexionBD {
     public boolean registrarRol(String nombre, boolean estado) {
         Connection conexion = null;
         PreparedStatement ps = null;
@@ -33,20 +28,13 @@ public class ConsultasRol extends ConexionBD {
             ps = conexion.prepareStatement(sql);
 
             ps.setString(1, nombre.trim());
-            int valorEstado;
-
-            if (estado) {
-                valorEstado = 1;
-            } else {
-                valorEstado = 0;
-            }
-            ps.setInt(2, valorEstado);
+            ps.setInt(2, estado ? 1 : 0);
 
             ps.executeUpdate();
             return true;
 
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasRol.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
             return false;
         } finally {
             try {
@@ -57,10 +45,6 @@ public class ConsultasRol extends ConexionBD {
             }
         }
     }
-    
-    // ------------------------------------------------------
-    // EDITAR UN ROL EXISTENTE
-    // ------------------------------------------------------
 
     public boolean editarRol(int idRol, String nombre, boolean estado) {
         Connection conexion = null;
@@ -72,34 +56,19 @@ public class ConsultasRol extends ConexionBD {
             ps = conexion.prepareStatement(sql);
 
             ps.setString(1, nombre.trim());
-            int valorEstado;
-
-            if (estado) {
-                valorEstado = 1;
-            } else {
-                valorEstado = 0;
-            }
-            ps.setInt(2, valorEstado);
+            ps.setInt(2, estado ? 1 : 0);
             ps.setInt(3, idRol);
 
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasRol.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
             return false;
         } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-            } catch (SQLException e) {
-            }
+            try { if (ps != null) ps.close(); } catch (SQLException e) {}
         }
     }
 
-    // ------------------------------------------------------
-    // ELIMINAR ROL
-    // ------------------------------------------------------
     public boolean eliminarRol(int idRol) {
         Connection conexion = null;
         PreparedStatement ps = null;
@@ -113,7 +82,7 @@ public class ConsultasRol extends ConexionBD {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasRol.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
             return false;
         } finally {
             try {
@@ -124,13 +93,10 @@ public class ConsultasRol extends ConexionBD {
             }
         }
     }
-    
-    // ------------------------------------------------------
-    // BUSCAR ROLES POR NOMBRE
-    // ------------------------------------------------------
-    
+
     public ArrayList<Object[]> buscarRolesPorNombre(String nombre) {
         ArrayList<Object[]> resultados = new ArrayList<>();
+        
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -143,16 +109,26 @@ public class ConsultasRol extends ConexionBD {
             rs = ps.executeQuery();
 
             while (rs.next()) {
+                int estadoBD = rs.getInt("estado");
+                String estadoTexto;
+
+                if (estadoBD == 1) {
+                    estadoTexto = "Activo";
+                } else {
+                    estadoTexto = "Inactivo";
+                }
+
                 Object[] fila = {
                     rs.getInt("id_rol"),
                     rs.getString("nombre"),
-                    rs.getInt("estado") == 1 ? "Activo" : "Inactivo"
+                    estadoTexto
                 };
+
                 resultados.add(fila);
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasRol.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
                 if (rs != null) {
@@ -170,13 +146,10 @@ public class ConsultasRol extends ConexionBD {
 
         return resultados;
     }
-    
-    // ------------------------------------------------------
-    // CARGAR TODOS LOS ROLES EN LA TABLA
-    // ------------------------------------------------------
-    
+
     public void cargarDatosEnTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);
+        
         Connection conexion = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -187,17 +160,34 @@ public class ConsultasRol extends ConexionBD {
             ps = conexion.prepareStatement(sql);
             rs = ps.executeQuery();
 
+            ArrayList<Object[]> lista = new ArrayList<>();
+
             while (rs.next()) {
+
+                int estadoBD = rs.getInt("estado");
+                String estadoTexto;
+
+                if (estadoBD == 1) {
+                    estadoTexto = "Activo";
+                } else {
+                    estadoTexto = "Inactivo";
+                }
+
                 Object[] fila = {
                     rs.getInt("id_rol"),
                     rs.getString("nombre"),
-                    rs.getInt("estado") == 1 ? "Activo" : "Inactivo"
+                    estadoTexto
                 };
-                modelo.addRow(fila);
+
+                lista.add(fila);
             }
 
+            Iterator<Object[]> it = lista.iterator();
+            while (it.hasNext()) {
+                modelo.addRow(it.next());
+            }
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasRol.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
                 if (rs != null) {
@@ -213,10 +203,6 @@ public class ConsultasRol extends ConexionBD {
             }
         }
     }
-    
-    // ------------------------------------------------------
-    // OBTENER SOLO ROLES ACTIVOS 
-    // ------------------------------------------------------
 
     public ArrayList<String> cargarRolesActivos() {
         ArrayList<String> roles = new ArrayList<>();
@@ -235,7 +221,7 @@ public class ConsultasRol extends ConexionBD {
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(ConsultasRol.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
                 if (rs != null) {
