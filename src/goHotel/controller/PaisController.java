@@ -21,29 +21,23 @@ public class PaisController implements ActionListener {
         this.view = view;
         this.dao = new PaisDAO();
 
-        // Registrar el controlador como oyente de la vista (ActionListeners)
         this.view.getBtnAgregar().addActionListener(this);
         this.view.getBtnEditar().addActionListener(this);
         this.view.getBtnEliminar().addActionListener(this);
         this.view.getBtnBuscar().addActionListener(this);
         this.view.getBtnSalir().addActionListener(this);
 
-        // Configuración inicial de la tabla
         cargarTabla();
     }
 
-    // Método auxiliar para limpiar campos 
     public void limpiarCampos() {
         view.getTxtId().setText(null);
         view.getTxtCodigoISO().setText(null);
         view.getTxtNombre().setText(null);
     }
 
-    // Método para cargar la tabla (Llama al DAO)
     public void cargarTabla() {
-        // Asegúrate de que el modelo de la tabla no sea null antes de castear
         if (view.getJtPais() == null || view.getJtPais().getModel() == null) {
-            // Manejar error si la tabla no está inicializada correctamente en la vista
             return;
         }
 
@@ -51,7 +45,7 @@ public class PaisController implements ActionListener {
         model.setRowCount(0);
 
         try {
-            List<Pais> lista = dao.listarPaises(); // Llama al DAO
+            List<Pais> lista = dao.listarPaises(); 
 
             for (Pais p : lista) {
                 Object[] fila = new Object[3];
@@ -133,10 +127,8 @@ public class PaisController implements ActionListener {
                 return;
             }
 
-            // 1. DEFINIR LAS OPCIONES EN ESPAÑOL
             Object[] options = {"Sí", "No"};
 
-            // 2. USAR showOptionDialog para mostrar las opciones personalizadas
             int confirmacion = JOptionPane.showOptionDialog(
                     view,
                     "¿Está seguro de eliminar el país con ID: " + view.getTxtId().getText() + "?",
@@ -148,7 +140,6 @@ public class PaisController implements ActionListener {
                     options[1] // Opción por defecto ("No")
             );
 
-            // 3. El índice 0 corresponde a "Sí"
             if (confirmacion == 0) {
                 try {
                     int idAEliminar = Integer.parseInt(view.getTxtId().getText().trim());

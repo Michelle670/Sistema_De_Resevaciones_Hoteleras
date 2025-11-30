@@ -106,7 +106,6 @@ public class PlanLealtadController implements ActionListener, MouseListener {
         }
     }
     
-    // --- LÓGICA DE ACCIONES ---
     @Override
     public void actionPerformed(ActionEvent e) {
 

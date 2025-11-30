@@ -6,12 +6,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList; // Necesario para listar
-import java.util.List; // Necesario para listar
+import java.util.ArrayList;
+import java.util.List; 
 
 public class PaisDAO {
 
-    // 1. EL DAO RECIBE EL OBJETO PAIS
     public boolean agregarPais(Pais pais) throws SQLException {
         PreparedStatement ps = null;
         Connection con = null;
@@ -21,7 +20,6 @@ public class PaisDAO {
             con = ConexionBD.getConnection();
             ps = con.prepareStatement(sql);
 
-            // El DAO solo usa los datos del objeto Pais (el Modelo)
             ps.setInt(1, pais.getIdPais());
             ps.setString(2, pais.getCodigo());
             ps.setString(3, pais.getNombre());
@@ -29,7 +27,6 @@ public class PaisDAO {
             ps.execute();
             return true;
         } catch (SQLException e) {
-            // El DAO lanza la excepción para que el Controlador la maneje y notifique a la Vista
             throw e;
         } finally {
             try {
@@ -45,7 +42,6 @@ public class PaisDAO {
         }
     }
 
-    // 2. EL DAO RECIBE EL OBJETO PAIS PARA MODIFICAR
     public boolean modificarPais(Pais pais) throws SQLException {
         PreparedStatement ps = null;
         Connection con = null;
@@ -77,7 +73,6 @@ public class PaisDAO {
         }
     }
 
-    // 3. EL DAO RECIBE SOLO EL ID PARA ELIMINAR
     public boolean eliminarPais(int idPais) throws SQLException {
         PreparedStatement ps = null;
         Connection con = null;
@@ -107,7 +102,6 @@ public class PaisDAO {
         }
     }
 
-    // 4. EL DAO DEVUELVE UN OBJETO PAIS ENCONTRADO
     public Pais buscarPaisPorId(int idPais) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -148,7 +142,6 @@ public class PaisDAO {
         return paisEncontrado;
     }
 
-    // 5. LISTAR TODOS LOS PAÍSES
     public List<Pais> listarPaises() throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
