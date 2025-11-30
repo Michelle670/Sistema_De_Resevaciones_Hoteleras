@@ -1,4 +1,5 @@
 package goHotel.controller;
+
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.HabitacionDAO;
@@ -23,6 +24,8 @@ import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import goHotel.view.GestionPlanLealtad; // Importar la vista de Plan Lealtad
+import goHotel.model.PlanLealtad; // Importar el modelo de Plan Lealtad
 
 /*****************************************************************************
  * AUTOR: GRUPO 3
@@ -35,7 +38,7 @@ public class MenuController implements ActionListener {
     private final String correoUsuario;
     private final String tipoUsuario;
 
-    public MenuController(Menu vista, String correo, String tipo) 
+    public MenuController(Menu vista, String correo, String tipo)
     {
         this.vista = vista;
         this.correoUsuario = correo;
@@ -44,6 +47,7 @@ public class MenuController implements ActionListener {
         // Registrar listeners
         this.vista.chmGestionHoteles.addActionListener(this);
         this.vista.chmGestionPaises.addActionListener(this);
+        this.vista.chmGestionPlanLealtad.addActionListener(this); // Registrar el listener
         this.vista.chmGestionReservas.addActionListener(this);
         this.vista.chmGestionClientes.addActionListener(this);
         this.vista.chmGestionEmpleados.addActionListener(this);
@@ -74,7 +78,7 @@ public class MenuController implements ActionListener {
     
     private void configurarPermisosPorRol() {
         // Si es Cliente, ocultar menús de empleado
-         if (tipoUsuario.equalsIgnoreCase("Cliente")) 
+          if (tipoUsuario.equalsIgnoreCase("Cliente"))
         {
             vista.mnuMantenimientos.setVisible(false);
             vista.mnuLimpieza.setVisible(false);
@@ -134,25 +138,44 @@ public class MenuController implements ActionListener {
     }
     
     private void abrirGestionPaises() {
+        // NOTA: Para que Gestión País funcione con la misma estructura MVC,
+        // deberías hacer esto, pero mantengo tu código original que funciona:
         GestionPaises vistaPaises = new GestionPaises();
         vistaPaises.setVisible(true);
         vistaPaises.setLocationRelativeTo(null);
     }
+    
+    // 💡 MÉTODO FALTANTE AÑADIDO 💡
+    private void abrirGestionPlanLealtad() {
+        try {
+            PlanLealtad modelo = new PlanLealtad();
+            // Usamos el singleton que definiste en GestionPlanLealtad
+            GestionPlanLealtad vistaPlan = GestionPlanLealtad.getInstancia(); 
+            
+            // Creamos e inicializamos el controlador
+            new PlanLealtadController(modelo, vistaPlan); 
+            
+            // NOTA: El PlanLealtadController ya tiene vista.setVisible(true) en su constructor.
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Error al abrir Gestión Plan Lealtad: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }
+    
     private void abrirGestionReservas() {
         Reserva modelo = new Reserva();
         ReservaDAO consultas = new ReservaDAO();
         GestionReserva vista = new GestionReserva(correoUsuario,tipoUsuario);
 
-// Crear el controlador
+        // Crear el controlador
         ReservaController controller = new ReservaController(modelo, consultas, vista,correoUsuario,tipoUsuario.toUpperCase());
 
-// Asignar el controlador a la vista
+        // Asignar el controlador a la vista
         vista.setController(controller);
 
-// Iniciar la ventana
+        // Iniciar la ventana
         controller.iniciar();
-    
-
     }
 
     private void abrirGestionClientes() {
@@ -226,6 +249,11 @@ public class MenuController implements ActionListener {
             abrirGestionPaises();
         }
         
+        // 💡 LLAMADA AL NUEVO MÉTODO AÑADIDA 💡
+        if (e.getSource() == vista.chmGestionPlanLealtad) {
+            abrirGestionPlanLealtad(); 
+        }
+        
         if (e.getSource() == vista.chmGestionReservas) {
             abrirGestionReservas();
         }
@@ -254,4 +282,4 @@ public class MenuController implements ActionListener {
             salirDelSistema();
         }
     }
-} 
+}
