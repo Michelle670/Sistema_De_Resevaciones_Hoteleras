@@ -1,5 +1,5 @@
-
 package goHotel.view;
+
 import goHotel.controller.HotelController;
 import goHotel.model.DAO.PaisDAO;
 import javax.swing.ImageIcon;

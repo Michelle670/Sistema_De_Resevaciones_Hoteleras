@@ -13,6 +13,11 @@ import goHotel.model.Reserva;
 import goHotel.view.GestionReserva;
 import goHotel.view.LoginView;
 import goHotel.view.ReservaBuscarHabitacion;
+import goHotel.view.GestionPlanLealtad;
+import goHotel.model.PlanLealtad;
+import goHotel.view.GestionPaises;
+import goHotel.model.Pais;
+
 public class Principal 
 {
 
