@@ -38,45 +38,53 @@ public class LoginController implements ActionListener
     }
     
     // Método para validar correo
-    public boolean validarCorreo(String correo) {
+    public boolean validarCorreo(String correo)
+    {
         return correo.contains("@") && correo.contains(".");
     }
     
     // Método para validar contraseña
-    public boolean validarPassword(String pass) {
+    public boolean validarPassword(String pass) 
+    {
         return pass.length() >= 4;
     }
     
     // Método para login de empleado
-    public boolean loginEmpleado(String correo, String pass) {
+    public boolean loginEmpleado(String correo, String pass)
+    {
         return dao.loginEmpleado(correo, pass);
     }
     
     // Método para login de cliente
-    public boolean loginCliente(String correo, String pass) {
+    public boolean loginCliente(String correo, String pass)
+    {
         return dao.loginCliente(correo, pass);
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         
         //======================================================================
         // BOTÓN OK (Login)
         //======================================================================
-        if (e.getSource() == vista.btnOk) {
+        if (e.getSource() == vista.btnOk)
+        {
             String correo = vista.txtCorreo.getText().trim();
             String pass = new String(vista.jPassword.getPassword());
             boolean esEmpleado = vista.jrEmpleado.isSelected();
             String tipoUsuario = esEmpleado ? "Empleado" : "Cliente";
 
             // VALIDAR CORREO
-            if (!validarCorreo(correo)) {
+            if (!validarCorreo(correo)) 
+            {
                 JOptionPane.showMessageDialog(vista, "Correo inválido, debe contener '@' y un '.'.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             // VALIDAR CONTRASEÑA
-            if (!validarPassword(pass)) {
+            if (!validarPassword(pass)) 
+            {
                 JOptionPane.showMessageDialog(vista, "La contraseña debe tener mínimo 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -84,15 +92,18 @@ public class LoginController implements ActionListener
             boolean loginCorrecto = false;
             
             // SI ES EMPLEADO (login fijo)
-            if (esEmpleado) {
+            if (esEmpleado) 
+            {
                 loginCorrecto = loginEmpleado(correo, pass);
             }
             // SI ES CLIENTE (se valida en BD)
-            else {
+            else 
+            {
                 loginCorrecto = loginCliente(correo, pass);
             }
             
-            if (loginCorrecto) {
+            if (loginCorrecto)
+            {
                 JOptionPane.showMessageDialog(vista, "¡Inicio de sesión exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             //Crear Menu con los parámetros
             Menu vistaMenu = new Menu(correo, tipoUsuario);
@@ -107,7 +118,8 @@ public class LoginController implements ActionListener
 //                m.setLocationRelativeTo(null);
 //                
                 vista.dispose(); // cerrar ventana de login
-            } else {
+            } else
+            {
                 JOptionPane.showMessageDialog(vista, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -115,14 +127,16 @@ public class LoginController implements ActionListener
         //======================================================================
         // BOTÓN CANCELAR
         //======================================================================
-        if (e.getSource() == vista.btnCancelar) {
+        if (e.getSource() == vista.btnCancelar)
+        {
             int confirmacion = JOptionPane.showConfirmDialog(
                 vista,
                 "¿Está seguro que desea salir?",
                 "Confirmar Salida",
                 JOptionPane.YES_NO_OPTION
             );
-            if (confirmacion == JOptionPane.YES_OPTION) {
+            if (confirmacion == JOptionPane.YES_OPTION)
+            {
                 System.exit(0);
             }
         }

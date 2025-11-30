@@ -3,6 +3,7 @@ import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.HabitacionDAO;
 import goHotel.model.DAO.HotelDAO;
+import goHotel.model.DAO.LimpiezaDAO;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.DAO.ServicioDAO;
@@ -14,6 +15,7 @@ import goHotel.view.GestionCliente;
 import goHotel.view.GestionHabitacion;
 import goHotel.view.GestionHoteles;
 import goHotel.view.GestionPaises;
+import goHotel.view.GestionReporteLimpieza;
 import goHotel.view.GestionReserva;
 import goHotel.view.GestionServicio;
 import goHotel.view.Menu;
@@ -46,6 +48,7 @@ public class MenuController implements ActionListener {
         this.vista.chmGestionClientes.addActionListener(this);
         this.vista.chmGestionEmpleados.addActionListener(this);
         this.vista.chmGestionHabitaciones.addActionListener(this);
+        this.vista.chmReporteOcupacion.addActionListener(this);
         this.vista.chmTipoServicio.addActionListener(this);
         this.vista.chmSalir.addActionListener(this);
     }
@@ -188,6 +191,15 @@ public class MenuController implements ActionListener {
         v.setLocationRelativeTo(null);
     }
     
+    
+    private void abrirReporteLimpieza()
+    {
+        LimpiezaDAO dao = new LimpiezaDAO();
+        GestionReporteLimpieza vista = new GestionReporteLimpieza();
+        LimpiezaController controller = new LimpiezaController(dao, vista);
+        controller.iniciar();
+    }
+    
     private void salirDelSistema() {
         int confirmacion = JOptionPane.showConfirmDialog(
             vista,
@@ -232,6 +244,10 @@ public class MenuController implements ActionListener {
         
         if (e.getSource() == vista.chmTipoServicio){
             abrirGestionServicio();
+        }
+        
+        if (e.getSource() == vista.chmReporteOcupacion){
+           abrirReporteLimpieza(); 
         }
         
         if (e.getSource() == vista.chmSalir) {
