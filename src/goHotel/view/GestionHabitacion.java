@@ -22,6 +22,12 @@ public class GestionHabitacion extends javax.swing.JFrame {
     public GestionHabitacion() {
         initComponents();
         
+        jtHabitaciones.setDefaultEditor(Object.class, null);
+        jtServiciosAsignados.setDefaultEditor(Object.class, null);
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtHabitaciones.getTableHeader().setBackground(lightGray);
+        jtServiciosAsignados.getTableHeader().setBackground(lightGray);
+        
         // ocultar columna id_hotel (col 1)
         jtHabitaciones.getColumnModel().getColumn(1).setMinWidth(0);
         jtHabitaciones.getColumnModel().getColumn(1).setMaxWidth(0);
@@ -57,7 +63,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtHabitaciones = new javax.swing.JTable();
-        jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtServiciosAsignados = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -224,7 +229,7 @@ public class GestionHabitacion extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 30, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Habitaciones", jPanel2);
@@ -247,9 +252,7 @@ public class GestionHabitacion extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jtServiciosAsignados);
 
-        jSplitPane1.setRightComponent(jScrollPane2);
-
-        jTabbedPane2.addTab("Asignación de Servicios", jSplitPane1);
+        jTabbedPane2.addTab("Asignación de Servicios", jScrollPane2);
 
         jLabel1.setText("ID Habitación:");
 
@@ -410,6 +413,17 @@ public class GestionHabitacion extends javax.swing.JFrame {
         }
         return Integer.parseInt(v.toString().trim());
     }
+    
+    private int getIntFromTableServicios(int row, int col) {
+        Object v = jtServiciosAsignados.getValueAt(row, col);
+        if (v == null) {
+            return 0;
+        }
+        if (v instanceof Number) {
+            return ((Number) v).intValue();
+        }
+        return Integer.parseInt(v.toString().trim());
+    }
 
     private String getStringFromTable(int row, int col) {
         Object v = jtHabitaciones.getValueAt(row, col);
@@ -491,7 +505,14 @@ public class GestionHabitacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAsignarServicioActionPerformed
 
     private void jtServiciosAsignadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtServiciosAsignadosMouseClicked
-        //controller.cargarServiciosAsignados(idHabitacionSeleccionada);
+        int fila = jtServiciosAsignados.getSelectedRow();
+
+        if (fila == -1) {
+            return; // No seleccionó nada
+        }
+        
+        int idServicio = getIntFromTableServicios(fila, 0); // col 0 = ID
+        seleccionarServicioPorId(cmbServicios, idServicio);
     }//GEN-LAST:event_jtServiciosAsignadosMouseClicked
 
     private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
@@ -514,6 +535,20 @@ public class GestionHabitacion extends javax.swing.JFrame {
         }
         combo.setSelectedIndex(0);
     }
+    
+    private void seleccionarServicioPorId(
+            JComboBox<ServicioDAO.ComboItem> combo, int idBuscado) {
+
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            ServicioDAO.ComboItem it = combo.getItemAt(i);
+            if (it != null && it.getId() == idBuscado) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+        combo.setSelectedIndex(0); // si no encuentra, vuelve a "--- Seleccione ---"
+    }
+
     
         /**
      * @param args the command line arguments
@@ -575,7 +610,6 @@ public class GestionHabitacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;

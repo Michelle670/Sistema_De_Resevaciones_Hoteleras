@@ -157,6 +157,7 @@ public class HabitacionController implements ActionListener{
                     vista.txtNumero.setText(String.valueOf(modelo.getNumero()));
                     
                     String estadoBD = modelo.getEstado();
+                    consultas.cargarDatosEnTablaPorID((DefaultTableModel) vista.jtHabitaciones.getModel(), id);
 
                     try {
                         EstadoHabitacion estadoEnum = EstadoHabitacion.valueOf(estadoBD);
@@ -177,6 +178,8 @@ public class HabitacionController implements ActionListener{
         if(e.getSource() == vista.btnLimpiar){
             limpiar();
             consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
+            DefaultTableModel m = (DefaultTableModel) vista.jtServiciosAsignados.getModel();
+            m.setRowCount(0);
         }
         
         //btnSalir
@@ -213,6 +216,8 @@ public class HabitacionController implements ActionListener{
         } else {
             JOptionPane.showMessageDialog(null, "Ese servicio ya estaba asignado.");
         }
+        
+        vista.cmbServicios.setSelectedIndex(0);
     }
 
     private void quitarServicio() {
@@ -230,6 +235,8 @@ public class HabitacionController implements ActionListener{
             JOptionPane.showMessageDialog(null, "Servicio removido.");
             cargarServiciosAsignados(idHabitacion);
         }
+        
+        vista.cmbServicios.setSelectedIndex(0);
     }
 
     public void cargarServiciosAsignados(int idHabitacion) {
@@ -254,5 +261,6 @@ public class HabitacionController implements ActionListener{
         }
         combo.setSelectedIndex(0);
     }
+    
     
 }

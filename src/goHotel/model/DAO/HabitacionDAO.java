@@ -223,7 +223,8 @@ public class HabitacionDAO extends ConexionBD{
                     + "       h.estado "
                     + "FROM habitacion h "
                     + "JOIN hotel ho ON h.id_hotel = ho.id_hotel "
-                    + "JOIN tipo_habitacion th ON h.id_tipo = th.id_tipo";
+                    + "JOIN tipo_habitacion th ON h.id_tipo = th.id_tipo "
+                    + "ORDER BY h.id_habitacion ASC";
             
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -255,6 +256,54 @@ public class HabitacionDAO extends ConexionBD{
                 Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
             } 
             // No cerramos conn porque es conexión global
+        }
+    }
+    
+    public void cargarDatosEnTablaPorID(DefaultTableModel modelo, int id) {
+        modelo.setRowCount(0);
+
+        String sqlBase
+                = "SELECT h.id_habitacion, "
+                + "       h.id_hotel, "
+                + "       ho.nombre AS hotel_nombre, "
+                + "       h.id_tipo, "
+                + "       th.nombre AS tipo_nombre, "
+                + "       h.numero, "
+                + "       h.estado "
+                + "FROM habitacion h "
+                + "JOIN hotel ho ON h.id_hotel = ho.id_hotel "
+                + "JOIN tipo_habitacion th ON h.id_tipo = th.id_tipo ";
+
+        String sql = sqlBase;
+
+        if (id > 0) {                     
+            sql += "WHERE h.id_habitacion = ?";
+        }
+
+        try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            if (id > 0) {
+                ps.setInt(1, id);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Object[] fila = {
+                        rs.getInt("id_habitacion"),
+                        rs.getInt("id_hotel"), // hidden
+                        rs.getString("hotel_nombre"), // visible
+                        rs.getInt("id_tipo"), // hidden
+                        rs.getString("tipo_nombre"), // visible
+                        rs.getInt("numero"),
+                        rs.getString("estado")
+                    };
+                    modelo.addRow(fila);
+                }
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Error al cargar habitación por ID: " + e.getMessage());
         }
     }
     
