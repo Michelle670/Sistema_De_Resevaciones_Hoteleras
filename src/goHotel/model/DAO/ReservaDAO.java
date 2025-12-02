@@ -190,7 +190,7 @@ public void cargarServicios(JComboBox<String> combo)
 {
     try (Connection conn = ConexionBD.getConnection()) 
     {
-        String sql = "SELECT nombre FROM servicio";
+        String sql = "SELECT nombre FROM servicio ORDER BY nombre";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 
