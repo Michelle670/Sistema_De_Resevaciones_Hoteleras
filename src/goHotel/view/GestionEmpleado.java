@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package goHotel.view;
 
-/**
- *
- * @author Michelle
- */
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
 public class GestionEmpleado extends javax.swing.JFrame {
 
     /**
@@ -47,7 +44,7 @@ public class GestionEmpleado extends javax.swing.JFrame {
         btEliminar = new javax.swing.JButton();
         btSalir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -69,7 +66,7 @@ public class GestionEmpleado extends javax.swing.JFrame {
             }
         });
 
-        cbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3" }));
         cbRol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbRolActionPerformed(evt);
@@ -92,7 +89,6 @@ public class GestionEmpleado extends javax.swing.JFrame {
         });
 
         TABLA.setBackground(new java.awt.Color(204, 204, 204));
-        TABLA.setForeground(new java.awt.Color(204, 204, 204));
 
         jTable3.setBackground(new java.awt.Color(204, 204, 204));
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
@@ -198,14 +194,14 @@ public class GestionEmpleado extends javax.swing.JFrame {
                                     .addComponent(cbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                                     .addComponent(txtId)))))
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblLogo)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(TABLA, javax.swing.GroupLayout.PREFERRED_SIZE, 797, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,16 +310,16 @@ public class GestionEmpleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane TABLA;
-    private javax.swing.JButton btAgregar;
-    private javax.swing.JButton btBuscar;
-    private javax.swing.JButton btEditar;
-    private javax.swing.JButton btEliminar;
-    private javax.swing.JButton btSalir;
-    private javax.swing.JComboBox<String> cbRol;
+    public javax.swing.JScrollPane TABLA;
+    public javax.swing.JButton btAgregar;
+    public javax.swing.JButton btBuscar;
+    public javax.swing.JButton btEditar;
+    public javax.swing.JButton btEliminar;
+    public javax.swing.JButton btSalir;
+    public javax.swing.JComboBox<String> cbRol;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTable jTable3;
+    public javax.swing.JPasswordField jPasswordField1;
+    public javax.swing.JTable jTable3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblLogo;
@@ -331,8 +327,8 @@ public class GestionEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblRol;
     private javax.swing.JLabel lblid;
-    private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtNombre;
+    public javax.swing.JTextField txtCorreo;
+    public javax.swing.JTextField txtId;
+    public javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
