@@ -54,7 +54,6 @@ public class HabitacionController implements ActionListener{
     public void iniciar() {
         vista.setTitle("Gestión de Hoteles");
         vista.setLocationRelativeTo(null);
-        vista.txtIdHabitacion.setVisible(false);
     }
     
     public void limpiar() {

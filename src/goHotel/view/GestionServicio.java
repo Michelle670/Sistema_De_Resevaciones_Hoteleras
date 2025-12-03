@@ -15,6 +15,12 @@ public class GestionServicio extends javax.swing.JFrame {
      */
     public GestionServicio() {
         initComponents();
+        setResizable(false);
+        
+        jtTablaServicios.setDefaultEditor(Object.class, null);
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtTablaServicios.getTableHeader().setBackground(lightGray);
+        
     }
 
     /**
@@ -81,6 +87,11 @@ public class GestionServicio extends javax.swing.JFrame {
                 "ID", "Nombre", "Descripcion"
             }
         ));
+        jtTablaServicios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtTablaServiciosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtTablaServicios);
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
@@ -265,6 +276,39 @@ public class GestionServicio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void jtTablaServiciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtTablaServiciosMouseClicked
+        int fila = jtTablaServicios.getSelectedRow();
+
+        if (fila == -1) {
+            return; // No seleccionó nada
+        }
+        
+        int idServicio = getIntFromTable(fila, 0);
+        txtID.setText(String.valueOf(idServicio));
+        
+        String nombre = getStringFromTable(fila, 1);
+        txtNombre.setText(nombre);
+        
+        String descripcion = getStringFromTable(fila, 2);
+        txtDescripcion.setText(descripcion);
+    }//GEN-LAST:event_jtTablaServiciosMouseClicked
+
+    private int getIntFromTable(int row, int col) {
+        Object v = jtTablaServicios.getValueAt(row, col);
+        if (v == null) {
+            return 0;
+        }
+        if (v instanceof Number) {
+            return ((Number) v).intValue();
+        }
+        return Integer.parseInt(v.toString().trim());
+    }
+    
+    private String getStringFromTable(int row, int col) {
+        Object v = jtTablaServicios.getValueAt(row, col);
+        return v == null ? "" : v.toString();
+    }
+    
     /**
      * @param args the command line arguments
      */

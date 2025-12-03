@@ -37,6 +37,8 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jtHabitaciones.getColumnModel().getColumn(3).setMinWidth(0);
         jtHabitaciones.getColumnModel().getColumn(3).setMaxWidth(0);
         jtHabitaciones.getColumnModel().getColumn(3).setWidth(0);
+        
+        setResizable(false); 
     }
 
     /**

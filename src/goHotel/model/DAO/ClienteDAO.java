@@ -177,25 +177,30 @@ public class ClienteDAO {
         try {
             conn = ConexionBD.getConnection();
             String sql = "SELECT A.id_cliente, "
+                    + "       A.id_plan, "
                     + "       PL.nivel  AS nombre_plan, "
-                    + "       A.Nombre   AS nombre_cliente, "
+                    + "       A.Nombre  AS nombre_cliente, "
                     + "       A.correo, "
                     + "       A.password, "
-                    + "       P.nombre   AS nombre_pais, "
+                    + "       A.id_pais, "
+                    + "       P.nombre  AS nombre_pais, "
                     + "       A.puntos_lealtad "
                     + "FROM cliente A "
-                    + "INNER JOIN pais P ON A.id_pais = P.id_pais "
-                    + "INNER JOIN plan_lealtad PL ON A.id_plan = PL.id_plan";
+                    + "JOIN pais P ON A.id_pais = P.id_pais "
+                    + "JOIN plan_lealtad PL ON A.id_plan = PL.id_plan "
+                    + "ORDER BY A.id_cliente ASC;";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("id_cliente"),
+                    rs.getInt("id_plan"),
                     rs.getString("nombre_plan"),
                     rs.getString("nombre_cliente"),
                     rs.getString("correo"),
                     rs.getString("password"),
+                    rs.getInt("id_pais"),
                     rs.getString("nombre_pais"),
                     rs.getInt("puntos_lealtad")
                 };
@@ -219,6 +224,54 @@ public class ClienteDAO {
                 Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, e);
             }
         }
+    }
+    
+    public void cargarDatosEnTablaPorID(DefaultTableModel modelo, int id) {
+        modelo.setRowCount(0);
+
+        String sqlBase = "SELECT A.id_cliente, "
+                + "       A.id_plan, "
+                + "       PL.nivel  AS nombre_plan, "
+                + "       A.Nombre  AS nombre_cliente, "
+                + "       A.correo, "
+                + "       A.password, "
+                + "       A.id_pais, "
+                + "       P.nombre  AS nombre_pais, "
+                + "       A.puntos_lealtad "
+                + "FROM cliente A "
+                + "JOIN pais P ON A.id_pais = P.id_pais "
+                + "JOIN plan_lealtad PL ON A.id_plan = PL.id_plan ";
+
+        String sql = sqlBase;
+
+        if (id > 0) {
+            sql += "WHERE A.id_cliente = ?";
+        }
+
+        try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (id > 0) {
+                ps.setInt(1, id);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Object[] fila = {
+                        rs.getInt("id_cliente"),
+                        rs.getInt("id_plan"),
+                        rs.getString("nombre_plan"),
+                        rs.getString("nombre_cliente"),
+                        rs.getString("correo"),
+                        rs.getString("password"),
+                        rs.getInt("id_pais"),
+                        rs.getString("nombre_pais"),
+                        rs.getInt("puntos_lealtad")
+                    };
+                    modelo.addRow(fila);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Error al cargar los clientes: " + e.getMessage());
+        } 
     }
     
     //Helpers;

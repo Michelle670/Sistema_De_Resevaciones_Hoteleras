@@ -41,9 +41,8 @@ public class ClienteController implements ActionListener {
     }
     
     public void iniciar() {
-        vista.setTitle("Gestor de Clientes");
+        vista.setTitle("Gestión de Clientes");
         vista.setLocationRelativeTo(null);
-        vista.txtID.setVisible(false);
     }
     
     public void limpiar() {
@@ -139,6 +138,8 @@ public class ClienteController implements ActionListener {
                     vista.cmbPais.setSelectedIndex(modelo.getIdPais());
                     seleccionarPorId(vista.cmbPais, modelo.getIdPais());
                     vista.lblPuntosAcumulados.setText(String.valueOf(modelo.getPuntosLealtad()));
+                    
+                    consultas.cargarDatosEnTablaPorID((DefaultTableModel) vista.jtTablaCliente.getModel(), id);
                     JOptionPane.showMessageDialog(null, "Cliente encontrado.");
                 }else {
                     JOptionPane.showMessageDialog(null, "No se encontró un cliente con ese ID.");

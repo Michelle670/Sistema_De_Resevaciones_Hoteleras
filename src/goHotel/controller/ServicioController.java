@@ -38,7 +38,6 @@ public class ServicioController implements ActionListener{
     public void iniciar() {
         vista.setTitle("Gestor de Productos");
         vista.setLocationRelativeTo(null);
-        vista.txtID.setVisible(false);
     }
     
     public void limpiar() {
@@ -110,6 +109,7 @@ public class ServicioController implements ActionListener{
                     vista.txtNombre.setText(modelo.getNombreServicio());
                     vista.txtDescripcion.setText(modelo.getDescripcion());
                     JOptionPane.showMessageDialog(null, "Servicio encontrado.");
+                    consultas.cargarDatosEnTablaPorID((DefaultTableModel) vista.jtTablaServicios.getModel(), id);
                 } else {
                     JOptionPane.showMessageDialog(null, "No se encontró un servicio con ese ID.");
                 }
