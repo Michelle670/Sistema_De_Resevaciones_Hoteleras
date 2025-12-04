@@ -36,7 +36,7 @@ public class ServicioController implements ActionListener{
     }
     
     public void iniciar() {
-        vista.setTitle("Gestor de Productos");
+        vista.setTitle("Gestión de Servicios");
         vista.setLocationRelativeTo(null);
     }
     

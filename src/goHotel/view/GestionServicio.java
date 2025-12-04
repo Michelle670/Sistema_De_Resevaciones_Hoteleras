@@ -4,6 +4,8 @@
  */
 package goHotel.view;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author israelapuy
@@ -15,12 +17,13 @@ public class GestionServicio extends javax.swing.JFrame {
      */
     public GestionServicio() {
         initComponents();
-        setResizable(false);
         
         jtTablaServicios.setDefaultEditor(Object.class, null);
         java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
         jtTablaServicios.getTableHeader().setBackground(lightGray);
         
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
+        setResizable(false);
     }
 
     /**

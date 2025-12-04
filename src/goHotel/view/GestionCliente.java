@@ -5,6 +5,7 @@
 package goHotel.view;
 
 import goHotel.model.DAO.ClienteDAO.ComboItem;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 
 /**
@@ -33,6 +34,7 @@ public class GestionCliente extends javax.swing.JFrame {
         jtTablaCliente.getColumnModel().getColumn(6).setMaxWidth(0);
         jtTablaCliente.getColumnModel().getColumn(6).setWidth(0);
         
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
         setResizable(false);
 
     }

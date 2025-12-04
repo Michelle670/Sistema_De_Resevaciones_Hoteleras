@@ -38,6 +38,7 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jtHabitaciones.getColumnModel().getColumn(3).setMaxWidth(0);
         jtHabitaciones.getColumnModel().getColumn(3).setWidth(0);
         
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
         setResizable(false); 
     }
 
@@ -171,10 +172,14 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jToolBar2.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar2.setRollover(true);
 
+        btnAsignarServicio.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnAsignarServicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/plus.png"))); // NOI18N
         btnAsignarServicio.setText("Asignar");
         btnAsignarServicio.setFocusable(false);
         btnAsignarServicio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAsignarServicio.setMaximumSize(new java.awt.Dimension(61, 61));
+        btnAsignarServicio.setMinimumSize(new java.awt.Dimension(61, 61));
+        btnAsignarServicio.setPreferredSize(new java.awt.Dimension(61, 61));
         btnAsignarServicio.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAsignarServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,10 +188,14 @@ public class GestionHabitacion extends javax.swing.JFrame {
         });
         jToolBar2.add(btnAsignarServicio);
 
+        btnQuitarServicio.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnQuitarServicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/remove.png"))); // NOI18N
         btnQuitarServicio.setText("Quitar");
         btnQuitarServicio.setFocusable(false);
         btnQuitarServicio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnQuitarServicio.setMaximumSize(new java.awt.Dimension(61, 61));
+        btnQuitarServicio.setMinimumSize(new java.awt.Dimension(61, 61));
+        btnQuitarServicio.setPreferredSize(new java.awt.Dimension(61, 61));
         btnQuitarServicio.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnQuitarServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,8 +239,8 @@ public class GestionHabitacion extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 27, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Habitaciones", jPanel2);
@@ -340,12 +349,13 @@ public class GestionHabitacion extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbIdTipo, 0, 175, Short.MAX_VALUE)
-                            .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbServicios, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cmbIdTipo, 0, 175, Short.MAX_VALUE)
+                                .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmbServicios, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(115, 115, 115)))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,14 +387,14 @@ public class GestionHabitacion extends javax.swing.JFrame {
                             .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(cmbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(cmbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(9, 9, 9)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane2.getAccessibleContext().setAccessibleName("Habitaciones");
@@ -398,8 +408,8 @@ public class GestionHabitacion extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         pack();

@@ -52,7 +52,7 @@ public class HabitacionController implements ActionListener{
     }
     
     public void iniciar() {
-        vista.setTitle("Gestión de Hoteles");
+        vista.setTitle("Gestión de Habitaciones");
         vista.setLocationRelativeTo(null);
     }
     
