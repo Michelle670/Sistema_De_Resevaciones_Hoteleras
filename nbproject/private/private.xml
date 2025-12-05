@@ -2,30 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/controller/RolController.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/model/DAO/ConsultasRol.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/view/Menu.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/view/GestionRol.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/controller/EmpleadoController.java</file>
-=======
-=======
->>>>>>> main
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/ReservaBuscarHabitacion.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/ReservaBusquedaController.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/DAO/ReservaDAO.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/ReservaController.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/GestionReserva.java</file>
-<<<<<<< HEAD
->>>>>>> origin/main
-=======
->>>>>>> main
+            <file>file:/Users/israelapuy/Documents/GitHub/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/HabitacionController.java</file>
+            <file>file:/Users/israelapuy/Documents/GitHub/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/EstadoHabitacion.java</file>
+            <file>file:/Users/israelapuy/Documents/GitHub/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/Habitacion.java</file>
+            <file>file:/Users/israelapuy/Documents/GitHub/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/DAO/HabitacionDAO.java</file>
+            <file>file:/Users/israelapuy/Documents/GitHub/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/GestionHabitacion.java</file>
         </group>
->>>>>>> 4e1acbbeaf225f6f93c3868a377711df7ac1b4fe
     </open-files>
 </project-private>

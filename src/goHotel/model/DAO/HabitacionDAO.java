@@ -6,7 +6,6 @@ package goHotel.model.DAO;
 
 import goHotel.controller.HabitacionController;
 import goHotel.model.ConexionBD;
-import goHotel.model.EstadoHabitacion;
 import goHotel.model.Habitacion;
 import goHotel.view.GestionHabitacion;
 import java.sql.*;
@@ -76,7 +75,7 @@ public class HabitacionDAO extends ConexionBD{
         String sql = "UPDATE habitacion "
                 + "SET id_hotel = ?, "
                 + "id_tipo = ?, "
-                + "numero = ?, "
+                + "numero = ? "
                 + "WHERE id_habitacion = ?";
         try {
             ps = conn.prepareStatement(sql);
