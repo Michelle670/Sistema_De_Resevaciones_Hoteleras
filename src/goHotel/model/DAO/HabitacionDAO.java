@@ -24,14 +24,13 @@ public class HabitacionDAO extends ConexionBD{
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
         
-        String sql = "INSERT INTO habitacion (id_habitacion, id_hotel, id_tipo, numero, estado) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO habitacion (id_habitacion, id_hotel, id_tipo, numero) VALUES (?,?,?,?)";
         try{
             ps = conn.prepareStatement(sql);
             ps.setInt(1, habitacion.getIdHabitacion());
             ps.setInt(2, habitacion.getHotel());
             ps.setInt(3, habitacion.getTipo());
             ps.setInt(4, habitacion.getNumero());
-            ps.setString(5, habitacion.getEstado());
             
             ps.executeUpdate();
             return true;
@@ -78,15 +77,13 @@ public class HabitacionDAO extends ConexionBD{
                 + "SET id_hotel = ?, "
                 + "id_tipo = ?, "
                 + "numero = ?, "
-                + "estado = ? "
                 + "WHERE id_habitacion = ?";
         try {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, habitacion.getHotel());
             ps.setInt(2, habitacion.getTipo());
             ps.setInt(3, habitacion.getNumero());
-            ps.setString(4, habitacion.getEstado());
-            ps.setInt(5, habitacion.getIdHabitacion());
+            ps.setInt(4, habitacion.getIdHabitacion());
 
             int rows = ps.executeUpdate();
             return rows > 0;
@@ -182,7 +179,6 @@ public class HabitacionDAO extends ConexionBD{
                 habitacion.setHotel(rs.getInt("id_hotel"));
                 habitacion.setTipo(rs.getInt("id_tipo"));
                 habitacion.setNumero(rs.getInt("numero"));
-                habitacion.setEstado(rs.getString("estado"));
                 return true;
             }
             return false;
@@ -219,8 +215,7 @@ public class HabitacionDAO extends ConexionBD{
                     + "       ho.nombre AS hotel_nombre, "
                     + "       h.id_tipo, "
                     + "       th.nombre AS tipo_nombre, "
-                    + "       h.numero, "
-                    + "       h.estado "
+                    + "       h.numero "
                     + "FROM habitacion h "
                     + "JOIN hotel ho ON h.id_hotel = ho.id_hotel "
                     + "JOIN tipo_habitacion th ON h.id_tipo = th.id_tipo "
@@ -237,7 +232,6 @@ public class HabitacionDAO extends ConexionBD{
                     rs.getInt("id_tipo"), // <- hidden
                     rs.getString("tipo_nombre"), // visible
                     rs.getInt("numero"),
-                    rs.getString("estado")
                 };
                 modelo.addRow(fila);
             }
@@ -268,8 +262,7 @@ public class HabitacionDAO extends ConexionBD{
                 + "       ho.nombre AS hotel_nombre, "
                 + "       h.id_tipo, "
                 + "       th.nombre AS tipo_nombre, "
-                + "       h.numero, "
-                + "       h.estado "
+                + "       h.numero "
                 + "FROM habitacion h "
                 + "JOIN hotel ho ON h.id_hotel = ho.id_hotel "
                 + "JOIN tipo_habitacion th ON h.id_tipo = th.id_tipo ";
@@ -295,7 +288,6 @@ public class HabitacionDAO extends ConexionBD{
                         rs.getInt("id_tipo"), // hidden
                         rs.getString("tipo_nombre"), // visible
                         rs.getInt("numero"),
-                        rs.getString("estado")
                     };
                     modelo.addRow(fila);
                 }
@@ -305,14 +297,6 @@ public class HabitacionDAO extends ConexionBD{
             Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al cargar habitación por ID: " + e.getMessage());
         }
-    }
-    
-    public void cargarEstado(JComboBox<EstadoHabitacion> combo) {
-        combo.removeAllItems();
-        for (EstadoHabitacion estado : EstadoHabitacion.values()) {
-            combo.addItem(estado);
-        }
-        combo.setSelectedItem(EstadoHabitacion.DISPONIBLE);
     }
     
     //Helpers

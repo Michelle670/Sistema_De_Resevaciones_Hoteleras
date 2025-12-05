@@ -15,7 +15,6 @@ public class Habitacion
     private int idHotel;
     private int idTipo;
     private int numero;
-    private String estado;
 //==============================================================================
 //CONSTRUCTOR
 //==============================================================================   
@@ -25,16 +24,14 @@ public class Habitacion
         this.idHotel = 0;
         this.idTipo = 0;
         this.numero = 0;
-        this.estado = "";
     }
 
-    public Habitacion(int idHabitacion, int idhotel, int idtipo, int numero, String estado) 
+    public Habitacion(int idHabitacion, int idhotel, int idtipo, int numero) 
     {
         this.idHabitacion = idHabitacion;
         this.idHotel = idhotel;
         this.idTipo = idtipo;
         this.numero = numero;
-        this.estado = estado;
     }
  
 //==============================================================================
@@ -79,15 +76,5 @@ public class Habitacion
     public void setNumero(int numero) 
     {
         this.numero = numero;
-    }
-
-    public String getEstado() 
-    {
-        return estado;
-    }
-
-    public void setEstado(String estado) 
-    {
-        this.estado = estado;
     }
 }
