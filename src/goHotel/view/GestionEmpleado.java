@@ -92,7 +92,6 @@ public class GestionEmpleado extends javax.swing.JFrame {
         });
 
         TABLA.setBackground(new java.awt.Color(204, 204, 204));
-        TABLA.setForeground(new java.awt.Color(204, 204, 204));
 
         jTable3.setBackground(new java.awt.Color(204, 204, 204));
         jTable3.setModel(new javax.swing.table.DefaultTableModel(

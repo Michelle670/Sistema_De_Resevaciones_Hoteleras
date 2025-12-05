@@ -8,8 +8,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List; 
+import javax.swing.JComboBox;
 
-public class PaisDAO {
+public class PaisDAO 
+{
+   
+ public void cargarPaises(JComboBox<String> combo) 
+ {
+    try (Connection conn = ConexionBD.getConnection()) 
+    {
+        String sql = "SELECT nombre FROM pais";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        combo.removeAllItems(); // limpiar combo por si acaso
+        combo.addItem("--- Ninguno ---");
+        while (rs.next()) 
+        {
+            combo.addItem(rs.getString("nombre"));
+        }
+
+    } catch (Exception e) 
+    {
+        e.printStackTrace();
+    }
+}   
+
 
     public boolean agregarPais(Pais pais) throws SQLException {
         PreparedStatement ps = null;
@@ -147,7 +171,7 @@ public class PaisDAO {
         ResultSet rs = null;
         Connection con = null;
         List<Pais> listaPaises = new ArrayList<>();
-        String sql = "SELECT id_pais, codigo, nombre FROM pais ORDER BY nombre";
+        String sql = "SELECT id_pais, codigo, nombre FROM pais ";
 
         try {
             con = ConexionBD.getConnection();
@@ -182,3 +206,4 @@ public class PaisDAO {
         return listaPaises;
     }
 }
+

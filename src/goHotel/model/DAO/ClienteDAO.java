@@ -19,12 +19,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClienteDAO {
     
+    //Registrar cliente en BD
     public boolean registrarCliente(Cliente cliente){
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
 
         String sql = "INSERT INTO cliente (id_cliente, id_plan, Nombre, correo, "
-                + "password, id_pais, puntos_lealtad) VALUES (?,?,?,?,?,?,?)";
+                + "password, id_pais) VALUES (?,?,?,?,?,?)";
         
         try {
             ps = conn.prepareStatement(sql);
@@ -34,10 +35,10 @@ public class ClienteDAO {
             ps.setString(4, cliente.getCorreo());
             ps.setString(5, cliente.getContrasenna());
             ps.setInt(6, cliente.getIdPais());
-            ps.setInt(7, cliente.getPuntosLealtad());
             ps.executeUpdate();
             return true;
-        }catch (SQLIntegrityConstraintViolationException e) {
+        } //Verifica que el ID no esté duplicado
+        catch (SQLIntegrityConstraintViolationException e) {
             JOptionPane.showMessageDialog(null,
                     "El ID ingresado (" + cliente.getIdCliente() + ") ya está registrado.\n"
                     + "Por favor, use otro ID o edite el cliente existente.",
@@ -58,6 +59,7 @@ public class ClienteDAO {
         }
     }
     
+    //Modifica cliente en BD
     public boolean modificarCliente(Cliente cliente) {
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -67,8 +69,7 @@ public class ClienteDAO {
                 + "    Nombre = ?, "
                 + "    correo = ?, "
                 + "    password = ?, "
-                + "    id_pais = ?, "
-                + "    puntos_lealtad = ? "
+                + "    id_pais = ? "
                 + "WHERE id_cliente = ?";
 
         try{
@@ -78,8 +79,7 @@ public class ClienteDAO {
             ps.setString(3, cliente.getCorreo());
             ps.setString(4, cliente.getContrasenna());
             ps.setInt(5, cliente.getIdPais());
-            ps.setInt(6, cliente.getPuntosLealtad());
-            ps.setInt(7, cliente.getIdCliente());
+            ps.setInt(6, cliente.getIdCliente());
 
             int rows = ps.executeUpdate();
             return rows > 0;
@@ -98,6 +98,7 @@ public class ClienteDAO {
         }
     }
     
+    //Eliminar cliente en BD
     public boolean eliminarCliente(Cliente cliente) {
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -124,6 +125,7 @@ public class ClienteDAO {
         }
     }
     
+    //Busca cliente en BD
     public boolean buscarCliente(Cliente cliente) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -168,6 +170,7 @@ public class ClienteDAO {
 
     }
     
+    //Carga los datos en la tabla
     public void cargarDatosEnTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         Connection conn = null;
@@ -177,25 +180,30 @@ public class ClienteDAO {
         try {
             conn = ConexionBD.getConnection();
             String sql = "SELECT A.id_cliente, "
+                    + "       A.id_plan, "
                     + "       PL.nivel  AS nombre_plan, "
-                    + "       A.Nombre   AS nombre_cliente, "
+                    + "       A.Nombre  AS nombre_cliente, "
                     + "       A.correo, "
                     + "       A.password, "
-                    + "       P.nombre   AS nombre_pais, "
+                    + "       A.id_pais, "
+                    + "       P.nombre  AS nombre_pais, "
                     + "       A.puntos_lealtad "
                     + "FROM cliente A "
-                    + "INNER JOIN pais P ON A.id_pais = P.id_pais "
-                    + "INNER JOIN plan_lealtad PL ON A.id_plan = PL.id_plan";
+                    + "JOIN pais P ON A.id_pais = P.id_pais "
+                    + "JOIN plan_lealtad PL ON A.id_plan = PL.id_plan "
+                    + "ORDER BY A.id_cliente ASC;";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 Object[] fila = {
                     rs.getInt("id_cliente"),
+                    rs.getInt("id_plan"),
                     rs.getString("nombre_plan"),
                     rs.getString("nombre_cliente"),
                     rs.getString("correo"),
                     rs.getString("password"),
+                    rs.getInt("id_pais"),
                     rs.getString("nombre_pais"),
                     rs.getInt("puntos_lealtad")
                 };
@@ -221,7 +229,56 @@ public class ClienteDAO {
         }
     }
     
-    //Helpers;
+    //Carga el cliente específico en la tabla luego de "Buscar"
+    public void cargarDatosEnTablaPorID(DefaultTableModel modelo, int id) {
+        modelo.setRowCount(0);
+
+        String sqlBase = "SELECT A.id_cliente, "
+                + "       A.id_plan, "
+                + "       PL.nivel  AS nombre_plan, "
+                + "       A.Nombre  AS nombre_cliente, "
+                + "       A.correo, "
+                + "       A.password, "
+                + "       A.id_pais, "
+                + "       P.nombre  AS nombre_pais, "
+                + "       A.puntos_lealtad "
+                + "FROM cliente A "
+                + "JOIN pais P ON A.id_pais = P.id_pais "
+                + "JOIN plan_lealtad PL ON A.id_plan = PL.id_plan ";
+
+        String sql = sqlBase;
+
+        if (id > 0) {
+            sql += "WHERE A.id_cliente = ?";
+        }
+
+        try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (id > 0) {
+                ps.setInt(1, id);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Object[] fila = {
+                        rs.getInt("id_cliente"),
+                        rs.getInt("id_plan"),
+                        rs.getString("nombre_plan"),
+                        rs.getString("nombre_cliente"),
+                        rs.getString("correo"),
+                        rs.getString("password"),
+                        rs.getInt("id_pais"),
+                        rs.getString("nombre_pais"),
+                        rs.getInt("puntos_lealtad")
+                    };
+                    modelo.addRow(fila);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Error al cargar los clientes: " + e.getMessage());
+        } 
+    }
+    
+    //Helpers para cargar los datos en los ComboBox
     
     public class ComboItem {
 

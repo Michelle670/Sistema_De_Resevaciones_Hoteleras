@@ -14,6 +14,7 @@ import java.util.List;
  * @author israelapuy
  */
 public class HabitacionServicioDAO {
+    //Basado en el ID de la habitacion se le asigna el servicio
     public boolean asignarServicio(int idHabitacion, int idServicio) {
         String sql = "INSERT INTO habitacion_servicio (id_habitacion, id_servicio) VALUES (?, ?)";
         try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -31,6 +32,7 @@ public class HabitacionServicioDAO {
         }
     }
     
+    //Basado en el ID de la habitacion se quita el servicio
     public boolean quitarServicio(int idHabitacion, int idServicio){
         String sql = "DELETE FROM habitacion_servicio WHERE id_habitacion=? AND id_servicio=?";
         try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
