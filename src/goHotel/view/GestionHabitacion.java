@@ -5,7 +5,6 @@ import goHotel.controller.HabitacionController;
 import goHotel.model.DAO.HabitacionDAO;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
-import goHotel.model.EstadoHabitacion;
 import goHotel.model.DAO.ServicioDAO;
 import javax.swing.JComboBox;
 

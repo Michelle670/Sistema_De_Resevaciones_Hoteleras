@@ -3,7 +3,6 @@ package goHotel.controller;
 import goHotel.model.DAO.HabitacionDAO;
 import goHotel.model.DAO.HabitacionDAO.ComboItemH;
 import goHotel.model.DAO.HabitacionServicioDAO;
-import goHotel.model.EstadoHabitacion;
 import goHotel.model.Habitacion;
 import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.DAO.ServicioDAO.ComboItem;
