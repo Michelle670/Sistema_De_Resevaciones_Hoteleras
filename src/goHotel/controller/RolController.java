@@ -23,11 +23,15 @@ public class RolController implements ActionListener {
 
     public RolController(GestionRol vista) {
         this.vista = vista;
-      // BOTONES
+        agregarClickEnTabla();
+        // ==========================================
+        // BOTONES
+        // ==========================================
         this.vista.btAgregar.addActionListener(this);
         this.vista.btEditar.addActionListener(this);
         this.vista.btBuscar.addActionListener(this);
         this.vista.btEliminar.addActionListener(this);
+        this.vista.btnLimpiar.addActionListener(this);
         this.vista.btSalir.addActionListener(this);
     }
 
@@ -37,39 +41,98 @@ public class RolController implements ActionListener {
         actualizarTabla();
     }
 
+    // ==========================================
+    // OBTENER ID VALIDADO
+    // ==========================================
+    private Integer obtenerId() {
+        String texto = vista.txtid_rol.getText().trim();
+
+        if (texto.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un ID.");
+            return null;
+        }
+
+        try {
+            return Integer.parseInt(texto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El ID debe ser un número entero válido.");
+            return null;
+        }
+    }
+// ==========================================
+// LIMPIAR CAMPOS
+// ==========================================
+
     public void limpiarCampos() {
+        vista.txtid_rol.setText("");
         vista.txtNombreRol.setText("");
         vista.cbEstado.setSelectedIndex(0);
         vista.txtNombreRol.requestFocus();
         idRolSeleccionado = 0;
     }
 
+    // ==========================================
+    // CLICK EN TABLA PARA CARGAR DATOS
+    // ==========================================
+    private void agregarClickEnTabla() {
+        vista.jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+                int fila = vista.jTable2.getSelectedRow();
+
+                if (fila != -1) {
+
+                    idRolSeleccionado = Integer.parseInt(vista.jTable2.getValueAt(fila, 0).toString());
+
+                    vista.txtid_rol.setText(vista.jTable2.getValueAt(fila, 0).toString());
+                    vista.txtNombreRol.setText(vista.jTable2.getValueAt(fila, 1).toString());
+                    vista.cbEstado.setSelectedItem(vista.jTable2.getValueAt(fila, 2).toString());
+                }
+            }
+        });
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        // ============================
         // BOTÓN AGREGAR
-        if (e.getSource() == vista.btAgregar) {
-            String nombre = vista.txtNombreRol.getText();
-            boolean estado = vista.cbEstado.getSelectedItem().toString().equals("Activo");
+        // ============================
 
-            if (nombre.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "El nombre es obligatorio");
+        if (e.getSource() == vista.btAgregar) {
+
+            Integer id_rol = obtenerId();
+            if (id_rol == null) {
                 return;
             }
 
-            if (consultas.registrarRol(nombre, estado)) {
+            String nombre = vista.txtNombreRol.getText().trim();
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar un nombre de rol");
+                return;
+            }
+            boolean estado = vista.cbEstado.getSelectedItem().toString().equals("Activo");
+
+            if (consultas.registrarRol(id_rol, nombre, estado)) {
                 JOptionPane.showMessageDialog(null, "Rol agregado correctamente");
                 limpiarCampos();
                 actualizarTabla();
             }
         }
-
+        // ==========================================
         // BOTÓN EDITAR
+        // ==========================================
         if (e.getSource() == vista.btEditar) {
-            String nombre = vista.txtNombreRol.getText();
+
+            Integer id = obtenerId();
+            if (id == null) {
+                return;
+            }
+            String nombre = vista.txtNombreRol.getText().trim();
             boolean estado = vista.cbEstado.getSelectedItem().toString().equals("Activo");
 
             if (idRolSeleccionado == 0) {
-                JOptionPane.showMessageDialog(null, "Seleccione un rol de la tabla");
+                JOptionPane.showMessageDialog(null, "Seleccione un rol de la tabla.");
                 return;
             }
 
@@ -80,24 +143,38 @@ public class RolController implements ActionListener {
             }
         }
 
-        // BOTÓN BUSCAR
+        // ============================
+        // BOTÓN BUSCAR 
+        // ============================
         if (e.getSource() == vista.btBuscar) {
-            buscarRol();
-        }
 
-        // BOTÓN ELIMINAR
-        if (e.getSource() == vista.btEliminar) {
-
-            if (idRolSeleccionado == 0) {
-                JOptionPane.showMessageDialog(null, "Seleccione un rol");
+            Integer id_rol = obtenerId();
+            if (id_rol == null) {
                 return;
             }
 
-            int confirm = JOptionPane.showConfirmDialog(
-                    null,
-                    "Eliminar?", "Confirmar",
-                    JOptionPane.YES_NO_OPTION);
-            if (confirm != JOptionPane.YES_OPTION) {
+            ArrayList<Object[]> resultado = consultas.buscarRolPorId(id_rol);
+            DefaultTableModel modelo = (DefaultTableModel) vista.jTable2.getModel();
+            modelo.setRowCount(0);
+
+            if (resultado.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No existe un rol con ese ID.");
+            } else {
+                modelo.addRow(resultado.get(0));
+            }
+        }
+        // ==========================================
+        // BOTÓN ELIMINAR
+        // ==========================================
+        if (e.getSource() == vista.btEliminar) {
+
+            Integer id = obtenerId();
+            if (id == null) {
+                return;
+            }
+
+            if (idRolSeleccionado == 0) {
+                JOptionPane.showMessageDialog(null, "Seleccione un rol de la tabla.");
                 return;
             }
 
@@ -108,41 +185,26 @@ public class RolController implements ActionListener {
             }
         }
 
+        // ============================
+        // BOTÓN LIMPIAR
+        // ============================
+        if (e.getSource() == vista.btnLimpiar) {
+            limpiarCampos();
+        }
+
+        // ============================
         // BOTÓN SALIR
+        // ============================
         if (e.getSource() == vista.btSalir) {
-            int respuesta = JOptionPane.showConfirmDialog(
-                    null,
-                    "¿Está seguro que desea salir?",
-                    "Confirmar salida",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            if (respuesta == JOptionPane.YES_OPTION) {
-                System.exit(0);
-            }
+            vista.dispose();
         }
     }
 
-    private void buscarRol() {
-        String nombre = vista.txtNombreRol.getText().trim();
-
-        ArrayList<Object[]> resultados = consultas.buscarRolesPorNombre(nombre);
-
-        DefaultTableModel modelo = (DefaultTableModel) vista.jTable2.getModel();
-        modelo.setRowCount(0);
-
-        Iterator<Object[]> it = resultados.iterator();
-        while (it.hasNext()) {
-            modelo.addRow(it.next());
-        }
-    }
-
+    // ==========================================
+    // ACTUALIZAR TABLA
+    // ==========================================
     public void actualizarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) vista.jTable2.getModel();
         consultas.cargarDatosEnTabla(modelo);
-    }
-
-    public void setIdRolSeleccionado(int id) {
-        this.idRolSeleccionado = id;
     }
 }

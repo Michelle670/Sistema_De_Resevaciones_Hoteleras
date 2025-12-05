@@ -1,4 +1,3 @@
-
 package goHotel.model.DAO;
 
 import goHotel.model.ConexionBD;
@@ -17,18 +16,19 @@ import javax.swing.table.DefaultTableModel;
  * @author Michelle
  */
 public class RolDAO extends ConexionBD {
-    public boolean registrarRol(String nombre, boolean estado) {
+
+    public boolean registrarRol(int id_rol, String nombre, boolean estado) {
         Connection conexion = null;
         PreparedStatement ps = null;
-        
-        
+
         try {
             conexion = ConexionBD.getConnection();
-            String sql = "INSERT INTO rol_empleado (nombre, estado) VALUES (?, ?)";
+            String sql = "INSERT INTO rol_empleado (id_rol, nombre, estado) VALUES (?, ?,?)";
             ps = conexion.prepareStatement(sql);
 
-            ps.setString(1, nombre.trim());
-            ps.setInt(2, estado ? 1 : 0);
+            ps.setInt(1, id_rol);
+            ps.setString(2, nombre.trim());
+            ps.setInt(3, estado ? 1 : 0);
 
             ps.executeUpdate();
             return true;
@@ -46,7 +46,7 @@ public class RolDAO extends ConexionBD {
         }
     }
 
-    public boolean editarRol(int idRol, String nombre, boolean estado) {
+    public boolean editarRol(int id_Rol, String nombre, boolean estado) {
         Connection conexion = null;
         PreparedStatement ps = null;
 
@@ -57,27 +57,7 @@ public class RolDAO extends ConexionBD {
 
             ps.setString(1, nombre.trim());
             ps.setInt(2, estado ? 1 : 0);
-            ps.setInt(3, idRol);
-
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
-            return false;
-        } finally {
-            try { if (ps != null) ps.close(); } catch (SQLException e) {}
-        }
-    }
-
-    public boolean eliminarRol(int idRol) {
-        Connection conexion = null;
-        PreparedStatement ps = null;
-
-        try {
-            conexion = ConexionBD.getConnection();
-            String sql = "DELETE FROM rol_empleado WHERE id_rol = ?";
-            ps = conexion.prepareStatement(sql);
-            ps.setInt(1, idRol);
+            ps.setInt(3, id_Rol);
 
             return ps.executeUpdate() > 0;
 
@@ -94,18 +74,44 @@ public class RolDAO extends ConexionBD {
         }
     }
 
-    public ArrayList<Object[]> buscarRolesPorNombre(String nombre) {
+    public boolean eliminarRol(int id_Rol) {
+        Connection conexion = null;
+        PreparedStatement ps = null;
+
+        try {
+            conexion = ConexionBD.getConnection();
+            String sql = "DELETE FROM rol_empleado WHERE id_rol = ?";
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, id_Rol);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            Logger.getLogger(RolDAO.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    public ArrayList<Object[]> buscarRolPorId(int id_Rol) {
         ArrayList<Object[]> resultados = new ArrayList<>();
-        
+
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             conn = ConexionBD.getConnection();
-            String sql = "SELECT id_rol, nombre, estado FROM rol_empleado WHERE nombre LIKE ?";
+            String sql = "SELECT id_rol, nombre, estado FROM rol_empleado WHERE id_rol = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, "%" + nombre + "%");
+
+            ps.setInt(1, id_Rol);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -149,7 +155,7 @@ public class RolDAO extends ConexionBD {
 
     public void cargarDatosEnTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);
-        
+
         Connection conexion = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

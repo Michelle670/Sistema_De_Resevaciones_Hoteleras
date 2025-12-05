@@ -1,9 +1,6 @@
 package goHotel.model.DAO;
 
 import goHotel.model.ConexionBD;
-import goHotel.model.ConexionBD;
-import goHotel.model.ConexionBD;
-import goHotel.model.TipoHabitacion;
 import goHotel.model.TipoHabitacion;
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
  */
-public class TipoHabitaciónDAO {
+public class TipoHabitacionDAO {
 
     // ---------------------------
     // AGREGAR TIPO DE HABITACIÓN 
@@ -20,15 +17,17 @@ public class TipoHabitaciónDAO {
     public boolean agregar(TipoHabitacion th) {
         PreparedStatement stmt = null;
         Connection conexion = ConexionBD.getConnection();
-        String sql = "INSERT INTO tipo_habitacion (nombre, descripcion, capacidad, precio_base) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO tipo_habitacion (id_tipo, nombre, descripcion, capacidad, precio_base) VALUES (?, ?, ?, ?, ?)";
 
         try {
 
             stmt = conexion.prepareStatement(sql);
-            stmt.setString(1, th.getNombreTipo());
-            stmt.setString(2, th.getDescripcion());
-            stmt.setInt(3, th.getCapacidad());
-            stmt.setDouble(4, th.getPrecioBase());
+             stmt.setInt(1, th.getIdTipo());           
+            stmt.setString(2, th.getNombreTipo());
+            stmt.setString(3, th.getDescripcion());
+            stmt.setInt(4, th.getCapacidad());
+            stmt.setDouble(5, th.getPrecioBase());
+
 
             return stmt.executeUpdate() > 0;
 
@@ -49,6 +48,7 @@ public class TipoHabitaciónDAO {
 
         try {
             stmt = conexion.prepareStatement(sql);
+            
             stmt.setString(1, t.getNombreTipo());
             stmt.setString(2, t.getDescripcion());
             stmt.setInt(3, t.getCapacidad());
@@ -87,16 +87,16 @@ public class TipoHabitaciónDAO {
     // BUSCAR POR NOMBRE EN TIPO DE HABITACIÓN 
     // ---------------------------------------
 
-    public ArrayList<Object[]> buscar(String nombre) {
+    public ArrayList<Object[]> buscarPorId(int id) {
         ArrayList<Object[]> lista = new ArrayList<>();
         PreparedStatement stmt = null;
         Connection conexion = ConexionBD.getConnection();
-        String sql = "SELECT * FROM tipo_habitacion WHERE nombre LIKE ?";
+        String sql = "SELECT * FROM tipo_habitacion WHERE id_tipo=?";
 
         try {
 
             stmt = conexion.prepareStatement(sql);
-            stmt.setString(1, "%" + nombre + "%");
+            stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

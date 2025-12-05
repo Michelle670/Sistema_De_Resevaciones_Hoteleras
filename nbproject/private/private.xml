@@ -3,25 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/controller/RolController.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/model/DAO/ConsultasRol.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/view/Menu.java</file>
             <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/view/GestionRol.java</file>
-            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/controller/EmpleadoController.java</file>
-=======
-=======
->>>>>>> main
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/ReservaBuscarHabitacion.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/ReservaBusquedaController.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/model/DAO/ReservaDAO.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/controller/ReservaController.java</file>
-            <file>file:/C:/Users/soloa/OneDrive/Documentos/Sistema_De_Resevaciones_Hoteleras/src/goHotel/view/GestionReserva.java</file>
-<<<<<<< HEAD
->>>>>>> origin/main
-=======
->>>>>>> main
+            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/view/GestionEmpleado.java</file>
+            <file>file:/C:/Users/Michelle/OneDrive/Documents/NetBeansProjects/SistemaDeReservacionesHoteleras/src/goHotel/view/GestionTipoHabitacion.java</file>
         </group>
     </open-files>
 </project-private>

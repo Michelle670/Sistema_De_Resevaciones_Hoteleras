@@ -1,6 +1,8 @@
 package goHotel.view;
 
-import goHotel.controller.TipoHabitacionController;
+import javax.swing.ImageIcon;
+
+
 
 /*****************************************************************************
  * AUTOR: GRUPO 3
@@ -8,37 +10,15 @@ import goHotel.controller.TipoHabitacionController;
  * SEMANA 9
  *****************************************************************************/
 public class GestionTipoHabitacion extends javax.swing.JFrame {
-    private TipoHabitacionController controlador;
+   
     /**
      * Creates new form GestionTipoHabitacion
      */
     public GestionTipoHabitacion() {
         initComponents();
+         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/habitacion.png")).getImage());
     }
-    public void setControlador(TipoHabitacionController controlador) {
-    this.controlador = controlador;
-
-    jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-
-            int fila = jTable1.getSelectedRow();
-
-            if (fila != -1) {
-                txtID.setText(jTable1.getValueAt(fila, 0).toString());
-                txtNOMBRE.setText(jTable1.getValueAt(fila, 1).toString());
-                txtareaDescrip.setText(jTable1.getValueAt(fila, 2).toString());
-                jSpCapacidad.setValue(Integer.parseInt(jTable1.getValueAt(fila, 3).toString()));
-                txtPrecioBase.setText(jTable1.getValueAt(fila, 4).toString());
-
-                controlador.setIdSeleccionado(
-                    Integer.parseInt(jTable1.getValueAt(fila, 0).toString())
-                );
-            }
-        }
-    });
-}
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,9 +50,12 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         btEditar = new javax.swing.JButton();
         btBuscar = new javax.swing.JButton();
         btEliminar = new javax.swing.JButton();
+        btLimpiar = new javax.swing.JButton();
         btSalir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Gestión Tipo Habitación");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -89,7 +72,6 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
 
         IbPrecioBase.setText("Precio Base:");
 
-        txtID.setEditable(false);
         txtID.setBackground(new java.awt.Color(255, 255, 255));
         txtID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,11 +162,29 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         btEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btEliminar);
 
+        btLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
+        btLimpiar.setText("Limpiar");
+        btLimpiar.setFocusable(false);
+        btLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btLimpiar);
+
         btSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btSalir.setText("Salir");
         btSalir.setFocusable(false);
         btSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalirActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btSalir);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -193,7 +193,7 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(iblogo, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -287,6 +287,14 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioBaseActionPerformed
 
+    private void btSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSalirActionPerformed
+
+    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
+
+    }//GEN-LAST:event_btLimpiarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -331,6 +339,7 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
     public javax.swing.JButton btBuscar;
     public javax.swing.JButton btEditar;
     public javax.swing.JButton btEliminar;
+    public javax.swing.JButton btLimpiar;
     public javax.swing.JButton btSalir;
     private javax.swing.JLabel iblogo;
     private javax.swing.JPanel jPanel1;

@@ -248,7 +248,6 @@ public class Menu extends javax.swing.JFrame {
     private void chmTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmTipoHabitacionActionPerformed
         GestionTipoHabitacion vista = new GestionTipoHabitacion();
         TipoHabitacionController control = new TipoHabitacionController(vista);
-        vista.setControlador(control);
         control.iniciar();
         vista.setVisible(true);
         vista.setLocationRelativeTo(null);
@@ -270,7 +269,6 @@ public class Menu extends javax.swing.JFrame {
     private void chmGestionRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chmGestionRolesActionPerformed
         GestionRol vista = new GestionRol();
         RolController control = new RolController(vista);
-        vista.setControlador(control);
         control.iniciar();
         vista.setVisible(true);
         vista.setLocationRelativeTo(null);
