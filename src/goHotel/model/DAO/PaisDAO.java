@@ -1,5 +1,4 @@
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD;
 import goHotel.model.Pais;
 import java.sql.Connection;
@@ -9,10 +8,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List; 
 import javax.swing.JComboBox;
-
-public class PaisDAO 
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 13
+ *****************************************************************************/
+public class PaisDAO extends ConexionBD
 {
-   
+//============================================================================== 
+// CARGAR PAISES EN UN COMBO BOX
+//==============================================================================
  public void cargarPaises(JComboBox<String> combo) 
  {
     try (Connection conn = ConexionBD.getConnection()) 

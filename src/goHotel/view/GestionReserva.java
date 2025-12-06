@@ -16,13 +16,15 @@ public class GestionReserva extends javax.swing.JFrame {
      * Creates new form GestionReserva
      */
     
-    public GestionReserva(String correo, String tipo) {
+    public GestionReserva(String correo, String tipo) 
+    {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/filtrar1.png")).getImage());
        
     }
     
-    public GestionReserva() {
+    public GestionReserva() 
+    {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/filtrar1.png")).getImage());
         jtGestionReserva.getTableHeader().setBackground(lightGray);

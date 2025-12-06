@@ -1,5 +1,4 @@
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD;
 import goHotel.model.PlanLealtad;
 import java.sql.Connection;
@@ -9,14 +8,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlanLealtadDAO {
+public class PlanLealtadDAO 
+{
 
     public boolean agregarPlanLealtad(PlanLealtad plan) throws SQLException {
         PreparedStatement ps = null;
         Connection con = ConexionBD.getConnection();
         String sql = "INSERT INTO plan_lealtad (id_plan, descuento, nivel) VALUES (?,?,?)";
 
-        try {
+        try 
+        {
             ps = con.prepareStatement(sql);
             ps.setInt(1, plan.getIdLealtad());
             ps.setDouble(2, plan.getDescuento());
@@ -24,8 +25,10 @@ public class PlanLealtadDAO {
             
             return ps.executeUpdate() > 0;
             
-        } finally {
-            try {
+        } finally
+        {
+            try
+            {
                 if (ps != null) { ps.close(); }
                 if (con != null) { con.close(); }
             } catch (SQLException e) {
@@ -34,12 +37,14 @@ public class PlanLealtadDAO {
         }
     }
 
-    public boolean modificarPlanLealtad(PlanLealtad plan) throws SQLException {
+    public boolean modificarPlanLealtad(PlanLealtad plan) throws SQLException 
+    {
         PreparedStatement ps = null;
         Connection con = ConexionBD.getConnection();
         String sql = "UPDATE plan_lealtad SET descuento=?, nivel=? WHERE id_plan=?";
 
-        try {
+        try
+        {
             ps = con.prepareStatement(sql);
             ps.setDouble(1, plan.getDescuento());
             ps.setString(2, plan.getNivel());
@@ -47,7 +52,8 @@ public class PlanLealtadDAO {
 
             return ps.executeUpdate() > 0;
             
-        } finally {
+        } finally 
+        {
             try {
                 if (ps != null) { ps.close(); }
                 if (con != null) { con.close(); }
@@ -57,19 +63,23 @@ public class PlanLealtadDAO {
         }
     }
     
-    public boolean eliminarPlanLealtad(int idLealtad) throws SQLException {
+    public boolean eliminarPlanLealtad(int idLealtad) throws SQLException 
+    {
         PreparedStatement ps = null;
         Connection con = ConexionBD.getConnection();
         String sql = "DELETE FROM plan_lealtad WHERE id_plan=?";
 
-        try {
+        try 
+        {
             ps = con.prepareStatement(sql);
             ps.setInt(1, idLealtad);
 
             return ps.executeUpdate() > 0;
             
-        } finally {
-            try {
+        } finally 
+        {
+            try 
+            {
                 if (ps != null) { ps.close(); }
                 if (con != null) { con.close(); }
             } catch (SQLException e) {
@@ -78,7 +88,8 @@ public class PlanLealtadDAO {
         }
     }
 
-    public PlanLealtad buscarPlanLealtad(String criterio) throws SQLException {
+    public PlanLealtad buscarPlanLealtad(String criterio) throws SQLException 
+    {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = ConexionBD.getConnection();
@@ -86,14 +97,17 @@ public class PlanLealtadDAO {
 
         String sql = "SELECT id_plan, nivel, descuento FROM plan_lealtad WHERE id_plan = ? OR (id_plan = 0 AND nivel LIKE ?)"; 
         
-        try {
+        try 
+        {
             ps = con.prepareStatement(sql);
             int idBusqueda = 0;
             String nivelBusqueda = null;
 
-            try {
+            try 
+            {
                 idBusqueda = Integer.parseInt(criterio);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) 
+            {
                 nivelBusqueda = criterio;
             }
 
@@ -112,6 +126,7 @@ public class PlanLealtadDAO {
                     rs.getInt("id_plan"),
                     rs.getString("nivel"),
                     rs.getDouble("descuento")
+                   // rs.getDouble("factor_puntos")
                 );
             }
             return plan_LealtadEncontrado;
@@ -143,6 +158,7 @@ public class PlanLealtadDAO {
                     rs.getInt("id_plan"),
                     rs.getString("nivel"),
                     rs.getDouble("descuento")
+                   // rs.getDouble("factor_puntos")
                 );
                 lista.add(pl);
             }
@@ -158,4 +174,30 @@ public class PlanLealtadDAO {
             }
         }
     }
+    
+//    public PlanLealtad obtenerPlanPorId(int idPlan) {
+//    String sql = "SELECT id_plan, nivel, descuento, factor_puntos FROM plan_lealtad WHERE id_plan = ?";
+//
+//    try (Connection con = ConexionBD.getConnection();
+//         PreparedStatement ps = con.prepareStatement(sql)) {
+//
+//        ps.setInt(1, idPlan);
+//        ResultSet rs = ps.executeQuery();
+//
+//        if (rs.next()) {
+//            PlanLealtad p = new PlanLealtad();
+//            p.setIdLealtad(rs.getInt("id_plan"));
+//            p.setNivel(rs.getString("nivel"));
+//            p.setDescuento(rs.getDouble("descuento"));
+//           // p.setFactorPuntos(rs.getInt("factor_puntos"));
+//            return p;
+//        }
+//
+//    } catch (SQLException e) {
+//        System.err.println("Error en PlanLealtadDAO: " + e.getMessage());
+//    }
+//
+//    return null;
+//}
+
 }

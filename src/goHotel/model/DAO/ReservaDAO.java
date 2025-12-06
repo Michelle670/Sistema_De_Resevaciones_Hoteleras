@@ -3,6 +3,7 @@ import goHotel.controller.ReservaController;
 import goHotel.model.ConexionBD;
 import goHotel.model.Reserva;
 import goHotel.model.Servicio;
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -448,10 +449,143 @@ public DefaultTableModel buscarHabitaciones(String hotelNombre,
 
     return modelo;
 }
+//==============================================================================
+// FRAME REGISTRO RESERVA
+//==============================================================================
+
+public boolean buscarClientePorCodigo(int codigo, Reserva modelo) 
+{
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    Connection con = ConexionBD.getConnection();
+
+    String sql = "SELECT nombre FROM cliente WHERE id_cliente = ?";
+
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, codigo);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            modelo.setNombreCliente(rs.getString("nombre"));
+            return true;
+        }
+
+        return false;
+
+    } catch (SQLException e) {
+        System.err.println("ERROR: " + e.getMessage());
+        return false;
+    } finally {
+        try { con.close(); } catch (Exception ex) { }
+    }
+}
+
+public boolean buscarHotelPorCodigo(int codigo, Reserva modelo) {
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    Connection con = ConexionBD.getConnection();
+
+    String sql = "SELECT nombre FROM hotel WHERE id_hotel = ?";
+
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, codigo);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            modelo.setNombreHotel(rs.getString("nombre"));
+            return true;
+        }
+
+        return false;
+
+    } catch (SQLException e) {
+        System.err.println("ERROR (Hotel): " + e.getMessage());
+        return false;
+
+    } finally {
+        try { con.close(); } catch (Exception ex) {}
+    }
+}
+
+public boolean buscarDescripcionHabitacion(int idHotel, int numeroHabitacion, Reserva modelo) 
+{
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    Connection con = ConexionBD.getConnection();
+
+    String sql = 
+        "SELECT CONCAT(B.nombre, ' - Cap.Max: ', CAST(B.capacidad AS CHAR)) AS DescripcionHabitacion " +
+        "FROM habitacion A " +
+        "INNER JOIN tipo_habitacion B ON A.id_tipo = B.id_tipo " +
+        "WHERE A.id_hotel = ? AND A.numero = ?";
+
+    try
+    {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, idHotel);
+        ps.setInt(2, numeroHabitacion);
+        rs = ps.executeQuery();
+
+        if (rs.next()) 
+        {
+            modelo.setDescripcionHabitacion(rs.getString("DescripcionHabitacion"));
+            return true;
+        }
+
+        return false;
+
+    } catch (SQLException e) 
+    {
+        System.err.println("ERROR HABITACIÓN: " + e.getMessage());
+        return false;
+
+    } finally 
+    {
+        try { con.close(); } catch (Exception e) {}
+    }
+}
 
 
-
-
+//==============================================================================
+// CARGAR SERVICIOS DE UNA HABITACIÓN EN TABLA
+//==============================================================================
+public void cargarServiciosHabitacion(DefaultTableModel modelo, int idHotel, int numeroHabitacion) 
+{
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    Connection con = ConexionBD.getConnection();
+    
+    String sql = 
+        "SELECT C.nombre " +
+        "FROM habitacion A " +
+        "INNER JOIN habitacion_servicio B ON A.id_habitacion = B.id_habitacion " +
+        "INNER JOIN servicio C ON B.id_servicio = C.id_servicio " +
+        "WHERE A.id_hotel = ? AND A.numero = ?";
+    
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, idHotel);
+        ps.setInt(2, numeroHabitacion);
+        rs = ps.executeQuery();
+        
+        // Limpiar tabla
+        modelo.setRowCount(0);
+        
+        while (rs.next()) {
+            Object[] fila = {rs.getString("nombre")};
+            modelo.addRow(fila);
+        }
+        
+    } catch (SQLException e) {
+        System.err.println("ERROR al cargar servicios: " + e.getMessage());
+    } finally {
+        try { if (rs != null) rs.close(); } catch (Exception ex) {}
+        try { if (ps != null) ps.close(); } catch (Exception ex) {}
+        try { con.close(); } catch (Exception ex) {}
+    }
+}
 
 }
 

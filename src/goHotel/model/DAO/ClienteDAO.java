@@ -1,9 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package goHotel.model.DAO;
 
+package goHotel.model.DAO;
 import goHotel.model.Cliente;
 import goHotel.model.ConexionBD;
 import java.sql.*;
@@ -270,4 +266,30 @@ public class ClienteDAO {
             JOptionPane.showMessageDialog(null, "Error cargando países: " + ex.getMessage());
         }
     }
+    
+    
+public Cliente obtenerClientePorId(int idCliente) {
+    String sql = "SELECT id_cliente, nombre, id_plan FROM cliente WHERE id_cliente = ?";
+
+    try (Connection con = ConexionBD.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, idCliente);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Cliente c = new Cliente();
+            c.setIdCliente(rs.getInt("id_cliente"));
+            c.setNombre(rs.getString("nombre"));
+            c.setIdPlan(rs.getInt("id_plan"));
+            return c;
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Error en ClienteDAO: " + e.getMessage());
+    }
+
+    return null;
+}
+
 }

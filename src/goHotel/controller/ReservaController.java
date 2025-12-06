@@ -38,10 +38,9 @@ public class ReservaController implements ActionListener
         this.consultas = consultas;
         this.vista = vista;
     
-        
-//==============================================================================      
-//GESTION RESERVA
-//==============================================================================  
+        //==============================================================================      
+        //GESTION RESERVA
+        //==============================================================================  
         this.vista.btnAgregar.addActionListener(this);
         this.vista.btnEditar.addActionListener(this);
         this.vista.btnBuscar.addActionListener(this);
@@ -55,9 +54,9 @@ public class ReservaController implements ActionListener
         this.vista.txtCliente.addActionListener(this);
         this.vista.txtPais.addActionListener(this);
     }
-//==============================================================================  
-//INICIAR
-//==============================================================================      
+    //==============================================================================  
+    //INICIAR
+    //==============================================================================      
     public void iniciar() 
     {
         vista.setTitle("Gestión de Reservas");
@@ -67,11 +66,9 @@ public class ReservaController implements ActionListener
         ajustarColumnas();
     }
     
-    
-    
-//==============================================================================  
-//ACTUALIZAR TABLA
-//==============================================================================      
+    //==============================================================================  
+    //ACTUALIZAR TABLA
+    //==============================================================================      
     public void actualizarTabla()
     {
         DefaultTableModel modelo = (DefaultTableModel) vista.jtGestionReserva.getModel();
@@ -124,7 +121,7 @@ public class ReservaController implements ActionListener
             ReservaDAO dao = new ReservaDAO();
             ReservaBuscarHabitacion vista = new ReservaBuscarHabitacion();
         
-            ReservaBusquedaController controller = new ReservaBusquedaController(modelo, dao, vista);
+            ReservaBusquedaController controller = new ReservaBusquedaController(modelo, dao, vista, correoUsuario);
             controller.iniciar(); // ← AQUÍ SE ABRE EL FRAME Y SE CARGAN LOS HOTELES
                
 

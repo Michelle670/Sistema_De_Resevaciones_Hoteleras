@@ -1,7 +1,5 @@
 
 package goHotel.controller;
-
-
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
 import goHotel.model.DAO.ClienteDAO.ComboItem;

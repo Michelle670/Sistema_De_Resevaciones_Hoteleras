@@ -1,5 +1,4 @@
 package goHotel.controller;
-
 import goHotel.model.DAO.PaisDAO;
 import goHotel.model.Pais;
 import goHotel.view.GestionPaises;
@@ -9,14 +8,20 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-public class PaisController implements ActionListener {
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
+public class PaisController implements ActionListener 
+{
 
     private Pais modelo;
     private GestionPaises view;
     private PaisDAO dao;
 
-    public PaisController(Pais modelo, GestionPaises view) {
+    public PaisController(Pais modelo, GestionPaises view)
+    {
         this.modelo = modelo;
         this.view = view;
         this.dao = new PaisDAO();

@@ -1,5 +1,4 @@
 package goHotel.controller;
-
 import goHotel.model.PlanLealtad;
 import goHotel.model.DAO.PlanLealtadDAO; 
 import goHotel.view.GestionPlanLealtad;
@@ -74,6 +73,7 @@ public class PlanLealtadController implements ActionListener, MouseListener {
         String idText = view.getTxtId().getText().trim();
         String descuentoText = view.getTxtDescuento().getText().trim().replace("%", "");
         String nivelText = view.getTxtNivel().getText().trim();
+        
 
         if (idText.isEmpty() || descuentoText.isEmpty() || nivelText.isEmpty()) {
             throw new IllegalArgumentException("Debe ingresar ID, Descuento y Nivel.");
