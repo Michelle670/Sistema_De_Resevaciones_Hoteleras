@@ -1,6 +1,8 @@
 package goHotel.view;
 
-import goHotel.controller.TipoHabitacionController;
+import javax.swing.ImageIcon;
+
+
 
 /*****************************************************************************
  * AUTOR: GRUPO 3
@@ -8,37 +10,15 @@ import goHotel.controller.TipoHabitacionController;
  * SEMANA 9
  *****************************************************************************/
 public class GestionTipoHabitacion extends javax.swing.JFrame {
-    private TipoHabitacionController controlador;
+   
     /**
      * Creates new form GestionTipoHabitacion
      */
     public GestionTipoHabitacion() {
         initComponents();
+         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/habitacion.png")).getImage());
     }
-    public void setControlador(TipoHabitacionController controlador) {
-    this.controlador = controlador;
-
-    jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-
-            int fila = jTable1.getSelectedRow();
-
-            if (fila != -1) {
-                txtID.setText(jTable1.getValueAt(fila, 0).toString());
-                txtNOMBRE.setText(jTable1.getValueAt(fila, 1).toString());
-                txtareaDescrip.setText(jTable1.getValueAt(fila, 2).toString());
-                jSpCapacidad.setValue(Integer.parseInt(jTable1.getValueAt(fila, 3).toString()));
-                txtPrecioBase.setText(jTable1.getValueAt(fila, 4).toString());
-
-                controlador.setIdSeleccionado(
-                    Integer.parseInt(jTable1.getValueAt(fila, 0).toString())
-                );
-            }
-        }
-    });
-}
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,6 +29,7 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         iblogo = new javax.swing.JLabel();
         IBIDtipo = new javax.swing.JLabel();
@@ -60,9 +41,6 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         txtNOMBRE = new javax.swing.JTextField();
         jSpCapacidad = new javax.swing.JSpinner();
         txtPrecioBase = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtareaDescrip = new javax.swing.JTextArea();
         tablaTipos = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
@@ -70,9 +48,14 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         btEditar = new javax.swing.JButton();
         btBuscar = new javax.swing.JButton();
         btEliminar = new javax.swing.JButton();
+        btLimpiar = new javax.swing.JButton();
         btSalir = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtareaDescrip = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Gestión Tipo Habitación");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -89,8 +72,6 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
 
         IbPrecioBase.setText("Precio Base:");
 
-        txtID.setEditable(false);
-        txtID.setBackground(new java.awt.Color(255, 255, 255));
         txtID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIDActionPerformed(evt);
@@ -111,12 +92,6 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
                 txtPrecioBaseActionPerformed(evt);
             }
         });
-
-        txtareaDescrip.setColumns(20);
-        txtareaDescrip.setRows(5);
-        jScrollPane1.setViewportView(txtareaDescrip);
-
-        jScrollPane2.setViewportView(jScrollPane1);
 
         jTable1.setBackground(new java.awt.Color(204, 204, 204));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -152,11 +127,14 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setRollover(true);
+        jToolBar1.setMaximumSize(new java.awt.Dimension(364, 64));
+        jToolBar1.setRequestFocusEnabled(false);
 
         btAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/agregar-usuario.png"))); // NOI18N
         btAgregar.setText("Agregar");
         btAgregar.setFocusable(false);
         btAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btAgregar.setMaximumSize(new java.awt.Dimension(60, 60));
         btAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btAgregar);
 
@@ -164,6 +142,7 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         btEditar.setText("Editar");
         btEditar.setFocusable(false);
         btEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btEditar.setMaximumSize(new java.awt.Dimension(60, 60));
         btEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btEditar);
 
@@ -171,29 +150,54 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
         btBuscar.setText("Buscar");
         btBuscar.setFocusable(false);
         btBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btBuscar.setMaximumSize(new java.awt.Dimension(60, 60));
         btBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btBuscar);
 
         btEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/usuario (2).png"))); // NOI18N
         btEliminar.setText("Eliminar");
         btEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btEliminar.setMaximumSize(new java.awt.Dimension(60, 60));
         btEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btEliminar);
+
+        btLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
+        btLimpiar.setText("Limpiar");
+        btLimpiar.setFocusable(false);
+        btLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btLimpiar);
 
         btSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btSalir.setText("Salir");
         btSalir.setFocusable(false);
         btSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btSalir.setMaximumSize(new java.awt.Dimension(60, 60));
         btSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalirActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btSalir);
+
+        txtareaDescrip.setColumns(20);
+        txtareaDescrip.setRows(5);
+        jScrollPane1.setViewportView(txtareaDescrip);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(iblogo, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -202,22 +206,20 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
                         .addGap(76, 76, 76)
                         .addComponent(IBIDtipo)
                         .addGap(68, 68, 68)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNOMBRE, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(88, 88, 88)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(IbPrecioBase)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtPrecioBase, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(IbCapacidad)
-                                        .addGap(53, 53, 53)
-                                        .addComponent(jSpCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(IbPrecioBase)
+                                    .addComponent(IbCapacidad))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSpCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPrecioBase, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane1)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(61, 61, 61)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,38 +227,40 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
                             .addComponent(lblNombre))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(96, 96, 96)
                 .addComponent(tablaTipos, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 67, Short.MAX_VALUE))
+                .addGap(0, 109, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(iblogo)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)))
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IBIDtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(IbCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNOMBRE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNOMBRE, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(IbPrecioBase)
-                    .addComponent(txtPrecioBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecioBase, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(Ibdescrip))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(tablaTipos, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addComponent(tablaTipos, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -286,6 +290,14 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
     private void txtPrecioBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioBaseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioBaseActionPerformed
+
+    private void btSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSalirActionPerformed
+
+    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
+
+    }//GEN-LAST:event_btLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,6 +343,7 @@ public class GestionTipoHabitacion extends javax.swing.JFrame {
     public javax.swing.JButton btBuscar;
     public javax.swing.JButton btEditar;
     public javax.swing.JButton btEliminar;
+    public javax.swing.JButton btLimpiar;
     public javax.swing.JButton btSalir;
     private javax.swing.JLabel iblogo;
     private javax.swing.JPanel jPanel1;

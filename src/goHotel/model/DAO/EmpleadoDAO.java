@@ -5,28 +5,32 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-/**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
- */
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
 public class EmpleadoDAO {
-  
+
     // ---------------------------
     // AGREGAR EMPLEADO
     // ---------------------------
-    public boolean agregar(String nombre, int idRol, String correo, String password) {
-    PreparedStatement ps = null;
-    Connection conexion = ConexionBD.getConnection();
-    
-        String sql = "INSERT INTO empleado (nombre, id_rol, correo, password) VALUES (?, ?, ?, ?)";
+    public boolean agregar(int id, String nombre, int idRol, String correo, String password) {
+        PreparedStatement ps = null;
+        Connection conexion = ConexionBD.getConnection();
 
-        try   {
+        String sql = "INSERT INTO empleado (id_empleado,nombre, id_rol, correo, password) VALUES (?, ?, ?, ?, ?)";
+
+        try {
             ps = conexion.prepareStatement(sql);
-            ps.setString(1, nombre);
-            ps.setInt(2, idRol);
-            ps.setString(3, correo);
-            ps.setString(4, password);
+            ps.setInt(1, id);
+            ps.setString(2, nombre);
+            ps.setInt(3, idRol);
+            ps.setString(4, correo);
+            ps.setString(5, password);
 
-            return  ps.executeUpdate() > 0;
+            return ps.executeUpdate() > 0;
+
         } catch (SQLException e) {
             System.err.println(e);
             return false;
@@ -47,7 +51,7 @@ public class EmpleadoDAO {
         Connection conexion = ConexionBD.getConnection();
         String sql = "UPDATE empleado SET nombre=?, id_rol=?, correo=?, password=? WHERE id_empleado=?";
 
-        try    {
+        try {
             ps = conexion.prepareStatement(sql);
             ps.setString(1, nombre);
             ps.setInt(2, idRol);
@@ -55,7 +59,8 @@ public class EmpleadoDAO {
             ps.setString(4, password);
             ps.setInt(5, id);
 
-             return ps.executeUpdate() > 0;
+            return ps.executeUpdate() > 0;
+
         } catch (SQLException e) {
             System.err.println(e);
             return false;
@@ -81,7 +86,8 @@ public class EmpleadoDAO {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
 
-             return ps.executeUpdate() > 0;
+            return ps.executeUpdate() > 0;
+
         } catch (SQLException e) {
             System.err.println(e);
             return false;
@@ -95,7 +101,7 @@ public class EmpleadoDAO {
     }
 
     // ---------------------------
-    //  ROL
+    //  OBTENER ROL
     // ---------------------------
     private String obtenerRolTexto(int idRol) {
         switch (idRol) {
@@ -111,18 +117,18 @@ public class EmpleadoDAO {
     }
 
     // ---------------------------
-    // BUSCAR EMPLEADO
+    // BUSCAR EMPLEADO POR ID
     // ---------------------------
-    public ArrayList<Object[]> buscar(String nombre) {
+    public ArrayList<Object[]> buscarPorId(int id) {
         ArrayList<Object[]> lista = new ArrayList<>();
         PreparedStatement ps = null;
         Connection conexion = ConexionBD.getConnection();
-        
-        String sql = "SELECT * FROM empleado WHERE nombre LIKE ?";
+
+        String sql = "SELECT * FROM empleado WHERE id_empleado = ?";
 
         try {
             ps = conexion.prepareStatement(sql);
-            ps.setString(1, "%" + nombre + "%");
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -155,9 +161,7 @@ public class EmpleadoDAO {
         String sql = "SELECT * FROM empleado";
 
         try (
-                Connection conexion = ConexionBD.getConnection();
-                Statement st = conexion.createStatement(); 
-                ResultSet rs = st.executeQuery(sql)) {
+                Connection conexion = ConexionBD.getConnection(); Statement st = conexion.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
 
