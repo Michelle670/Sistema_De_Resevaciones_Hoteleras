@@ -6,9 +6,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-/**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
- */
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
 public class TipoHabitacionDAO {
 
     // ---------------------------
@@ -84,7 +86,7 @@ public class TipoHabitacionDAO {
         }
     }
     // ---------------------------------------
-    // BUSCAR POR NOMBRE EN TIPO DE HABITACIÓN 
+    // BUSCAR POR ID EN TIPO DE HABITACIÓN 
     // ---------------------------------------
 
     public ArrayList<Object[]> buscarPorId(int id) {
@@ -115,10 +117,10 @@ public class TipoHabitacionDAO {
 
         return lista;
     }
+    
     // ---------------------------
     // CARGAR TABLA
     // ---------------------------
-
     public void cargarTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         String sql = "SELECT * FROM tipo_habitacion";

@@ -11,12 +11,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Michelle
- */
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
 public class RolDAO extends ConexionBD {
 
+    // ---------------------------
+    // REGISTRAR ROL
+    // ---------------------------
     public boolean registrarRol(int id_rol, String nombre, boolean estado) {
         Connection conexion = null;
         PreparedStatement ps = null;
@@ -46,6 +50,9 @@ public class RolDAO extends ConexionBD {
         }
     }
 
+    // ---------------------------
+    // EDITAR ROL
+    // ---------------------------
     public boolean editarRol(int id_Rol, String nombre, boolean estado) {
         Connection conexion = null;
         PreparedStatement ps = null;
@@ -74,6 +81,9 @@ public class RolDAO extends ConexionBD {
         }
     }
 
+    // ---------------------------
+    // ELIMINAR ROL
+    // ---------------------------
     public boolean eliminarRol(int id_Rol) {
         Connection conexion = null;
         PreparedStatement ps = null;
@@ -99,6 +109,9 @@ public class RolDAO extends ConexionBD {
         }
     }
 
+    // ---------------------------------------
+    // BUSCAR POR ID ROL
+    // ---------------------------------------
     public ArrayList<Object[]> buscarRolPorId(int id_Rol) {
         ArrayList<Object[]> resultados = new ArrayList<>();
 
@@ -153,6 +166,9 @@ public class RolDAO extends ConexionBD {
         return resultados;
     }
 
+    // ---------------------------
+    // CARGAR DATOS DE LA TABLA
+    // ---------------------------
     public void cargarDatosEnTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);
 
@@ -210,6 +226,9 @@ public class RolDAO extends ConexionBD {
         }
     }
 
+    // ---------------------------
+    // CARGAR ROLES
+    // ---------------------------
     public ArrayList<String> cargarRolesActivos() {
         ArrayList<String> roles = new ArrayList<>();
         Connection conexion = null;

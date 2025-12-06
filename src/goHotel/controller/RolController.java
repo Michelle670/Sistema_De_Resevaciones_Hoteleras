@@ -1,7 +1,9 @@
 package goHotel.controller;
 
 /**
+ * ***************************************************************************
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ * ***************************************************************************
  */
 import goHotel.model.DAO.RolDAO;
 import goHotel.view.GestionRol;
@@ -13,16 +15,23 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ * Controlador encargado de manejar la lógica de la pantalla Gestión de Roles.
  */
 public class RolController implements ActionListener {
-
+    // Referencia a la vista (pantalla)
     private final GestionRol vista;
+    // Guarda el ID del rol seleccionado en la tabla
     private int idRolSeleccionado = 0;
+     // Acceso a las consultas de base de datos
     private final RolDAO consultas = new RolDAO();
 
+    // ===========================================================
+    // CONSTRUCTOR
+    // ===========================================================
     public RolController(GestionRol vista) {
         this.vista = vista;
+        
+        // Activar clic en tabla para cargar datos en los campos
         agregarClickEnTabla();
         // ==========================================
         // BOTONES
@@ -34,7 +43,10 @@ public class RolController implements ActionListener {
         this.vista.btnLimpiar.addActionListener(this);
         this.vista.btSalir.addActionListener(this);
     }
-
+    
+    // ==============================================
+    // INICIO DE LA VENTANA
+    // ============================================== 
     public void iniciar() {
         vista.setTitle("Gestión de Roles");
         vista.setLocationRelativeTo(null);
@@ -66,9 +78,9 @@ public class RolController implements ActionListener {
     public void limpiarCampos() {
         vista.txtid_rol.setText("");
         vista.txtNombreRol.setText("");
-        vista.cbEstado.setSelectedIndex(0);
-        vista.txtNombreRol.requestFocus();
-        idRolSeleccionado = 0;
+        vista.cbEstado.setSelectedIndex(0);// Vuelve a "Activo"
+        vista.txtNombreRol.requestFocus();// Retoma el foco
+        idRolSeleccionado = 0;// Reinicia selección
     }
 
     // ==========================================
@@ -82,9 +94,11 @@ public class RolController implements ActionListener {
                 int fila = vista.jTable2.getSelectedRow();
 
                 if (fila != -1) {
-
+                    
+                     // Guardar ID del rol seleccionado
                     idRolSeleccionado = Integer.parseInt(vista.jTable2.getValueAt(fila, 0).toString());
-
+                    
+                    // Cargar datos desde la tabla a los campos
                     vista.txtid_rol.setText(vista.jTable2.getValueAt(fila, 0).toString());
                     vista.txtNombreRol.setText(vista.jTable2.getValueAt(fila, 1).toString());
                     vista.cbEstado.setSelectedItem(vista.jTable2.getValueAt(fila, 2).toString());
@@ -92,7 +106,10 @@ public class RolController implements ActionListener {
             }
         });
     }
-
+    
+    // =========================================
+    // MANEJO DE BOTONES
+    // =========================================
     @Override
     public void actionPerformed(ActionEvent e) {
         // ============================
@@ -111,8 +128,10 @@ public class RolController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Debe ingresar un nombre de rol");
                 return;
             }
+            // Convertir estado del combo en booleano
             boolean estado = vista.cbEstado.getSelectedItem().toString().equals("Activo");
-
+            
+             // Registrar rol en BD
             if (consultas.registrarRol(id_rol, nombre, estado)) {
                 JOptionPane.showMessageDialog(null, "Rol agregado correctamente");
                 limpiarCampos();
@@ -135,7 +154,8 @@ public class RolController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Seleccione un rol de la tabla.");
                 return;
             }
-
+            
+             // Editar rol en BD
             if (consultas.editarRol(idRolSeleccionado, nombre, estado)) {
                 JOptionPane.showMessageDialog(null, "Rol actualizado");
                 limpiarCampos();
@@ -155,12 +175,12 @@ public class RolController implements ActionListener {
 
             ArrayList<Object[]> resultado = consultas.buscarRolPorId(id_rol);
             DefaultTableModel modelo = (DefaultTableModel) vista.jTable2.getModel();
-            modelo.setRowCount(0);
+            modelo.setRowCount(0); // Limpiar tabla
 
             if (resultado.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No existe un rol con ese ID.");
             } else {
-                modelo.addRow(resultado.get(0));
+                modelo.addRow(resultado.get(0));// Mostrar resultado en tabla
             }
         }
         // ==========================================
@@ -177,7 +197,8 @@ public class RolController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Seleccione un rol de la tabla.");
                 return;
             }
-
+            
+            // Eliminar rol de BD
             if (consultas.eliminarRol(idRolSeleccionado)) {
                 JOptionPane.showMessageDialog(null, "Rol eliminado");
                 limpiarCampos();
@@ -196,7 +217,7 @@ public class RolController implements ActionListener {
         // BOTÓN SALIR
         // ============================
         if (e.getSource() == vista.btSalir) {
-            vista.dispose();
+            vista.dispose();// Cierra la ventana
         }
     }
 

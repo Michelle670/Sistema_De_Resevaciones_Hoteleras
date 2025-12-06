@@ -10,22 +10,34 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * ***************************************************************************
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
- * ***************************************************************************
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Gestión de Empleados.
  */
 public class EmpleadoController implements ActionListener {
-
+    // Referencia a la vista (pantalla)
     private final GestionEmpleado vista;
+    
+     // Acceso a las consultas de base de datos
     private final EmpleadoDAO consultas = new EmpleadoDAO();
+    
+    // Guarda el ID del rol seleccionado en la tabla
     private int idSeleccionado = 0;
 
+    // ===========================================================
+    // CONSTRUCTOR
+    // ===========================================================
     public EmpleadoController(GestionEmpleado vista) {
         this.vista = vista;
-        cargarRolesEnCombo();
-        agregarClickEnTabla();
         
+        // Carga los roles disponibles en el combo box
+        cargarRolesEnCombo();
+        
+        // Activar clic en tabla para cargar datos en los campos
+        agregarClickEnTabla();
+
+        // ==========================================
         // BOTONES
+        // ==========================================
         this.vista.btAgregar.addActionListener(this);
         this.vista.btEditar.addActionListener(this);
         this.vista.btBuscar.addActionListener(this);
@@ -34,6 +46,9 @@ public class EmpleadoController implements ActionListener {
         this.vista.btSalir.addActionListener(this);
     }
 
+    // ==============================================
+    // INICIO DE LA VENTANA
+    // ============================================== 
     public void iniciar() {
         vista.setTitle("Gestión de Empleados");
         vista.setLocationRelativeTo(null);
@@ -60,9 +75,9 @@ public class EmpleadoController implements ActionListener {
         }
     }
 
-    // ==========================
-    // CLICK EN TABLA
-    // ==========================
+    // ==========================================
+    // CLICK EN TABLA PARA CARGAR DATOS
+    // ==========================================
     private void agregarClickEnTabla() {
         vista.jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -70,8 +85,10 @@ public class EmpleadoController implements ActionListener {
                 int fila = vista.jTable3.getSelectedRow();
 
                 if (fila != -1) {
+                    
+                    // Guardar ID del empleado seleccionado
                     idSeleccionado = Integer.parseInt(vista.jTable3.getValueAt(fila, 0).toString());
-
+                    // Cargar datos desde la tabla a los campos
                     vista.txtId.setText(vista.jTable3.getValueAt(fila, 0).toString());
                     vista.txtNombre.setText(vista.jTable3.getValueAt(fila, 1).toString());
                     vista.txtCorreo.setText(vista.jTable3.getValueAt(fila, 2).toString());
@@ -103,24 +120,27 @@ public class EmpleadoController implements ActionListener {
         vista.cbRol.addItem("Limpieza");
     }
 
-    // ==========================
-    // ACTION LISTENER
-    // ==========================
+    // =========================================
+    // MANEJO DE BOTONES
+    // =========================================
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        // ============================
         // BOTÓN AGREGAR
+        // ============================
         if (e.getSource() == vista.btAgregar) {
-            
-             Integer id = obtenerId();
-            if (id == null) 
+
+            Integer id = obtenerId();
+            if (id == null)
                 return;
             
             String nombre = vista.txtNombre.getText().trim();
             String correo = vista.txtCorreo.getText().trim();
             String password = new String(vista.jPasswordField1.getPassword());
             int idRol = obtenerIdRol(vista.cbRol.getSelectedItem().toString());
-
+            
+            // Registrar nuevo empleado
             if (consultas.agregar(id,nombre, idRol, correo, password)) {
                 JOptionPane.showMessageDialog(null, "Empleado agregado");
                 limpiar();
@@ -128,7 +148,9 @@ public class EmpleadoController implements ActionListener {
             }
         }
 
+        // ==========================================
         // BOTÓN EDITAR
+        // ==========================================
         if (e.getSource() == vista.btEditar) {
 
             if (idSeleccionado == 0) {
@@ -140,7 +162,8 @@ public class EmpleadoController implements ActionListener {
             String correo = vista.txtCorreo.getText();
             String password = new String(vista.jPasswordField1.getPassword());
             int idRol = obtenerIdRol(vista.cbRol.getSelectedItem().toString());
-
+            
+            // Actualizar empleado
             if (consultas.editar(idSeleccionado, nombre, idRol, correo, password)) {
                 JOptionPane.showMessageDialog(null, "Empleado actualizado");
                 limpiar();
@@ -148,7 +171,9 @@ public class EmpleadoController implements ActionListener {
             }
         }
 
-        // BOTÓN BUSCAR
+        // ============================
+        // BOTÓN BUSCAR 
+        // ============================
         if (e.getSource() == vista.btBuscar) {
 
              Integer id = obtenerId();
@@ -157,7 +182,7 @@ public class EmpleadoController implements ActionListener {
             }
 
             DefaultTableModel modelo = (DefaultTableModel) vista.jTable3.getModel();
-            modelo.setRowCount(0);
+            modelo.setRowCount(0);// Limpiar tabla
 
             ArrayList<Object[]> lista = consultas.buscarPorId(id);
              if (lista.isEmpty()) {
@@ -167,13 +192,16 @@ public class EmpleadoController implements ActionListener {
             }
         }
 
+        // ==========================================
         // BOTÓN ELIMINAR
+        // ==========================================
         if (e.getSource() == vista.btEliminar) {
 
             if (idSeleccionado == 0) {
                 JOptionPane.showMessageDialog(null, "Seleccione un empleado");
                 return;
             }
+            // Eliminar empleado
             if (consultas.eliminar(idSeleccionado)) {
                 JOptionPane.showMessageDialog(null, "Empleado eliminado");
                 limpiar();
@@ -181,22 +209,31 @@ public class EmpleadoController implements ActionListener {
             }
         }
 
-        // LIMPIAR
+        // ============================
+        // BOTÓN LIMPIAR
+        // ============================
         if (e.getSource() == vista.btLimpiar) {
             limpiar();
         }
 
+        // ============================
         // BOTÓN SALIR
+        // ============================
         if (e.getSource() == vista.btSalir) {
-            vista.dispose();
+            vista.dispose();// Cerrar ventana
         }
     }
 
+    // ==========================================
+    // ACTUALIZAR TABLA
+    // ==========================================
     public void actualizarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) vista.jTable3.getModel();
         consultas.cargarTabla(modelo);
     }
-
+    // ==========================================
+    // OBTENER ID DEL ROL SEGÚN TEXTO
+    // ==========================================
     private int obtenerIdRol(String rol) {
         switch (rol) {
             case "Admin":

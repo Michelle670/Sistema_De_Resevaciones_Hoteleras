@@ -1,7 +1,9 @@
 package goHotel.controller;
 
 /**
+ * ***************************************************************************
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ * ***************************************************************************
  */
 import goHotel.model.DAO.TipoHabitacionDAO;
 import goHotel.model.TipoHabitacion;
@@ -14,20 +16,31 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ * Controlador encargado de manejar la lógica de la pantalla
+ * de Gestión de Tipos de Habitación.
  */
+
 public class TipoHabitacionController implements ActionListener {
 
+    // Referencia a la vista (pantalla)
     private final GestionTipoHabitacion vista;
+     // Acceso consultas SQL
     private final TipoHabitacionDAO consultas = new TipoHabitacionDAO();
+    // Variable para almacenar el ID seleccionado en la tabla
     private int idSeleccionado = 0;
 
+    // ===========================================================
+    // CONSTRUCTOR
+    // ===========================================================
     public TipoHabitacionController(GestionTipoHabitacion vista) {
         this.vista = vista;
-
+        
+        // Habilita que al hacer clic en la tabla se carguen los datos en los campos
         agregarClickEnTabla();
 
+        // ==========================================
         // BOTONES
+        // ==========================================
         this.vista.btAgregar.addActionListener(this);
         this.vista.btEditar.addActionListener(this);
         this.vista.btBuscar.addActionListener(this);
@@ -36,12 +49,19 @@ public class TipoHabitacionController implements ActionListener {
         this.vista.btSalir.addActionListener(this);
     }
 
+    // ==============================================
+    // INICIO DE LA VENTANA
+    // ==============================================
     public void iniciar() {
         vista.setTitle("Gestión de Tipo Habitación");
         vista.setLocationRelativeTo(null);
         actualizarTabla();
     }
 
+    
+    // =============================================
+    // OBTENER ID INGRESADO
+    // =============================================
     private Integer obtenerId() {
         String texto = vista.txtID.getText().trim();
 
@@ -58,6 +78,9 @@ public class TipoHabitacionController implements ActionListener {
         }
     }
 
+    // ==========================
+    // LIMPIAR CAMPOS DE LA PANTALLA
+    // ==========================
     public void limpiar() {
         vista.txtID.setText("");
         vista.txtNOMBRE.setText("");
@@ -66,7 +89,10 @@ public class TipoHabitacionController implements ActionListener {
         vista.txtareaDescrip.setText("");
         idSeleccionado = 0;
     }
-
+    
+    // ==========================
+    // CLICK EN TABLA -> CARGAR DATOS
+    // ==========================
     private void agregarClickEnTabla() {
         vista.jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -75,8 +101,10 @@ public class TipoHabitacionController implements ActionListener {
                 int fila = vista.jTable1.getSelectedRow();
                 if (fila != -1) {
 
+                    // Guardar ID seleccionado
                     idSeleccionado = Integer.parseInt(vista.jTable1.getValueAt(fila, 0).toString());
 
+                    // Cargar datos de la tabla a los campos
                     vista.txtID.setText(vista.jTable1.getValueAt(fila, 0).toString());
                     vista.txtNOMBRE.setText(vista.jTable1.getValueAt(fila, 1).toString());
                     vista.txtareaDescrip.setText(vista.jTable1.getValueAt(fila, 2).toString());
@@ -87,26 +115,30 @@ public class TipoHabitacionController implements ActionListener {
         });
     }
 
+    // =========================================
+    // MANEJO DE BOTONES
+    // =========================================
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        // -------------------------
+        // ====================================
         // BOTÓN AGREGAR
-        // -------------------------
+        //=====================================
         if (e.getSource() == vista.btAgregar) {
 
             Integer id = obtenerId();
             if (id == null) {
                 return;
             }
-
+            // Crear objeto con datos de la pantalla
             TipoHabitacion tipHA = new TipoHabitacion();
             tipHA.setIdTipo(id);
             tipHA.setNombreTipo(vista.txtNOMBRE.getText());
             tipHA.setDescripcion(vista.txtareaDescrip.getText());
             tipHA.setCapacidad((int) vista.jSpCapacidad.getValue());
             tipHA.setPrecioBase(Double.parseDouble(vista.txtPrecioBase.getText()));
-
+            
+            // Guardar en BD
             if (consultas.agregar(tipHA)) {
                 JOptionPane.showMessageDialog(null, "Agregado correctamente");
                 limpiar();
@@ -114,16 +146,16 @@ public class TipoHabitacionController implements ActionListener {
             }
         }
 
-        // -------------------------
+        //=====================================
         // BOTÓN EDITAR
-        // -------------------------
+        //=====================================
         if (e.getSource() == vista.btEditar) {
 
             if (idSeleccionado == 0) {
                 JOptionPane.showMessageDialog(null, "Seleccione un tipo de registro en la tabla");
                 return;
             }
-
+              // Crear objeto con los nuevos datos
             TipoHabitacion tipHA = new TipoHabitacion();
             tipHA.setIdTipo(idSeleccionado);
             tipHA.setNombreTipo(vista.txtNOMBRE.getText());
@@ -138,9 +170,9 @@ public class TipoHabitacionController implements ActionListener {
             }
         }
 
-        // -------------------------
+        // =====================================
         // BOTÓN BUSCAR
-        // -------------------------
+        // =====================================
         if (e.getSource() == vista.btBuscar) {
 
             Integer id = obtenerId();
@@ -150,18 +182,18 @@ public class TipoHabitacionController implements ActionListener {
             ArrayList<Object[]> resultados = consultas.buscarPorId(id);
 
             DefaultTableModel modelo = (DefaultTableModel) vista.jTable1.getModel();
-            modelo.setRowCount(0);
+            modelo.setRowCount(0);// Limpiar tabla
 
             if (resultados.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No se encontró un tipo con ese ID.");
             } else {
-                modelo.addRow(resultados.get(0));
+                modelo.addRow(resultados.get(0));// Mostrar resultado
             }
         }
 
-        // -------------------------
+        //======================================
         // BOTÓN ELIMINAR
-        // -------------------------
+        // =====================================
         if (e.getSource() == vista.btEliminar) {
 
             if (idSeleccionado == 0) {
@@ -175,20 +207,25 @@ public class TipoHabitacionController implements ActionListener {
                 actualizarTabla();
             }
         }
-
+        
+        // ==================================
         // LIMPIAR
+        // ==================================
         if (e.getSource() == vista.btLimpiar) {
             limpiar();
         }
 
-        // -------------------------
+        // ==================================
         // BOTÓN SALIR
-        // -------------------------
+        // ==================================
         if (e.getSource() == vista.btSalir) {
-            vista.dispose();
+            vista.dispose();// Cerrar ventana
         }
     }
-
+    
+    // ==========================
+    // ACTUALIZAR TABLA COMPLETA
+    // ==========================
     public void actualizarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) vista.jTable1.getModel();
         consultas.cargarTabla(modelo);

@@ -5,9 +5,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-/**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
- */
+/*****************************************************************************
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *****************************************************************************/
 public class EmpleadoDAO {
 
     // ---------------------------
@@ -99,7 +101,7 @@ public class EmpleadoDAO {
     }
 
     // ---------------------------
-    //  ROL
+    //  OBTENER ROL
     // ---------------------------
     private String obtenerRolTexto(int idRol) {
         switch (idRol) {
@@ -115,7 +117,7 @@ public class EmpleadoDAO {
     }
 
     // ---------------------------
-    // BUSCAR EMPLEADO
+    // BUSCAR EMPLEADO POR ID
     // ---------------------------
     public ArrayList<Object[]> buscarPorId(int id) {
         ArrayList<Object[]> lista = new ArrayList<>();
