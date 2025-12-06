@@ -183,9 +183,10 @@ public class MenuController implements ActionListener {
         ClienteDAO q = new ClienteDAO();
         GestionCliente v = new GestionCliente();
 
-        new ClienteController(m, q, v);
+        ClienteController ctrl = new ClienteController(m, q, v);
         v.setVisible(true);
         v.setLocationRelativeTo(null);
+        ctrl.iniciar();
     }
 
     private void abrirGestionEmpleados() {
@@ -198,10 +199,10 @@ public class MenuController implements ActionListener {
         HabitacionDAO q = new HabitacionDAO();
         GestionHabitacion v = new GestionHabitacion();
         
-        new HabitacionController(m, q, v);
+        HabitacionController ctrl = new HabitacionController(m, q, v);
         v.setVisible(true);
         v.setLocationRelativeTo(null);
-        
+        ctrl.iniciar();
     }
     
     private void abrirGestionServicio(){
@@ -209,9 +210,10 @@ public class MenuController implements ActionListener {
         ServicioDAO q = new ServicioDAO();
         GestionServicio v = new GestionServicio();
 
-        new ServicioController(m, q, v);
+        ServicioController ctrl = new ServicioController(m, q, v);
         v.setVisible(true);
         v.setLocationRelativeTo(null);
+        ctrl.iniciar();
     }
     
     

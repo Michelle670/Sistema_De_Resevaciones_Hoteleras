@@ -5,6 +5,8 @@
 package goHotel.view;
 
 import goHotel.model.DAO.ClienteDAO.ComboItem;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -17,6 +19,24 @@ public class GestionCliente extends javax.swing.JFrame {
      */
     public GestionCliente() {
         initComponents();
+        
+        jtTablaCliente.setDefaultEditor(Object.class, null);
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtTablaCliente.getTableHeader().setBackground(lightGray);
+        
+        // ocultar ID Plan (col 1)
+        jtTablaCliente.getColumnModel().getColumn(1).setMinWidth(0);
+        jtTablaCliente.getColumnModel().getColumn(1).setMaxWidth(0);
+        jtTablaCliente.getColumnModel().getColumn(1).setWidth(0);
+
+        // ocultar ID País (col 6)
+        jtTablaCliente.getColumnModel().getColumn(6).setMinWidth(0);
+        jtTablaCliente.getColumnModel().getColumn(6).setMaxWidth(0);
+        jtTablaCliente.getColumnModel().getColumn(6).setWidth(0);
+        
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
+        setResizable(false);
+
     }
 
     /**
@@ -69,7 +89,8 @@ public class GestionCliente extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Gestion de Clientes");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -128,13 +149,13 @@ public class GestionCliente extends javax.swing.JFrame {
         jtTablaCliente.setBackground(new java.awt.Color(204, 204, 204));
         jtTablaCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Plan Lealtad", "Nombre", "Correo", "Password", "Pais", "Puntos"
+                "ID", "ID Plan", "Plan Lealtad", "Nombre", "Correo", "Password", "ID Pais", "Pais", "Puntos"
             }
         ));
         jtTablaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -383,31 +404,38 @@ public class GestionCliente extends javax.swing.JFrame {
         // Columna 0
         String id = jtTablaCliente.getValueAt(fila, 0).toString();
         txtID.setText(id);
+        
+        //Columna 1
+        int idPlan = Integer.parseInt(jtTablaCliente.getValueAt(fila, 1).toString()); // escondido
+        seleccionarPorId(cmbPlanLealtad, idPlan);
+        
+        //Columna 2
+        txtNombre.setText(jtTablaCliente.getValueAt(fila, 3).toString());
+        
+        //Columna 3
+        txtCorreo.setText(jtTablaCliente.getValueAt(fila, 4).toString());
+        
+        //Columna 4
+        txtPassword.setText(jtTablaCliente.getValueAt(fila, 5).toString());
 
-        // Columna 1
-        String plan = jtTablaCliente.getValueAt(fila, 1).toString();
-        cmbPlanLealtad.setSelectedItem(plan);
+        //Columna 5
+        int idPais = Integer.parseInt(jtTablaCliente.getValueAt(fila, 6).toString()); // escondido
+        seleccionarPorId(cmbPais, idPais);
 
-        // Columna 2
-        String nombre = jtTablaCliente.getValueAt(fila, 2).toString();
-        txtNombre.setText(nombre);
-
-        // Columna 3
-        String correo = jtTablaCliente.getValueAt(fila, 3).toString();
-        txtCorreo.setText(correo);
-
-        // Columna 4
-        String password = jtTablaCliente.getValueAt(fila, 4).toString();
-        txtPassword.setText(password);
-
-        // Columna 5 
-        String pais = jtTablaCliente.getValueAt(fila, 5).toString();
-        cmbPais.setSelectedItem(pais);
-
-        // Columna 6
-        String puntos = jtTablaCliente.getValueAt(fila, 6).toString();
-        lblPuntosAcumulados.setText(puntos);
+        //Columna 6
+        lblPuntosAcumulados.setText(jtTablaCliente.getValueAt(fila, 8).toString());
     }//GEN-LAST:event_jtTablaClienteMouseClicked
+
+    private void seleccionarPorId(JComboBox<ComboItem> combo, int idBuscado) {
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            ComboItem it = combo.getItemAt(i);
+            if (it != null && it.getId() == idBuscado) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
+        combo.setSelectedIndex(0);
+    }
 
     /**
      * @param args the command line arguments

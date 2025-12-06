@@ -18,6 +18,8 @@ import javax.swing.table.DefaultTableModel;
  * @author israelapuy
  */
 public class ServicioDAO {
+    
+    //Registrar servicio en BD
     public boolean registrarServicio(Servicio servicio){
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -52,6 +54,7 @@ public class ServicioDAO {
         }
     }
     
+    //Modificar servicio en BD
     public boolean modificarServicio(Servicio servicio) {
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -80,6 +83,7 @@ public class ServicioDAO {
         }
     }
     
+    //Eliminar servicio en BD
     public boolean eliminarServicio(Servicio servicio) {
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
@@ -106,6 +110,7 @@ public class ServicioDAO {
         }
     }
     
+    //Buscar servicio en BD
     public boolean buscarServicio(Servicio servicio){
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -139,6 +144,7 @@ public class ServicioDAO {
         }
     }
     
+    //Cargar todos los servicios en la tabla
     public void cargarDatosEnTabla(DefaultTableModel modelo) {
         modelo.setRowCount(0);
         Connection conn = null;
@@ -179,6 +185,39 @@ public class ServicioDAO {
         }
     }
     
+    //Carga solo el servicio buscado en la tabla
+    public void cargarDatosEnTablaPorID(DefaultTableModel modelo, int id) {
+        modelo.setRowCount(0);
+
+        String sqlBase = "SELECT id_servicio, nombre, descripcion FROM servicio";
+
+        String sql = sqlBase;
+
+        if (id > 0) {
+            sql += " WHERE id_servicio = ?";
+        }
+
+        try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (id > 0) {
+                ps.setInt(1, id);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Object[] fila = {
+                        rs.getInt("id_servicio"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion")
+                    };
+                    modelo.addRow(fila);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Error al cargar los servicios: " + e.getMessage());
+        } 
+    }
+    
+    //Helpers para cargar los ComboBox
     public static class ComboItem {
 
         private final int id;
@@ -217,6 +256,7 @@ public class ServicioDAO {
         }
     }
     
+    //Obtener el nombre del servicio basado en el ID
     public String obtenerNombreServicio(int idServicio) {
         String sql = "SELECT nombre FROM servicio WHERE id_servicio=?";
         try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

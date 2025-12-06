@@ -39,9 +39,8 @@ public class ClienteController implements ActionListener {
     }
     
     public void iniciar() {
-        vista.setTitle("Gestor de Clientes");
+        vista.setTitle("Gestión de Clientes");
         vista.setLocationRelativeTo(null);
-        vista.txtID.setVisible(false);
     }
     
     public void limpiar() {
@@ -55,6 +54,7 @@ public class ClienteController implements ActionListener {
         vista.txtID.requestFocus();
     }
     
+    //
     @Override
     public void actionPerformed(ActionEvent e){
         //btnAgregar;
@@ -78,7 +78,6 @@ public class ClienteController implements ActionListener {
             modelo.setCorreo(vista.txtCorreo.getText().trim());
             modelo.setContrasenna(vista.txtPassword.getText().trim());
             modelo.setIdPais(paisItem.getId());
-            modelo.setPuntosLealtad(1000);
             
             if(consultas.registrarCliente(modelo)){
                 JOptionPane.showMessageDialog(null, "Cliente registrado.");
@@ -99,7 +98,6 @@ public class ClienteController implements ActionListener {
             modelo.setCorreo(vista.txtCorreo.getText().trim());
             modelo.setContrasenna(vista.txtPassword.getText().trim());
             modelo.setIdPais(paisItem.getId());
-            modelo.setPuntosLealtad(1000);
 
             if (consultas.modificarCliente(modelo)) {
                 JOptionPane.showMessageDialog(null, "Cliente modificado.");
@@ -137,6 +135,8 @@ public class ClienteController implements ActionListener {
                     vista.cmbPais.setSelectedIndex(modelo.getIdPais());
                     seleccionarPorId(vista.cmbPais, modelo.getIdPais());
                     vista.lblPuntosAcumulados.setText(String.valueOf(modelo.getPuntosLealtad()));
+                    
+                    consultas.cargarDatosEnTablaPorID((DefaultTableModel) vista.jtTablaCliente.getModel(), id);
                     JOptionPane.showMessageDialog(null, "Cliente encontrado.");
                 }else {
                     JOptionPane.showMessageDialog(null, "No se encontró un cliente con ese ID.");
@@ -163,6 +163,7 @@ public class ClienteController implements ActionListener {
         }
     }
     
+    //Helper para los Combobox
     private void seleccionarPorId(JComboBox<ComboItem> combo, int idBuscado) {
         for (int i = 0; i < combo.getItemCount(); i++) {
             ComboItem it = combo.getItemAt(i);
