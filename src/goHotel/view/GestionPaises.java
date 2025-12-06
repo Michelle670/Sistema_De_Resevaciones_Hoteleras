@@ -1,16 +1,58 @@
 package goHotel.view;
 
 import goHotel.controller.PaisController;
+import goHotel.model.DAO.PaisDAO;
 import goHotel.model.Pais;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel; // Import necesario si manipulas el modelo de la tabla
+
+//******************************************************************************
+/**
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ */
+//******************************************************************************
 
 public class GestionPaises extends javax.swing.JFrame {
 
+    // Variable de instancia para el Controlador
+    private PaisController ctrl; 
+
+    /**
+     * Creates new form GestionPaises
+     */
     public GestionPaises() {
         initComponents();
-        Pais modeloPais = new Pais();
-        PaisController ctrl = new PaisController(modeloPais, this);
+        
+        // 1. Establecer el ÍCONO de la ventana (Implementación de GestionHoteles)
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage()); 
+        
+        // 2. Desactivar edición de tabla (como en GestionHoteles)
+        jtPais.setDefaultEditor(Object.class, null); 
+        
+        // 3. Configurar el color del encabezado de la tabla (opcional, como en GestionHoteles)
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtPais.getTableHeader().setBackground(lightGray);
+        
+        // 4. Inicializa el controlador
+        iniciarControlador(); 
     }
-
+    
+    /**
+     * Inicializa el modelo, DAO y el controlador.
+     */
+    private void iniciarControlador() {
+        Pais modeloPais = new Pais();
+        PaisDAO daoPais = new PaisDAO(); 
+        
+        // Ahora el controlador se asigna a la variable de instancia (this.ctrl)
+        this.ctrl = new PaisController(modeloPais, this, daoPais);
+        this.ctrl.iniciar(); 
+    }
+    
+    // --- MÉTODOS GETTERS ---
+    
     public javax.swing.JButton getBtnAgregar() {
         return btnAgregar;
     }
@@ -30,6 +72,10 @@ public class GestionPaises extends javax.swing.JFrame {
     public javax.swing.JButton getBtnSalir() {
         return btnSalir;
     }
+    
+    public javax.swing.JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
 
     public javax.swing.JTextField getTxtId() {
         return txtId;
@@ -46,6 +92,30 @@ public class GestionPaises extends javax.swing.JFrame {
     public javax.swing.JTable getJtPais() {
         return jtPais;
     }
+    
+    // --- MÉTODOS DE UTILIDAD/FUNCIONALIDAD ---
+    
+    /**
+     * Limpia todos los campos de texto de la ventana.
+     * Es útil para el botón 'Limpiar'.
+     */
+    public void limpiarCampos() {
+        txtId.setText("");
+        txtCodigoISO.setText("");
+        txtNombre.setText("");
+        txtId.requestFocus();
+    }
+    
+    /**
+     * Actualiza la tabla llamando al controlador.
+     */
+    public void actualizarTabla() {
+        if (ctrl != null) {
+            DefaultTableModel modelo = (DefaultTableModel) jtPais.getModel();
+            // Asumiendo que el controlador tiene un método cargarTabla, similar al de HotelController
+            // ctrl.cargarTabla(modelo); 
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -57,6 +127,7 @@ public class GestionPaises extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         txtCodigoISO = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
@@ -132,6 +203,19 @@ public class GestionPaises extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEliminar);
 
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setFocusable(false);
+        btnLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnLimpiar);
+
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.setFocusable(false);
@@ -175,8 +259,8 @@ public class GestionPaises extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(92, Short.MAX_VALUE)
@@ -261,12 +345,17 @@ public class GestionPaises extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

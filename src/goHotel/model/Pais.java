@@ -5,66 +5,57 @@ package goHotel.model;
  * PROYECTO
  * SEMANA 9
  */
-public class Pais 
-{
+public class Pais {
 //==============================================================================
-//ATRIBUTOS   
+// ATRIBUTOS
 //==============================================================================
- private int idPais;
- private String codigo;
- private String nombre;
+    private int idPais;
+    private String codigo;
+    private String nombre;
 //==============================================================================
-//CONSTRUCTOR
-//==============================================================================   
-    public Pais() 
-    {
+// CONSTRUCTOR
+//==============================================================================
+    public Pais() {
         this.idPais = 0;
         this.codigo = "";
         this.nombre = "";
     }
-    
-    public Pais(int idPais, String codigo, String nombre) 
-    {
+
+    public Pais(int idPais, String codigo, String nombre) {
         this.idPais = idPais;
         this.codigo = codigo;
         this.nombre = nombre;
     }
 //==============================================================================
-//GETTERS Y SETTERS
-//==============================================================================  
+// GETTERS Y SETTERS
+//==============================================================================
 
-    public int getIdPais() 
-    {
+    public int getIdPais() {
         return idPais;
     }
 
-    public void setIdPais(int idPais) 
-    {
+    public void setIdPais(int idPais) {
         this.idPais = idPais;
     }
 
-    public String getCodigo() 
-    {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo)
-    {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    public String getNombre() 
-    {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) 
-    {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     @Override
     public String toString() {
-        return  nombre ;
-    }    
+        return nombre;
+    }
 }

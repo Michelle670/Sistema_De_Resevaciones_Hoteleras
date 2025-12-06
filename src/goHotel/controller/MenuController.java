@@ -8,6 +8,7 @@ import goHotel.model.DAO.LimpiezaDAO;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.DAO.ServicioDAO;
+import goHotel.model.DAO.PlanLealtadDAO; // <-- IMPORTACIÓN NECESARIA AÑADIDA
 import goHotel.model.Habitacion;
 import goHotel.model.Hotel;
 import goHotel.model.Reserva;
@@ -79,11 +80,11 @@ public class MenuController implements ActionListener {
     private void configurarPermisosPorRol() {
         // Si es Cliente, ocultar menús de empleado
           if (tipoUsuario.equalsIgnoreCase("Cliente"))
-        {
+          {
             vista.mnuMantenimientos.setVisible(false);
             vista.mnuLimpieza.setVisible(false);
             return;
-        }
+          }
 
         // Si es Empleado, configurar según rol
         if (tipoUsuario.equalsIgnoreCase("Empleado")) {
@@ -145,17 +146,30 @@ public class MenuController implements ActionListener {
         vistaPaises.setLocationRelativeTo(null);
     }
     
-    // 💡 MÉTODO FALTANTE AÑADIDO 💡
+    /**
+     * CORRECCIÓN: Este método ahora instancia el DAO y pasa los 3 argumentos (Vista, DAO, Modelo)
+     * al constructor del PlanLealtadController.
+     */
     private void abrirGestionPlanLealtad() {
         try {
+            // 1. Instanciar el MODELO
             PlanLealtad modelo = new PlanLealtad();
-            // Usamos el singleton que definiste en GestionPlanLealtad
-            GestionPlanLealtad vistaPlan = GestionPlanLealtad.getInstancia(); 
             
-            // Creamos e inicializamos el controlador
-            new PlanLealtadController(modelo, vistaPlan); 
+            // 2. Instanciar el DAO
+            PlanLealtadDAO modeloDAO = new PlanLealtadDAO(); 
             
-            // NOTA: El PlanLealtadController ya tiene vista.setVisible(true) en su constructor.
+            // 3. Obtener la VISTA (usando el Singleton)
+            GestionPlanLealtad vistaPlan = GestionPlanLealtad.getInstancia();
+            
+            // 4. Creamos e inicializamos el controlador con los 3 argumentos en el ORDEN CORRECTO:
+            PlanLealtadController controller = new PlanLealtadController(vistaPlan, modeloDAO, modelo); 
+            
+            // Asignar el controlador a la vista si existe el setter
+            vistaPlan.setPlanLealtadController(controller); 
+            
+            // 5. Mostrar la Vista
+            vistaPlan.setVisible(true);
+            vistaPlan.setLocationRelativeTo(null);
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(vista, "Error al abrir Gestión Plan Lealtad: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -251,7 +265,6 @@ public class MenuController implements ActionListener {
             abrirGestionPaises();
         }
         
-        // 💡 LLAMADA AL NUEVO MÉTODO AÑADIDA 💡
         if (e.getSource() == vista.chmGestionPlanLealtad) {
             abrirGestionPlanLealtad(); 
         }
@@ -277,7 +290,7 @@ public class MenuController implements ActionListener {
         }
         
         if (e.getSource() == vista.chmReporteOcupacion){
-           abrirReporteLimpieza(); 
+            abrirReporteLimpieza(); 
         }
         
         if (e.getSource() == vista.chmSalir) {

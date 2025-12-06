@@ -1,4 +1,5 @@
 package goHotel.model.DAO;
+
 import goHotel.model.ConexionBD;
 import goHotel.model.PlanLealtad;
 import java.sql.Connection;
@@ -7,150 +8,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class PlanLealtadDAO 
-{
+//******************************************************************************
+/**
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ */
+//******************************************************************************
 
-    public boolean agregarPlanLealtad(PlanLealtad plan) throws SQLException {
-        PreparedStatement ps = null;
-        Connection con = ConexionBD.getConnection();
-        String sql = "INSERT INTO plan_lealtad (id_plan, descuento, nivel) VALUES (?,?,?)";
-
-        try 
-        {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, plan.getIdLealtad());
-            ps.setDouble(2, plan.getDescuento());
-            ps.setString(3, plan.getNivel());
-            
-            return ps.executeUpdate() > 0;
-            
-        } finally
-        {
-            try
-            {
-                if (ps != null) { ps.close(); }
-                if (con != null) { con.close(); }
-            } catch (SQLException e) {
-                System.err.println("Error al cerrar recursos en agregarPlanLealtad: " + e.getMessage());
-            }
-        }
-    }
-
-    public boolean modificarPlanLealtad(PlanLealtad plan) throws SQLException 
-    {
-        PreparedStatement ps = null;
-        Connection con = ConexionBD.getConnection();
-        String sql = "UPDATE plan_lealtad SET descuento=?, nivel=? WHERE id_plan=?";
-
-        try
-        {
-            ps = con.prepareStatement(sql);
-            ps.setDouble(1, plan.getDescuento());
-            ps.setString(2, plan.getNivel());
-            ps.setInt(3, plan.getIdLealtad());
-
-            return ps.executeUpdate() > 0;
-            
-        } finally 
-        {
-            try {
-                if (ps != null) { ps.close(); }
-                if (con != null) { con.close(); }
-            } catch (SQLException e) {
-                System.err.println("Error al cerrar recursos en modificarPlanLealtad: " + e.getMessage());
-            }
-        }
-    }
+public class PlanLealtadDAO extends ConexionBD {
     
-    public boolean eliminarPlanLealtad(int idLealtad) throws SQLException 
-    {
-        PreparedStatement ps = null;
-        Connection con = ConexionBD.getConnection();
-        String sql = "DELETE FROM plan_lealtad WHERE id_plan=?";
+    private static final Logger LOGGER = Logger.getLogger(PlanLealtadDAO.class.getName());
 
-        try 
-        {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, idLealtad);
-
-            return ps.executeUpdate() > 0;
-            
-        } finally 
-        {
-            try 
-            {
-                if (ps != null) { ps.close(); }
-                if (con != null) { con.close(); }
-            } catch (SQLException e) {
-                System.err.println("Error al cerrar recursos en eliminarPlanLealtad: " + e.getMessage());
-            }
-        }
-    }
-
-    public PlanLealtad buscarPlanLealtad(String criterio) throws SQLException 
-    {
+    // ==========================================================================
+    // MÉTODO 1: OBTENER TODOS (Reemplaza cargarDatosEnTabla para el Controller)
+    // Firma requerida por Controller: List<PlanLealtad> planes = modeloDAO.obtenerTodos();
+    // ==========================================================================
+    public List<PlanLealtad> obtenerTodos() {
+        List<PlanLealtad> planes = new ArrayList<>();
+        Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Connection con = ConexionBD.getConnection();
-        PlanLealtad plan_LealtadEncontrado = null;
-
-        String sql = "SELECT id_plan, nivel, descuento FROM plan_lealtad WHERE id_plan = ? OR (id_plan = 0 AND nivel LIKE ?)"; 
-        
-        try 
-        {
-            ps = con.prepareStatement(sql);
-            int idBusqueda = 0;
-            String nivelBusqueda = null;
-
-            try 
-            {
-                idBusqueda = Integer.parseInt(criterio);
-            } catch (NumberFormatException e) 
-            {
-                nivelBusqueda = criterio;
-            }
-
-            if (nivelBusqueda != null) {
-                ps.setInt(1, 0); 
-                ps.setString(2, "%" + nivelBusqueda + "%");
-            } else {
-                ps.setInt(1, idBusqueda);
-                ps.setString(2, null); 
-            }
-
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                plan_LealtadEncontrado = new PlanLealtad(
-                    rs.getInt("id_plan"),
-                    rs.getString("nivel"),
-                    rs.getDouble("descuento")
-                   // rs.getDouble("factor_puntos")
-                );
-            }
-            return plan_LealtadEncontrado;
-            
-        } finally {
-            try {
-                if (rs != null) { rs.close(); }
-                if (ps != null) { ps.close(); }
-                if (con != null) { con.close(); }
-            } catch (SQLException e) {
-                System.err.println("Error al cerrar recursos en buscarPlanLealtad: " + e.getMessage());
-            }
-        }
-    }
-
-    public List<PlanLealtad> listarPlanesLealtad() throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection con = ConexionBD.getConnection();
-        List<PlanLealtad> lista = new ArrayList<>();
-        String sql = "SELECT id_plan, descuento, nivel FROM plan_lealtad ORDER BY id_plan";
 
         try {
-            ps = con.prepareStatement(sql);
+            conn = ConexionBD.getConnection();
+            String sql = "SELECT id_plan, nivel, descuento FROM plan_lealtad ORDER BY id_plan";
+            ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -158,46 +44,146 @@ public class PlanLealtadDAO
                     rs.getInt("id_plan"),
                     rs.getString("nivel"),
                     rs.getDouble("descuento")
-                   // rs.getDouble("factor_puntos")
                 );
-                lista.add(pl);
+                planes.add(pl);
             }
-            return lista;
-            
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error al cargar todos los planes de lealtad", e);
         } finally {
             try {
-                if (rs != null) { rs.close(); }
-                if (ps != null) { ps.close(); }
-                if (con != null) { con.close(); }
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
             } catch (SQLException e) {
-                System.err.println("Error al cerrar recursos en listarPlanesLealtad: " + e.getMessage());
+                LOGGER.log(Level.SEVERE, "Error al cerrar recursos en obtenerTodos", e);
+            }
+        }
+        return planes;
+    }
+
+    // ==========================================================================
+    // MÉTODO 2: AGREGAR (Reemplaza registrarPlanLealtad)
+    // Firma requerida por Controller: if (modeloDAO.agregar(modelo)) {
+    // ==========================================================================
+    public boolean agregar(PlanLealtad modelo) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConexionBD.getConnection();
+            String sql = "INSERT INTO plan_lealtad (id_plan, nivel, descuento) VALUES (?, ?, ?)";
+            ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, modelo.getId()); 
+            ps.setString(2, modelo.getNivel());
+            ps.setDouble(3, modelo.getDescuento());
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error de BD al agregar PlanLealtad: " + e.getMessage(), e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error al cerrar PreparedStatement en agregar", e);
+            }
+        }
+    }
+
+    // ==========================================================================
+    // MÉTODO 3: EDITAR (Reemplaza modificarPlanLealtad)
+    // Firma requerida por Controller: if (modeloDAO.editar(modelo)) {
+    // ==========================================================================
+    public boolean editar(PlanLealtad modelo) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = ConexionBD.getConnection();
+            String sql = "UPDATE plan_lealtad SET nivel = ?, descuento = ? WHERE id_plan = ?";
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, modelo.getNivel());
+            ps.setDouble(2, modelo.getDescuento());
+            ps.setInt(3, modelo.getId());
+
+            int filasActualizadas = ps.executeUpdate();
+            return filasActualizadas > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error de BD al editar PlanLealtad: " + e.getMessage(), e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error al cerrar PreparedStatement en editar", e);
             }
         }
     }
     
-//    public PlanLealtad obtenerPlanPorId(int idPlan) {
-//    String sql = "SELECT id_plan, nivel, descuento, factor_puntos FROM plan_lealtad WHERE id_plan = ?";
-//
-//    try (Connection con = ConexionBD.getConnection();
-//         PreparedStatement ps = con.prepareStatement(sql)) {
-//
-//        ps.setInt(1, idPlan);
-//        ResultSet rs = ps.executeQuery();
-//
-//        if (rs.next()) {
-//            PlanLealtad p = new PlanLealtad();
-//            p.setIdLealtad(rs.getInt("id_plan"));
-//            p.setNivel(rs.getString("nivel"));
-//            p.setDescuento(rs.getDouble("descuento"));
-//           // p.setFactorPuntos(rs.getInt("factor_puntos"));
-//            return p;
-//        }
-//
-//    } catch (SQLException e) {
-//        System.err.println("Error en PlanLealtadDAO: " + e.getMessage());
-//    }
-//
-//    return null;
-//}
+    // ==========================================================================
+    // MÉTODO 4: ELIMINAR
+    // Firma requerida por Controller: if (modeloDAO.eliminar(modelo)) {
+    // ==========================================================================
+    public boolean eliminar(PlanLealtad modelo) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        try {
+            conn = ConexionBD.getConnection();
+            String sql = "DELETE FROM plan_lealtad WHERE id_plan = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, modelo.getId()); 
 
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error al eliminar PlanLealtad: " + e.getMessage(), e);
+            return false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error al cerrar PreparedStatement en eliminar", e);
+            }
+        }
+    }
+
+    // ==========================================================================
+    // MÉTODO 5: BUSCAR (Por ID)
+    // Firma requerida por Controller: PlanLealtad encontrado = modeloDAO.buscar(modelo);
+    // ==========================================================================
+    public PlanLealtad buscar(PlanLealtad modelo) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConexionBD.getConnection();
+            String sql = "SELECT id_plan, nivel, descuento FROM plan_lealtad WHERE id_plan = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, modelo.getId());
+            
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new PlanLealtad(
+                    rs.getInt("id_plan"),
+                    rs.getString("nivel"),
+                    rs.getDouble("descuento")
+                );
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error de BD al buscar PlanLealtad por ID", e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Error al cerrar recursos en buscar", e);
+            }
+        }
+        return null;
+    }
 }

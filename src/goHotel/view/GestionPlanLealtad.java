@@ -1,34 +1,78 @@
 package goHotel.view;
 
+import goHotel.controller.PlanLealtadController;
+import goHotel.model.PlanLealtad; 
+import goHotel.model.DAO.PlanLealtadDAO;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import goHotel.model.PlanLealtad;
-import goHotel.controller.PlanLealtadController;
 import javax.swing.JOptionPane;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import goHotel.view.GestionPlanLealtad;
+import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel; 
 
 public class GestionPlanLealtad extends javax.swing.JFrame {
 
+    // **********************************************
+    // ATRIBUTOS
+    // **********************************************
     private static GestionPlanLealtad instancia;
-
     private PlanLealtadController planLealtadController;
 
+    // **********************************************
+    // CONSTRUCTOR Y SINGLETON
+    // **********************************************
     public GestionPlanLealtad() {
         initComponents();
+        
+        // --- Configuración Inicial de la Vista ---
+        // 1. Establecer el ÍCONO de la ventana
+        try {
+            setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage()); 
+        } catch (Exception e) {
+            System.err.println("Advertencia: No se encontró el ícono /ImagenesProyecto/icono_plan_lealtad.png");
+        }
+        
+        // 2. Comportamiento al cerrar
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        // 3. Configuración de la tabla
+        jtPlanLealtad.setDefaultEditor(Object.class, null); // Desactivar edición
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtPlanLealtad.getTableHeader().setBackground(lightGray);
+        // ------------------------------------------
+        
+        // 4. Inicializar el Controlador
+        iniciarControlador();
     }
 
+    /**
+     * Implementación del patrón Singleton.
+     * @return La única instancia de GestionPlanLealtad.
+     */
     public static GestionPlanLealtad getInstancia() {
         if (instancia == null) {
             instancia = new GestionPlanLealtad();
         }
         return instancia;
     }
+    
+    private void iniciarControlador() {
+        PlanLealtad modelo = new PlanLealtad();
+        PlanLealtadDAO dao = new PlanLealtadDAO();
+        
+        // Se instancia y se le asigna al atributo de la clase
+        this.planLealtadController = new PlanLealtadController(this, dao, modelo);
+        this.planLealtadController.iniciar();
+    }
 
+
+    // **********************************************
+    // GETTERS REQUERIDOS POR EL CONTROLLER
+    // **********************************************
+    
+    
     public PlanLealtadController getPlanLealtadController() {
         return planLealtadController;
     }
@@ -57,6 +101,10 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
         return btnSalir;
     }
 
+    public JButton getBtnLimpiar() {
+        return btnLimpiar;
+    }
+
     public JTextField getTxtId() {
         return txtId;
     }
@@ -73,6 +121,30 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
         return jtPlanLealtad;
     }
 
+    // **********************************************
+    // MÉTODOS DE UTILIDAD (Lógica de UI)
+    // **********************************************
+    /**
+     * Limpia el contenido de todos los campos de texto de la vista.
+     */
+    public void limpiarCampos() {
+        txtId.setText("");
+        txtNivel.setText("");
+        txtDescuento.setText("");
+        txtId.requestFocus();
+    }
+
+    /**
+     * Solicita al Controller que recargue los datos y actualice la tabla.
+     */
+    public void actualizarTabla() {
+         if (planLealtadController != null) {
+             planLealtadController.actualizarTabla(); 
+         } else {
+             JOptionPane.showMessageDialog(this, "Error: Controller no asignado a la Vista.", "Error de Inicialización", JOptionPane.ERROR_MESSAGE);
+         }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -83,6 +155,7 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         txtDescuento = new javax.swing.JTextField();
         txtNivel = new javax.swing.JTextField();
@@ -152,6 +225,19 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnEliminar);
+
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setFocusable(false);
+        btnLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnLimpiar);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btnSalir.setText("Salir");
@@ -224,7 +310,7 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -289,31 +375,47 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescuentoActionPerformed
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
     public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    try {
+        // ... (Código de Look and Feel) ...
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GestionPlanLealtad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
-        java.awt.EventQueue.invokeLater(() -> {
-            PlanLealtad modelo = new PlanLealtad();
-            GestionPlanLealtad vista = new GestionPlanLealtad();
-
-            new PlanLealtadController(modelo, vista);
-        });
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(GestionPlanLealtad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+
+    java.awt.EventQueue.invokeLater(() -> {
+        // 1. Instanciar el MODELO
+        PlanLealtad modelo = new PlanLealtad();
+        
+        // 2. Instanciar el DAO
+        PlanLealtadDAO modeloDAO = new PlanLealtadDAO(); 
+        
+        // 3. Instanciar la VISTA
+        GestionPlanLealtad vista = new GestionPlanLealtad();
+        
+        // 4. INSTANCIAR EL CONTROLLER EN EL ORDEN CORRECTO: (Vista, DAO, Modelo)
+        new PlanLealtadController(vista, modeloDAO, modelo); 
+        
+        // 5. Mostrar la Vista
+        vista.setVisible(true);
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
