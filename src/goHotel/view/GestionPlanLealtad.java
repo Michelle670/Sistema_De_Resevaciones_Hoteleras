@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//******************************************************************************
+//*****************************************************************************
 /**
  * AUTOR: GRUPO 3 PROYECTO SEMANA 9
  */
