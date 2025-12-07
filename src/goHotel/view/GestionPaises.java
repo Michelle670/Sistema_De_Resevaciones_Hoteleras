@@ -4,117 +4,83 @@ import goHotel.controller.PaisController;
 import goHotel.model.DAO.PaisDAO;
 import goHotel.model.Pais;
 import javax.swing.ImageIcon;
-import javax.swing.table.DefaultTableModel; // Import necesario si manipulas el modelo de la tabla
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JComboBox; 
 
-//******************************************************************************
 /**
  * AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
+ *
+ * Vista para la gestión de países (Formulario).
  */
 //******************************************************************************
-
 public class GestionPaises extends javax.swing.JFrame {
 
-    // Variable de instancia para el Controlador
     private PaisController ctrl; 
+
+    // **********************************************************************
+    // COMPONENTE EXTRA ASUMIDO: Se mantiene la declaración de jcPais
+    // por si se necesita, aunque no se usa visiblemente en este formulario.
+    // **********************************************************************
+    private JComboBox<String> jcPais; 
 
     /**
      * Creates new form GestionPaises
      */
     public GestionPaises() {
-        initComponents();
+        // Inicializar el combo (si no está en initComponents)
+        jcPais = new JComboBox<>(); 
         
-        // 1. Establecer el ÍCONO de la ventana (Implementación de GestionHoteles)
+        initComponents(); 
+
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage()); 
+        this.setResizable(false); 
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
-        // 2. Desactivar edición de tabla (como en GestionHoteles)
         jtPais.setDefaultEditor(Object.class, null); 
         
-        // 3. Configurar el color del encabezado de la tabla (opcional, como en GestionHoteles)
         java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
         jtPais.getTableHeader().setBackground(lightGray);
-        
-        // 4. Inicializa el controlador
+
         iniciarControlador(); 
     }
-    
+
     /**
      * Inicializa el modelo, DAO y el controlador.
      */
     private void iniciarControlador() {
         Pais modeloPais = new Pais();
         PaisDAO daoPais = new PaisDAO(); 
-        
-        // Ahora el controlador se asigna a la variable de instancia (this.ctrl)
+
         this.ctrl = new PaisController(modeloPais, this, daoPais);
         this.ctrl.iniciar(); 
     }
-    
-    // --- MÉTODOS GETTERS ---
-    
-    public javax.swing.JButton getBtnAgregar() {
-        return btnAgregar;
-    }
 
-    public javax.swing.JButton getBtnEditar() {
-        return btnEditar;
-    }
+    // ======================================================================
+    // MÉTODOS GETTERS (INCLUYE getJcPais())
+    // ======================================================================
 
-    public javax.swing.JButton getBtnBuscar() {
-        return btnBuscar;
-    }
-
-    public javax.swing.JButton getBtnEliminar() {
-        return btnEliminar;
-    }
-
-    public javax.swing.JButton getBtnSalir() {
-        return btnSalir;
-    }
-    
-    public javax.swing.JButton getBtnLimpiar() {
-        return btnLimpiar;
-    }
-
-    public javax.swing.JTextField getTxtId() {
-        return txtId;
-    }
-
-    public javax.swing.JTextField getTxtCodigoISO() {
-        return txtCodigoISO;
-    }
-
-    public javax.swing.JTextField getTxtNombre() {
-        return txtNombre;
-    }
-
-    public javax.swing.JTable getJtPais() {
-        return jtPais;
-    }
-    
-    // --- MÉTODOS DE UTILIDAD/FUNCIONALIDAD ---
+    public JButton getBtnAgregar() { return btnAgregar; }
+    public JButton getBtnEditar() { return btnEditar; }
+    public JButton getBtnBuscar() { return btnBuscar; }
+    public JButton getBtnEliminar() { return btnEliminar; }
+    public JButton getBtnSalir() { return btnSalir; }
+    public JButton getBtnLimpiar() { return btnLimpiar; }
+    public JTextField getTxtId() { return txtId; }
+    public JTextField getTxtCodigoISO() { return txtCodigoISO; }
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTable getJtPais() { return jtPais; }
     
     /**
-     * Limpia todos los campos de texto de la ventana.
-     * Es útil para el botón 'Limpiar'.
+     * Getter para el JComboBox de países.
+     * @return El JComboBox jcPais.
      */
-    public void limpiarCampos() {
-        txtId.setText("");
-        txtCodigoISO.setText("");
-        txtNombre.setText("");
-        txtId.requestFocus();
-    }
-    
-    /**
-     * Actualiza la tabla llamando al controlador.
-     */
-    public void actualizarTabla() {
-        if (ctrl != null) {
-            DefaultTableModel modelo = (DefaultTableModel) jtPais.getModel();
-            // Asumiendo que el controlador tiene un método cargarTabla, similar al de HotelController
-            // ctrl.cargarTabla(modelo); 
-        }
+    public JComboBox<String> getJcPais() {
+        return jcPais;
     }
 
     @SuppressWarnings("unchecked")
@@ -259,8 +225,8 @@ public class GestionPaises extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(92, Short.MAX_VALUE)

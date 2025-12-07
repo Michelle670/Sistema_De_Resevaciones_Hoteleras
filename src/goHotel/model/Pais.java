@@ -4,30 +4,46 @@ package goHotel.model;
  * AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
+ *
+ * Clase que representa la entidad Pais.
  */
-public class Pais {
+
+//******************************************************************************
+public class Pais
+{
 //==============================================================================
-// ATRIBUTOS
+//ATRIBUTOS 
 //==============================================================================
+
     private int idPais;
-    private String codigo;
+    private String codigo; // Código ISO (ej. ES, US, FR)
     private String nombre;
+
 //==============================================================================
-// CONSTRUCTOR
+//CONSTRUCTOR
 //==============================================================================
-    public Pais() {
+
+    public Pais() 
+    {
         this.idPais = 0;
         this.codigo = "";
         this.nombre = "";
     }
 
+    /**
+     * Constructor completo.
+     * @param idPais Identificador único del país.
+     * @param codigo Código ISO del país.
+     * @param nombre Nombre del país.
+     */
     public Pais(int idPais, String codigo, String nombre) {
         this.idPais = idPais;
         this.codigo = codigo;
         this.nombre = nombre;
     }
+
 //==============================================================================
-// GETTERS Y SETTERS
+//GETTERS Y SETTERS
 //==============================================================================
 
     public int getIdPais() {
@@ -54,6 +70,14 @@ public class Pais {
         this.nombre = nombre;
     }
 
+//==============================================================================
+//MÉTODOS DE OBJETO
+//==============================================================================
+    
+    /**
+     * Devuelve el nombre del país, útil para ComboBoxes.
+     * @return El nombre del país.
+     */
     @Override
     public String toString() {
         return nombre;

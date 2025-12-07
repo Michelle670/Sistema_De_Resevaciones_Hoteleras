@@ -1,6 +1,6 @@
 package goHotel.model.DAO;
 
-import goHotel.model.ConexionBD;
+import goHotel.model.ConexionBD; 
 import goHotel.model.PlanLealtad;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,17 +16,16 @@ import java.util.logging.Logger;
  * AUTOR: GRUPO 3
  * PROYECTO
  * SEMANA 9
+ * Data Access Object para la entidad PlanLealtad.
  */
 //******************************************************************************
-
 public class PlanLealtadDAO extends ConexionBD {
-    
+
     private static final Logger LOGGER = Logger.getLogger(PlanLealtadDAO.class.getName());
 
-    // ==========================================================================
-    // MÉTODO 1: OBTENER TODOS (Reemplaza cargarDatosEnTabla para el Controller)
-    // Firma requerida por Controller: List<PlanLealtad> planes = modeloDAO.obtenerTodos();
-    // ==========================================================================
+    //==========================================================================
+    // MÉTODO 1: OBTENER TODOS (READ ALL)
+    //==========================================================================
     public List<PlanLealtad> obtenerTodos() {
         List<PlanLealtad> planes = new ArrayList<>();
         Connection conn = null;
@@ -35,7 +34,7 @@ public class PlanLealtadDAO extends ConexionBD {
 
         try {
             conn = ConexionBD.getConnection();
-            String sql = "SELECT id_plan, nivel, descuento FROM plan_lealtad ORDER BY id_plan";
+            String sql = "SELECT id_plan, nivel, descuento, factor_puntos FROM plan_lealtad ORDER BY id_plan";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -43,7 +42,11 @@ public class PlanLealtadDAO extends ConexionBD {
                 PlanLealtad pl = new PlanLealtad(
                     rs.getInt("id_plan"),
                     rs.getString("nivel"),
-                    rs.getDouble("descuento")
+                    // Se usa getObject(column, Double.class) para manejar NULL, 
+                    // si la BD retorna null y el modelo usa Double (clase envoltorio)
+                    // Si el modelo usa double (primitivo), getDouble() retorna 0.0 si es NULL.
+                    rs.getDouble("descuento"), 
+                    rs.getDouble("factor_puntos")
                 );
                 planes.add(pl);
             }
@@ -60,22 +63,23 @@ public class PlanLealtadDAO extends ConexionBD {
         return planes;
     }
 
-    // ==========================================================================
-    // MÉTODO 2: AGREGAR (Reemplaza registrarPlanLealtad)
-    // Firma requerida por Controller: if (modeloDAO.agregar(modelo)) {
-    // ==========================================================================
+    //==========================================================================
+    // MÉTODO 2: AGREGAR (CREATE)
+    //==========================================================================
     public boolean agregar(PlanLealtad modelo) {
         Connection conn = null;
         PreparedStatement ps = null;
 
         try {
             conn = ConexionBD.getConnection();
-            String sql = "INSERT INTO plan_lealtad (id_plan, nivel, descuento) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO plan_lealtad (id_plan, nivel, descuento, factor_puntos) VALUES (?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
 
-            ps.setInt(1, modelo.getId()); 
+            ps.setInt(1, modelo.getId());
             ps.setString(2, modelo.getNivel());
-            ps.setDouble(3, modelo.getDescuento());
+            // Usar setDouble() que maneja Double (la clase) y también double (el primitivo)
+            ps.setObject(3, modelo.getDescuento()); 
+            ps.setObject(4, modelo.getFactorPuntos()); 
 
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
@@ -91,22 +95,22 @@ public class PlanLealtadDAO extends ConexionBD {
         }
     }
 
-    // ==========================================================================
-    // MÉTODO 3: EDITAR (Reemplaza modificarPlanLealtad)
-    // Firma requerida por Controller: if (modeloDAO.editar(modelo)) {
-    // ==========================================================================
+    //==========================================================================
+    // MÉTODO 3: EDITAR (UPDATE)
+    //==========================================================================
     public boolean editar(PlanLealtad modelo) {
         Connection conn = null;
         PreparedStatement ps = null;
 
         try {
             conn = ConexionBD.getConnection();
-            String sql = "UPDATE plan_lealtad SET nivel = ?, descuento = ? WHERE id_plan = ?";
+            String sql = "UPDATE plan_lealtad SET nivel = ?, descuento = ?, factor_puntos = ? WHERE id_plan = ?";
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, modelo.getNivel());
-            ps.setDouble(2, modelo.getDescuento());
-            ps.setInt(3, modelo.getId());
+            ps.setObject(2, modelo.getDescuento());
+            ps.setObject(3, modelo.getFactorPuntos()); 
+            ps.setInt(4, modelo.getId());
 
             int filasActualizadas = ps.executeUpdate();
             return filasActualizadas > 0;
@@ -121,20 +125,30 @@ public class PlanLealtadDAO extends ConexionBD {
             }
         }
     }
-    
-    // ==========================================================================
-    // MÉTODO 4: ELIMINAR
-    // Firma requerida por Controller: if (modeloDAO.eliminar(modelo)) {
-    // ==========================================================================
+
+    //==========================================================================
+    // MÉTODO 4: ELIMINAR (DELETE - Por ID o Nivel)
+    //==========================================================================
     public boolean eliminar(PlanLealtad modelo) {
         Connection conn = null;
         PreparedStatement ps = null;
-        
+        String sql;
+
         try {
             conn = ConexionBD.getConnection();
-            String sql = "DELETE FROM plan_lealtad WHERE id_plan = ?";
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, modelo.getId()); 
+
+            if (modelo.getId() > 0) {
+                sql = "DELETE FROM plan_lealtad WHERE id_plan = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, modelo.getId());
+            } else if (modelo.getNivel() != null && !modelo.getNivel().trim().isEmpty()) {
+                sql = "DELETE FROM plan_lealtad WHERE nivel = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, modelo.getNivel());
+            } else {
+                LOGGER.log(Level.WARNING, "Intento de eliminar PlanLealtad sin ID ni Nivel válidos.");
+                return false;
+            }
 
             int filas = ps.executeUpdate();
             return filas > 0;
@@ -150,28 +164,33 @@ public class PlanLealtadDAO extends ConexionBD {
         }
     }
 
-    // ==========================================================================
-    // MÉTODO 5: BUSCAR (Por ID)
-    // Firma requerida por Controller: PlanLealtad encontrado = modeloDAO.buscar(modelo);
-    // ==========================================================================
+    //==========================================================================
+    // MÉTODO 5: BUSCAR (READ ONE - Por ID)
+    //==========================================================================
     public PlanLealtad buscar(PlanLealtad modelo) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+        PlanLealtad encontrado = null;
+
+        if (modelo.getId() <= 0) {
+             return null; 
+        }
+
         try {
             conn = ConexionBD.getConnection();
-            String sql = "SELECT id_plan, nivel, descuento FROM plan_lealtad WHERE id_plan = ?";
+            String sql = "SELECT id_plan, nivel, descuento, factor_puntos FROM plan_lealtad WHERE id_plan = ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, modelo.getId());
-            
+
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new PlanLealtad(
+                encontrado = new PlanLealtad(
                     rs.getInt("id_plan"),
                     rs.getString("nivel"),
-                    rs.getDouble("descuento")
+                    rs.getDouble("descuento"),
+                    rs.getDouble("factor_puntos") 
                 );
             }
         } catch (SQLException e) {
@@ -184,6 +203,13 @@ public class PlanLealtadDAO extends ConexionBD {
                 LOGGER.log(Level.SEVERE, "Error al cerrar recursos en buscar", e);
             }
         }
-        return null;
+        return encontrado;
+    }
+
+    public PlanLealtad buscarPorId(int id) {
+        // Este método está duplicado/no usado. Es mejor eliminarlo o refactorizar 
+        // para que use el método 'buscar(PlanLealtad modelo)'. 
+        // Lo dejamos para cumplir con el código original, pero es redundante.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 }

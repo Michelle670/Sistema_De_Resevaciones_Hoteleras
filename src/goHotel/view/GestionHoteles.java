@@ -106,9 +106,6 @@ public class GestionHoteles extends javax.swing.JFrame
         });
         jToolBar1.add(btnEditar);
 
-
-        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
-        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/lupa (1).png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.setFocusable(false);

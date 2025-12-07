@@ -1,148 +1,139 @@
 package goHotel.view;
 
 import goHotel.controller.PlanLealtadController;
-import goHotel.model.PlanLealtad; 
 import goHotel.model.DAO.PlanLealtadDAO;
+import goHotel.model.PlanLealtad;
 import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
-import javax.swing.table.DefaultTableModel; 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+//******************************************************************************
+/**
+ * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ */
+//******************************************************************************
 public class GestionPlanLealtad extends javax.swing.JFrame {
 
-    // **********************************************
-    // ATRIBUTOS
-    // **********************************************
-    private static GestionPlanLealtad instancia;
-    private PlanLealtadController planLealtadController;
-
-    // **********************************************
-    // CONSTRUCTOR Y SINGLETON
-    // **********************************************
-    public GestionPlanLealtad() {
-        initComponents();
-        
-        // --- Configuración Inicial de la Vista ---
-        // 1. Establecer el ÍCONO de la ventana
-        try {
-            setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage()); 
-        } catch (Exception e) {
-            System.err.println("Advertencia: No se encontró el ícono /ImagenesProyecto/icono_plan_lealtad.png");
-        }
-        
-        // 2. Comportamiento al cerrar
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        // 3. Configuración de la tabla
-        jtPlanLealtad.setDefaultEditor(Object.class, null); // Desactivar edición
-        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
-        jtPlanLealtad.getTableHeader().setBackground(lightGray);
-        // ------------------------------------------
-        
-        // 4. Inicializar el Controlador
-        iniciarControlador();
-    }
+    private PlanLealtadController controller;
 
     /**
-     * Implementación del patrón Singleton.
-     * @return La única instancia de GestionPlanLealtad.
+     * Creates new form GestionPlanLealtad
      */
-    public static GestionPlanLealtad getInstancia() {
-        if (instancia == null) {
-            instancia = new GestionPlanLealtad();
+    public GestionPlanLealtad() {
+        initComponents();
+
+        // --- Configuración Inicial de la Vista ---
+        jtPlanLealtad.setDefaultEditor(Object.class, null);
+
+        try {
+            setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage());
+        } catch (Exception e) {
+            System.err.println("Advertencia: No se encontró el ícono /ImagenesProyecto/web-settings.png. " + e.getMessage());
         }
-        return instancia;
-    }
-    
-    private void iniciarControlador() {
-        PlanLealtad modelo = new PlanLealtad();
-        PlanLealtadDAO dao = new PlanLealtadDAO();
-        
-        // Se instancia y se le asigna al atributo de la clase
-        this.planLealtadController = new PlanLealtadController(this, dao, modelo);
-        this.planLealtadController.iniciar();
+
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtPlanLealtad.getTableHeader().setBackground(lightGray);
+
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setResizable(false);
+        this.setTitle("Gestión de Planes de Lealtad");
     }
 
+    private void limpiarActionListeners(javax.swing.JButton boton) {
+        for (ActionListener al : boton.getActionListeners()) {
+            boton.removeActionListener(al);
+        }
+    }
 
     // **********************************************
-    // GETTERS REQUERIDOS POR EL CONTROLLER
+    // GETTERS Y SETTERS (CRUCIAL: ASIGNACIÓN Y LIMPIEZA DE LISTENERS)
     // **********************************************
-    
-    
-    public PlanLealtadController getPlanLealtadController() {
-        return planLealtadController;
-    }
-
     public void setPlanLealtadController(PlanLealtadController controller) {
-        this.planLealtadController = controller;
+        this.controller = controller;
+        
+        // ***************************************************************
+        // CRÍTICO: LIMPIAR LISTENERS ANTES DE ASIGNAR NUEVOS para evitar repetición
+        // ***************************************************************
+        
+        limpiarActionListeners(getBtnAgregar());
+        limpiarActionListeners(getBtnEditar());
+        limpiarActionListeners(getBtnBuscar());
+        limpiarActionListeners(getBtnEliminar());
+        limpiarActionListeners(getBtnLimpiar());
+        limpiarActionListeners(getBtnSalir());
+        
+        // ***************************************************************
+        
+        // Asignar los ActionListeners de los botones al controlador
+        // (Asumimos que PlanLealtadController implementa ActionListener)
+        getBtnAgregar().addActionListener(controller);
+        getBtnEditar().addActionListener(controller);
+        getBtnBuscar().addActionListener(controller);
+        getBtnEliminar().addActionListener(controller);
+        getBtnLimpiar().addActionListener(controller);
+        getBtnSalir().addActionListener(controller);
     }
 
-    public JButton getBtnAgregar() {
+    // --- Getters de Componentes ---
+    public javax.swing.JButton getBtnAgregar() {
         return btnAgregar;
     }
 
-    public JButton getBtnEditar() {
+    public javax.swing.JButton getBtnEditar() {
         return btnEditar;
     }
 
-    public JButton getBtnBuscar() {
+    public javax.swing.JButton getBtnBuscar() {
         return btnBuscar;
     }
 
-    public JButton getBtnEliminar() {
+    public javax.swing.JButton getBtnEliminar() {
         return btnEliminar;
     }
 
-    public JButton getBtnSalir() {
+    public javax.swing.JButton getBtnSalir() {
         return btnSalir;
     }
 
-    public JButton getBtnLimpiar() {
+    public javax.swing.JButton getBtnLimpiar() {
         return btnLimpiar;
     }
 
-    public JTextField getTxtId() {
+    public javax.swing.JTextField getTxtId() {
         return txtId;
     }
 
-    public JTextField getTxtNivel() {
+    public javax.swing.JTextField getTxtNivel() {
         return txtNivel;
     }
 
-    public JTextField getTxtDescuento() {
+    public javax.swing.JTextField getTxtDescuento() {
         return txtDescuento;
     }
 
-    public JTable getJtPlanLealtad() {
+    public javax.swing.JTextField getTxtFactorPuntos() {
+        return txtFactorPuntos;
+    }
+
+    public javax.swing.JTable getJtPlanLealtad() {
         return jtPlanLealtad;
     }
 
     // **********************************************
-    // MÉTODOS DE UTILIDAD (Lógica de UI)
+    // MÉTODO DE UTILIDAD
     // **********************************************
-    /**
-     * Limpia el contenido de todos los campos de texto de la vista.
-     */
     public void limpiarCampos() {
         txtId.setText("");
         txtNivel.setText("");
         txtDescuento.setText("");
+        txtFactorPuntos.setText("");
         txtId.requestFocus();
-    }
-
-    /**
-     * Solicita al Controller que recargue los datos y actualice la tabla.
-     */
-    public void actualizarTabla() {
-         if (planLealtadController != null) {
-             planLealtadController.actualizarTabla(); 
-         } else {
-             JOptionPane.showMessageDialog(this, "Error: Controller no asignado a la Vista.", "Error de Inicialización", JOptionPane.ERROR_MESSAGE);
-         }
     }
 
     @SuppressWarnings("unchecked")
@@ -166,6 +157,8 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        txtFactorPuntos = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -262,13 +255,13 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
         jtPlanLealtad.setForeground(new java.awt.Color(51, 51, 51));
         jtPlanLealtad.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Descuento", "Nivel"
+                "ID", "Descuento", "Nivel", "Factor Puntos"
             }
         ));
         jtPlanLealtad.setGridColor(new java.awt.Color(255, 255, 255));
@@ -277,11 +270,13 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
 
         jLabel1.setText("Descuento (%):");
 
-        jLabel2.setText("Nivel");
+        jLabel2.setText("Nivel:");
 
         jLabel5.setText("ID:");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/LogoGOHOTEL_1.jpeg"))); // NOI18N
+
+        jLabel4.setText("Factor Puntos:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -290,27 +285,27 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtNivel))
+                    .addComponent(txtNivel, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                    .addComponent(txtId))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                    .addComponent(txtFactorPuntos))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -321,18 +316,21 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
                     .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5)
+                    .addComponent(txtId))
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtFactorPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)))
+                .addGap(47, 47, 47)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -380,36 +378,27 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     public static void main(String args[]) {
-    try {
-        // ... (Código de Look and Feel) ...
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GestionPlanLealtad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-        java.util.logging.Logger.getLogger(GestionPlanLealtad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        java.awt.EventQueue.invokeLater(() -> {
+            PlanLealtad modelo = new PlanLealtad();
+            PlanLealtadDAO modeloDAO = new PlanLealtadDAO();
+            GestionPlanLealtad vista = new GestionPlanLealtad();
+            PlanLealtadController controller = new PlanLealtadController(vista, modeloDAO, modelo);
+
+            vista.setPlanLealtadController(controller); 
+            vista.setVisible(true);
+        });
     }
-
-    java.awt.EventQueue.invokeLater(() -> {
-        // 1. Instanciar el MODELO
-        PlanLealtad modelo = new PlanLealtad();
-        
-        // 2. Instanciar el DAO
-        PlanLealtadDAO modeloDAO = new PlanLealtadDAO(); 
-        
-        // 3. Instanciar la VISTA
-        GestionPlanLealtad vista = new GestionPlanLealtad();
-        
-        // 4. INSTANCIAR EL CONTROLLER EN EL ORDEN CORRECTO: (Vista, DAO, Modelo)
-        new PlanLealtadController(vista, modeloDAO, modelo); 
-        
-        // 5. Mostrar la Vista
-        vista.setVisible(true);
-    });
-}
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
@@ -420,12 +409,14 @@ public class GestionPlanLealtad extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable jtPlanLealtad;
     private javax.swing.JTextField txtDescuento;
+    private javax.swing.JTextField txtFactorPuntos;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNivel;
     // End of variables declaration//GEN-END:variables

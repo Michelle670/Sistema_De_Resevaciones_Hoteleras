@@ -8,7 +8,7 @@ import goHotel.model.DAO.LimpiezaDAO;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.DAO.ServicioDAO;
-import goHotel.model.DAO.PlanLealtadDAO; // <-- IMPORTACIÓN NECESARIA AÑADIDA
+import goHotel.model.DAO.PlanLealtadDAO; 
 import goHotel.model.Habitacion;
 import goHotel.model.Hotel;
 import goHotel.model.Reserva;
@@ -25,8 +25,8 @@ import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import goHotel.view.GestionPlanLealtad; // Importar la vista de Plan Lealtad
-import goHotel.model.PlanLealtad; // Importar el modelo de Plan Lealtad
+import goHotel.view.GestionPlanLealtad; 
+import goHotel.model.PlanLealtad; 
 
 /*****************************************************************************
  * AUTOR: GRUPO 3
@@ -139,16 +139,15 @@ public class MenuController implements ActionListener {
     }
     
     private void abrirGestionPaises() {
-        // NOTA: Para que Gestión País funcione con la misma estructura MVC,
-        // deberías hacer esto, pero mantengo tu código original que funciona:
+        // Mantenemos el código original que funciona:
         GestionPaises vistaPaises = new GestionPaises();
         vistaPaises.setVisible(true);
         vistaPaises.setLocationRelativeTo(null);
     }
     
     /**
-     * CORRECCIÓN: Este método ahora instancia el DAO y pasa los 3 argumentos (Vista, DAO, Modelo)
-     * al constructor del PlanLealtadController.
+     * CORRECCIÓN DE ERROR: Eliminamos la llamada a GestionPlanLealtad.getInstancia()
+     * y se crea una nueva instancia normal (new GestionPlanLealtad()).
      */
     private void abrirGestionPlanLealtad() {
         try {
@@ -158,17 +157,17 @@ public class MenuController implements ActionListener {
             // 2. Instanciar el DAO
             PlanLealtadDAO modeloDAO = new PlanLealtadDAO(); 
             
-            // 3. Obtener la VISTA (usando el Singleton)
-            GestionPlanLealtad vistaPlan = GestionPlanLealtad.getInstancia();
+            // 3. Crear la VISTA sin usar Singleton
+            GestionPlanLealtad vistaPlan = new GestionPlanLealtad();
             
-            // 4. Creamos e inicializamos el controlador con los 3 argumentos en el ORDEN CORRECTO:
+            // 4. Creamos e inicializamos el controlador con los 3 argumentos
             PlanLealtadController controller = new PlanLealtadController(vistaPlan, modeloDAO, modelo); 
             
-            // Asignar el controlador a la vista si existe el setter
-            vistaPlan.setPlanLealtadController(controller); 
+            // 5. Asignar el controlador a la vista si existe el setter (Ya lo hace el controlador, pero se deja para ser explícito)
+            vistaPlan.setPlanLealtadController(controller);
             
-            // 5. Mostrar la Vista
-            vistaPlan.setVisible(true);
+            // 6. Mostrar la Vista (El controlador ya llama a iniciar(), que debería hacer esto)
+            vistaPlan.setVisible(true); 
             vistaPlan.setLocationRelativeTo(null);
             
         } catch (Exception ex) {
@@ -205,7 +204,6 @@ public class MenuController implements ActionListener {
 
     private void abrirGestionEmpleados() {
         JOptionPane.showMessageDialog(vista, "Módulo en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
-        // TODO: Implementar cuando esté listo
     }
 
     private void abrirGestionHabitaciones() {
