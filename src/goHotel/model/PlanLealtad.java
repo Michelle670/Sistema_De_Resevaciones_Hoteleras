@@ -1,41 +1,49 @@
 package goHotel.model;
 
 /**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
  */
+
+//******************************************************************************
 public class PlanLealtad {
 //==============================================================================
-// ATRIBUTOS    
+//ATRIBUTOS 
 //==============================================================================
 
-    private int idLealtad;
+    private int id;
     private String nivel;
-    private double descuento;
+    private Double descuento; 
+    private Double factorPuntos; 
 
 //==============================================================================
-// CONSTRUCTOR
-//==============================================================================    
+//CONSTRUCTOR
+//==============================================================================
+    
     public PlanLealtad() {
-        this.idLealtad = 0;
+        this.id = 0;
         this.nivel = "";
-        this.descuento = 0.0;
+        this.descuento = 0.0; // Inicializar Double a 0.0
+        this.factorPuntos = 0.0; // Inicializar Double a 0.0
     }
 
-    public PlanLealtad(int idLealtad, String nivel, double descuento) {
-        this.idLealtad = idLealtad;
+    public PlanLealtad(int id, String nivel, Double descuento, Double factorPuntos) {
+        this.id = id;
         this.nivel = nivel;
         this.descuento = descuento;
+        this.factorPuntos = factorPuntos;
     }
 
 //==============================================================================
-// GETTERS Y SETTERS
-//==============================================================================  
-    public int getIdLealtad() {
-        return idLealtad;
+//GETTERS Y SETTERS
+//==============================================================================
+    public int getId() {
+        return id;
     }
 
-    public void setIdLealtad(int idLealtad) {
-        this.idLealtad = idLealtad;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNivel() {
@@ -46,16 +54,19 @@ public class PlanLealtad {
         this.nivel = nivel;
     }
 
-    public double getDescuento() {
+    public Double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(double descuento) {
+    public void setDescuento(Double descuento) {
         this.descuento = descuento;
     }
 
-    @Override
-    public String toString() {
-        return nivel + " (" + descuento + "%)";
+    public Double getFactorPuntos() {
+        return factorPuntos;
+    }
+
+    public void setFactorPuntos(Double factorPuntos) {
+        this.factorPuntos = factorPuntos;
     }
 }

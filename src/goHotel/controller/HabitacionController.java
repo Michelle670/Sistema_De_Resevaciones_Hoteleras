@@ -3,7 +3,6 @@ package goHotel.controller;
 import goHotel.model.DAO.HabitacionDAO;
 import goHotel.model.DAO.HabitacionDAO.ComboItemH;
 import goHotel.model.DAO.HabitacionServicioDAO;
-import goHotel.model.EstadoHabitacion;
 import goHotel.model.Habitacion;
 import goHotel.model.DAO.ServicioDAO;
 import goHotel.model.DAO.ServicioDAO.ComboItem;
@@ -42,7 +41,6 @@ public class HabitacionController implements ActionListener{
         this.vista.btnAsignarServicio.addActionListener(this);
         this.vista.btnQuitarServicio.addActionListener(this);
         
-        consultas.cargarEstado(vista.cmbEstado);
         consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtHabitaciones.getModel());
                 
         consultas.cargarHoteles(vista.cmbIdHotel);
@@ -70,13 +68,12 @@ public class HabitacionController implements ActionListener{
         if(e.getSource() == vista.btnAgregar){
             ComboItemH idHotelPlan = (ComboItemH) vista.cmbIdHotel.getSelectedItem();
             ComboItemH idTipoPlan = (ComboItemH) vista.cmbIdTipo.getSelectedItem();
-            EstadoHabitacion estado = (EstadoHabitacion) vista.cmbEstado.getSelectedItem();
             
             if(vista.txtIdHabitacion.getText().trim().isEmpty() 
                     || vista.cmbIdHotel.getSelectedIndex() == 0
                     || vista.cmbIdTipo.getSelectedIndex() == 0
-                    || vista.txtNumero.getText().trim().isEmpty()
-                    || estado == null){
+                    || vista.txtNumero.getText().trim().isEmpty())
+            {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
                 return;   
             }
@@ -87,7 +84,6 @@ public class HabitacionController implements ActionListener{
             modelo.setTipo(idTipoPlan.getId());
             int numero = Integer.parseInt(vista.txtNumero.getText().trim());
             modelo.setNumero(numero);
-            modelo.setEstado(estado.name());
             
             if (consultas.registrarHabitacion(modelo)) {
                 JOptionPane.showMessageDialog(null, "Habitación registrada.");
@@ -101,13 +97,12 @@ public class HabitacionController implements ActionListener{
         if(e.getSource() == vista.btnEditar){
             ComboItemH idHotelPlan = (ComboItemH) vista.cmbIdHotel.getSelectedItem();
             ComboItemH idTipoPlan = (ComboItemH) vista.cmbIdTipo.getSelectedItem();
-            EstadoHabitacion estado = (EstadoHabitacion) vista.cmbEstado.getSelectedItem();
 
             if (vista.txtIdHabitacion.getText().trim().isEmpty()
                     || vista.cmbIdHotel.getSelectedIndex() == 0
                     || vista.cmbIdTipo.getSelectedIndex() == 0
-                    || vista.txtNumero.getText().trim().isEmpty()
-                    || estado == null) {
+                    || vista.txtNumero.getText().trim().isEmpty()) 
+            {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
                 return;
             }
@@ -118,7 +113,6 @@ public class HabitacionController implements ActionListener{
             modelo.setTipo(idTipoPlan.getId());
             int numero = Integer.parseInt(vista.txtNumero.getText().trim());
             modelo.setNumero(numero);
-            modelo.setEstado(estado.name());
 
             if(consultas.editarHabitacion(modelo)){
                 JOptionPane.showMessageDialog(null, "Habitación modificada.");
@@ -155,15 +149,7 @@ public class HabitacionController implements ActionListener{
                     seleccionarPorId(vista.cmbIdTipo, modelo.getTipo());
                     vista.txtNumero.setText(String.valueOf(modelo.getNumero()));
                     
-                    String estadoBD = modelo.getEstado();
                     consultas.cargarDatosEnTablaPorID((DefaultTableModel) vista.jtHabitaciones.getModel(), id);
-
-                    try {
-                        EstadoHabitacion estadoEnum = EstadoHabitacion.valueOf(estadoBD);
-                        vista.cmbIdHotel.setSelectedItem(estadoEnum);
-                    } catch (IllegalArgumentException ex) {
-                        vista.cmbIdHotel.setSelectedItem(EstadoHabitacion.DISPONIBLE);
-                    }
                     cargarServiciosAsignados(id);
                     JOptionPane.showMessageDialog(null, "Habitación encontrada.");
                 }

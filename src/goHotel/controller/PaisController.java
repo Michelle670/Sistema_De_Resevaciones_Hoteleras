@@ -5,190 +5,286 @@ import goHotel.model.Pais;
 import goHotel.view.GestionPaises;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 13 (Estilo PlanLealtadController)
+ *
+ * Controlador para la gestión de la entidad Pais.
+ */
+//*****************************************************************************
 public class PaisController implements ActionListener {
 
-    private Pais modelo;
-    private GestionPaises view;
-    private PaisDAO dao;
+    private final Pais modelo;
+    private final GestionPaises vista;
+    private final PaisDAO modeloDAO;
 
-    public PaisController(Pais modelo, GestionPaises view) {
+    // **********************************************
+    // CONSTRUCTOR
+    // **********************************************
+
+    /**
+     * Constructor del controlador.
+     * @param modelo El objeto País temporal para las operaciones.
+     * @param vista La ventana de Gestión de Países.
+     * @param modeloDAO El objeto DAO para el acceso a datos.
+     */
+    public PaisController(Pais modelo, GestionPaises vista, PaisDAO modeloDAO) {
         this.modelo = modelo;
-        this.view = view;
-        this.dao = new PaisDAO();
+        this.vista = vista;
+        this.modeloDAO = modeloDAO;
 
-        this.view.getBtnAgregar().addActionListener(this);
-        this.view.getBtnEditar().addActionListener(this);
-        this.view.getBtnEliminar().addActionListener(this);
-        this.view.getBtnBuscar().addActionListener(this);
-        this.view.getBtnSalir().addActionListener(this);
-
-        cargarTabla();
+        // 1. Asociar eventos de la Vista al Controller
+        this.vista.getBtnAgregar().addActionListener(this);
+        this.vista.getBtnEditar().addActionListener(this);
+        this.vista.getBtnEliminar().addActionListener(this);
+        this.vista.getBtnBuscar().addActionListener(this);
+        this.vista.getBtnSalir().addActionListener(this);
+        // Usar expresión lambda para el botón Limpiar
+        this.vista.getBtnLimpiar().addActionListener(e -> limpiarCampos());
     }
 
-    public void limpiarCampos() {
-        view.getTxtId().setText(null);
-        view.getTxtCodigoISO().setText(null);
-        view.getTxtNombre().setText(null);
-    }
+    // **********************************************
+    // INICIO DEL CONTROLADOR
+    // **********************************************
 
-    public void cargarTabla() {
-        if (view.getJtPais() == null || view.getJtPais().getModel() == null) {
-            return;
-        }
-
-        DefaultTableModel model = (DefaultTableModel) view.getJtPais().getModel();
-        model.setRowCount(0);
-
-        try {
-            List<Pais> lista = dao.listarPaises(); 
-
-            for (Pais p : lista) {
-                Object[] fila = new Object[3];
-                fila[0] = p.getIdPais();
-                fila[1] = p.getCodigo();
-                fila[2] = p.getNombre();
-                model.addRow(fila);
+    /**
+     * Configura el MouseListener para el autollenado y realiza la carga inicial de datos.
+     */
+    public void iniciar() {
+        
+        // =====================================================================
+        // ASEGURA que el MouseListener se configura SOLO UNA VEZ
+        // (Lógica heredada y mantenida para evitar duplicados de listeners)
+        for (java.awt.event.MouseListener ml : this.vista.getJtPais().getMouseListeners()) {
+            if (ml instanceof MouseAdapter) { 
+                 this.vista.getJtPais().removeMouseListener(ml);
             }
-            view.getJtPais().setModel(model);
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(view, "Error al cargar datos de países: " + e.getMessage());
+        }
+        
+        // AGREGAR MouseListener a la tabla para autocompletar campos
+        this.vista.getJtPais().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                seleccionarFilaParaEdicion();
+            }
+        });
+        // =====================================================================
+        
+        this.vista.setTitle("Gestión de Países");
+        this.vista.setLocationRelativeTo(null);
+        actualizarTabla(); 
+    }
+    
+    // **********************************************
+    // MÉTODOS AUXILIARES
+    // **********************************************
+    
+    /** * Implementa la lógica de limpiar campos en el Controller
+     * y refresca la tabla.
+     */
+    public void limpiarCampos() {
+        vista.getTxtId().setText("");
+        vista.getTxtCodigoISO().setText("");
+        vista.getTxtNombre().setText("");
+        
+        actualizarTabla(); // Refresca la tabla
+    }
+    
+    private void salir() {
+        int confirmacion = JOptionPane.showConfirmDialog(
+            vista,
+            "¿Está seguro que desea cerrar la ventana de Gestión de Países?",
+            "Confirmar Salida",
+            JOptionPane.YES_NO_OPTION
+        );
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            vista.dispose();
         }
     }
+
+    /**
+     * Obtiene los datos de la fila seleccionada y rellena los campos.
+     */
+    private void seleccionarFilaParaEdicion() {
+        int fila = vista.getJtPais().getSelectedRow();
+        
+        if (fila >= 0) {
+            DefaultTableModel tableModel = (DefaultTableModel) vista.getJtPais().getModel();
+            
+            // Se asume que los datos están en el orden: ID, Código, Nombre
+            String id = tableModel.getValueAt(fila, 0) != null ? tableModel.getValueAt(fila, 0).toString() : "";
+            String codigo = tableModel.getValueAt(fila, 1) != null ? tableModel.getValueAt(fila, 1).toString() : "";
+            String nombre = tableModel.getValueAt(fila, 2) != null ? tableModel.getValueAt(fila, 2).toString() : "";
+            
+            vista.getTxtId().setText(id);
+            vista.getTxtCodigoISO().setText(codigo);
+            vista.getTxtNombre().setText(nombre);
+        }
+    }
+    
+    /**
+     * Carga todos los países desde el DAO y actualiza la tabla de la vista.
+     */
+    public void actualizarTabla() {
+        
+        DefaultTableModel tableModel = new DefaultTableModel(
+            new Object[]{"ID", "Código", "Nombre"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;  
+            }
+        };
+        
+        List<Pais> paises = modeloDAO.obtenerTodos(); 
+
+        for (Pais p : paises) {
+            tableModel.addRow(new Object[]{
+                p.getIdPais(),
+                p.getCodigo(),
+                p.getNombre()
+            });
+        }
+        
+        this.vista.getJtPais().setModel(tableModel);
+    }
+    
+    // **********************************************
+    // MANEJADOR DE EVENTOS (ActionListener)
+    // **********************************************
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        // --- Botón SALIR ---
+        if (e.getSource() == vista.getBtnSalir()) {
+            salir();
+            return;
+        }
 
-        // --- 1. AGREGAR PAÍS ---
-        if (e.getSource() == view.getBtnAgregar()) {
-            if (view.getTxtId().getText().trim().isEmpty()
-                    || view.getTxtCodigoISO().getText().trim().isEmpty()
-                    || view.getTxtNombre().getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(view, "Todos los campos son obligatorios para agregar.");
+        // --- 1. Botón AGREGAR ---
+        if (e.getSource() == vista.getBtnAgregar()) {
+            
+            String codigo = vista.getTxtCodigoISO().getText().trim();
+            String nombre = vista.getTxtNombre().getText().trim();
+            
+            if (codigo.isEmpty() || nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "El Código y el Nombre son obligatorios.", "Error de validación", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
             try {
-                int id = Integer.parseInt(view.getTxtId().getText().trim());
-                modelo.setIdPais(id);
-                modelo.setCodigo(view.getTxtCodigoISO().getText().trim());
-                modelo.setNombre(view.getTxtNombre().getText().trim());
-
-                if (dao.agregarPais(modelo)) {
-                    JOptionPane.showMessageDialog(view, "País agregado con éxito.");
-                    limpiarCampos();
-                    cargarTabla();
-                }
-
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(view, "Error: El ID debe ser un número entero válido.");
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(view, "Error al guardar en la BD: " + ex.getMessage());
-            }
-
-            // --- 2. EDITAR/MODIFICAR PAÍS ---
-        } else if (e.getSource() == view.getBtnEditar()) {
-            if (view.getTxtId().getText().trim().isEmpty()
-                    || view.getTxtCodigoISO().getText().trim().isEmpty()
-                    || view.getTxtNombre().getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(view, "Debe ingresar el ID, Código ISO y Nombre para modificar.");
-                return;
-            }
-
-            try {
-                int id = Integer.parseInt(view.getTxtId().getText().trim());
-                modelo.setIdPais(id);
-                modelo.setCodigo(view.getTxtCodigoISO().getText().trim());
-                modelo.setNombre(view.getTxtNombre().getText().trim());
-
-                if (dao.modificarPais(modelo)) {
-                    JOptionPane.showMessageDialog(view, "País modificado con éxito.");
-                    limpiarCampos();
-                    cargarTabla();
+                // Si el campo ID está vacío, se asume que el DAO autogenerará el ID.
+                if (!vista.getTxtId().getText().trim().isEmpty()) {
+                    modelo.setIdPais(Integer.parseInt(vista.getTxtId().getText()));
                 } else {
-                    JOptionPane.showMessageDialog(view, "No se encontró el país con ese ID para modificar.");
+                    modelo.setIdPais(0); // O un valor que el DAO reconozca como "nuevo registro"
                 }
-
+                
+                modelo.setCodigo(codigo);
+                modelo.setNombre(nombre);
+                
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(view, "Error: El ID debe ser un número entero válido.");
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(view, "Error al modificar en la BD: " + ex.getMessage());
-            }
-
-            // --- 3. ELIMINAR PAÍS ---
-        } else if (e.getSource() == view.getBtnEliminar()) {
-            if (view.getTxtId().getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(view, "Debe ingresar el ID del país a eliminar.");
+                JOptionPane.showMessageDialog(vista, "El ID debe ser un número entero válido (o déjelo vacío para autogenerar).", "Error de entrada", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            Object[] options = {"Sí", "No"};
-
-            int confirmacion = JOptionPane.showOptionDialog(
-                    view,
-                    "¿Está seguro de eliminar el país con ID: " + view.getTxtId().getText() + "?",
-                    "Confirmar Eliminación",
-                    JOptionPane.YES_NO_OPTION, // Tipo de diálogo (define la cantidad de botones)
-                    JOptionPane.QUESTION_MESSAGE, // Tipo de ícono (el signo de interrogación)
-                    null, // No usamos ícono personalizado
-                    options, // Nuestro array de strings {"Sí", "No"}
-                    options[1] // Opción por defecto ("No")
-            );
-
-            if (confirmacion == 0) {
-                try {
-                    int idAEliminar = Integer.parseInt(view.getTxtId().getText().trim());
-
-                    if (dao.eliminarPais(idAEliminar)) {
-                        JOptionPane.showMessageDialog(view, "País eliminado con éxito.");
-                        limpiarCampos();
-                        cargarTabla();
-                    } else {
-                        JOptionPane.showMessageDialog(view, "No se encontró el país con ese ID para eliminar.");
-                    }
-
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(view, "Error: El ID debe ser un número entero válido.");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(view, "Error al eliminar en la BD: " + ex.getMessage());
+            if (modeloDAO.registrar(modelo)) { 
+                JOptionPane.showMessageDialog(vista, "País Agregado con éxito.");
+                limpiarCampos(); 
+            }
+        }
+        
+        // --- 2. Botón EDITAR ---
+        else if (e.getSource() == vista.getBtnEditar()) {
+            
+            if (vista.getTxtId().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Debe seleccionar un País o ingresar el ID a editar.", "Error de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            try {
+                String codigo = vista.getTxtCodigoISO().getText().trim();
+                String nombre = vista.getTxtNombre().getText().trim();
+                
+                if (codigo.isEmpty() || nombre.isEmpty()) {
+                    JOptionPane.showMessageDialog(vista, "El Código y el Nombre son obligatorios para editar.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+                
+                modelo.setIdPais(Integer.parseInt(vista.getTxtId().getText())); 
+                modelo.setCodigo(codigo);
+                modelo.setNombre(nombre);
+                
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(vista, "El ID debe ser un número entero válido.", "Error de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            // --- 4. BUSCAR PAÍS ---
-        } else if (e.getSource() == view.getBtnBuscar()) {
-            String criterio = JOptionPane.showInputDialog(view, "Ingrese el ID del país a buscar:");
+            if (modeloDAO.editar(modelo)) {
+                JOptionPane.showMessageDialog(vista, "País Editado con éxito.");
+                limpiarCampos(); 
+            }
+        }
 
-            if (criterio != null && !criterio.trim().isEmpty()) {
-                try {
-                    // Solo se busca por ID (número) en este controlador
-                    int idBusqueda = Integer.parseInt(criterio.trim());
-
-                    Pais p = dao.buscarPaisPorId(idBusqueda);
-
-                    if (p != null) {
-                        view.getTxtId().setText(String.valueOf(p.getIdPais()));
-                        view.getTxtCodigoISO().setText(p.getCodigo());
-                        view.getTxtNombre().setText(p.getNombre());
-                        JOptionPane.showMessageDialog(view, "País encontrado y cargado en los campos.");
-                    } else {
-                        JOptionPane.showMessageDialog(view, "País no encontrado con el ID: " + idBusqueda);
-                        limpiarCampos();
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(view, "Error: El criterio de búsqueda debe ser el ID (número entero).");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(view, "Error de base de datos al buscar: " + ex.getMessage());
-                }
+        // --- 3. Botón ELIMINAR ---
+        else if (e.getSource() == vista.getBtnEliminar()) {
+            
+            int id;
+            try {
+                id = Integer.parseInt(vista.getTxtId().getText());
+                modelo.setIdPais(id);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(vista, "Debe ingresar el ID del país a eliminar.", "Error de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            // --- 5. SALIR ---
-        } else if (e.getSource() == view.getBtnSalir()) {
-            view.dispose();
+            int confirmacion = JOptionPane.showConfirmDialog(vista, 
+                                     "ADVERTENCIA: ¿Está seguro que desea eliminar el País con ID: " + id + "?", 
+                                     "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                if (modeloDAO.eliminar(modelo)) {
+                    JOptionPane.showMessageDialog(vista, "País Eliminado con éxito.");
+                    limpiarCampos(); 
+                }
+            }
+        }
+        
+        // --- 4. Botón BUSCAR ---
+        else if (e.getSource() == vista.getBtnBuscar()) {
+            
+            int id;
+            try {
+                id = Integer.parseInt(vista.getTxtId().getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(vista, "Debe ingresar el ID del país a buscar.", "Error de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Pais encontrado = modeloDAO.buscarPorId(id);
+
+            if (encontrado != null) {
+                vista.getTxtId().setText(String.valueOf(encontrado.getIdPais()));
+                vista.getTxtCodigoISO().setText(encontrado.getCodigo());
+                vista.getTxtNombre().setText(encontrado.getNombre());
+                JOptionPane.showMessageDialog(vista, "País encontrado: " + encontrado.getNombre());
+                
+                // OPCIONAL: Podrías querer filtrar la tabla para mostrar solo el resultado
+                // Para esto necesitarías un método de búsqueda en el DAO que devuelva una lista de 1 elemento,
+                // o actualizar el método actualizarTabla() para aceptar un filtro de ID.
+                
+            } else {
+                JOptionPane.showMessageDialog(vista, "País no encontrado.", "Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+                vista.getTxtCodigoISO().setText("");
+                vista.getTxtNombre().setText("");
+            }
         }
     }
 }

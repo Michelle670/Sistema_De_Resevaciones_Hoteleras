@@ -37,7 +37,7 @@ public class LimpiezaDAO {
           + "       INNER JOIN hotel B ON A.id_hotel = B.id_hotel "
           + "       INNER JOIN habitacion C ON A.id_habitacion = C.id_habitacion "
           + "       INNER JOIN tipo_habitacion D ON C.id_tipo = D.id_tipo "
-          + " WHERE 1 = 1 ";
+          + " WHERE A.estado_reserva NOT IN ('CANCELADA','FINALIZADA') ";
 
         // FILTRO: HOTEL
         if (nombreHotel != null && !nombreHotel.equalsIgnoreCase("--- Ninguno ---")) {

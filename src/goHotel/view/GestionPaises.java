@@ -1,50 +1,86 @@
 package goHotel.view;
 
 import goHotel.controller.PaisController;
+import goHotel.model.DAO.PaisDAO;
 import goHotel.model.Pais;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JComboBox; 
 
+/**
+ * AUTOR: GRUPO 3
+ * PROYECTO
+ * SEMANA 9
+ *
+ * Vista para la gestión de países (Formulario).
+ */
+//******************************************************************************
 public class GestionPaises extends javax.swing.JFrame {
 
+    private PaisController ctrl; 
+
+    // **********************************************************************
+    // COMPONENTE EXTRA ASUMIDO: Se mantiene la declaración de jcPais
+    // por si se necesita, aunque no se usa visiblemente en este formulario.
+    // **********************************************************************
+    private JComboBox<String> jcPais; 
+
+    /**
+     * Creates new form GestionPaises
+     */
     public GestionPaises() {
-        initComponents();
+        // Inicializar el combo (si no está en initComponents)
+        jcPais = new JComboBox<>(); 
+        
+        initComponents(); 
+
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/web-settings.png")).getImage()); 
+        this.setResizable(false); 
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        jtPais.setDefaultEditor(Object.class, null); 
+        
+        java.awt.Color lightGray = new java.awt.Color(230, 230, 230);
+        jtPais.getTableHeader().setBackground(lightGray);
+
+        iniciarControlador(); 
+    }
+
+    /**
+     * Inicializa el modelo, DAO y el controlador.
+     */
+    private void iniciarControlador() {
         Pais modeloPais = new Pais();
-        PaisController ctrl = new PaisController(modeloPais, this);
+        PaisDAO daoPais = new PaisDAO(); 
+
+        this.ctrl = new PaisController(modeloPais, this, daoPais);
+        this.ctrl.iniciar(); 
     }
 
-    public javax.swing.JButton getBtnAgregar() {
-        return btnAgregar;
-    }
+    // ======================================================================
+    // MÉTODOS GETTERS (INCLUYE getJcPais())
+    // ======================================================================
 
-    public javax.swing.JButton getBtnEditar() {
-        return btnEditar;
-    }
-
-    public javax.swing.JButton getBtnBuscar() {
-        return btnBuscar;
-    }
-
-    public javax.swing.JButton getBtnEliminar() {
-        return btnEliminar;
-    }
-
-    public javax.swing.JButton getBtnSalir() {
-        return btnSalir;
-    }
-
-    public javax.swing.JTextField getTxtId() {
-        return txtId;
-    }
-
-    public javax.swing.JTextField getTxtCodigoISO() {
-        return txtCodigoISO;
-    }
-
-    public javax.swing.JTextField getTxtNombre() {
-        return txtNombre;
-    }
-
-    public javax.swing.JTable getJtPais() {
-        return jtPais;
+    public JButton getBtnAgregar() { return btnAgregar; }
+    public JButton getBtnEditar() { return btnEditar; }
+    public JButton getBtnBuscar() { return btnBuscar; }
+    public JButton getBtnEliminar() { return btnEliminar; }
+    public JButton getBtnSalir() { return btnSalir; }
+    public JButton getBtnLimpiar() { return btnLimpiar; }
+    public JTextField getTxtId() { return txtId; }
+    public JTextField getTxtCodigoISO() { return txtCodigoISO; }
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTable getJtPais() { return jtPais; }
+    
+    /**
+     * Getter para el JComboBox de países.
+     * @return El JComboBox jcPais.
+     */
+    public JComboBox<String> getJcPais() {
+        return jcPais;
     }
 
     @SuppressWarnings("unchecked")
@@ -57,6 +93,7 @@ public class GestionPaises extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         txtCodigoISO = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
@@ -132,6 +169,19 @@ public class GestionPaises extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEliminar);
 
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/escoba.png"))); // NOI18N
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setFocusable(false);
+        btnLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLimpiar.setMaximumSize(new java.awt.Dimension(60, 60));
+        btnLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnLimpiar);
+
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/cerrar-sesion (1).png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.setFocusable(false);
@@ -175,7 +225,7 @@ public class GestionPaises extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -261,12 +311,17 @@ public class GestionPaises extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formWindowOpened
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

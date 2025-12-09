@@ -18,9 +18,12 @@ public class Reserva
     private String nombreHotel;
     private String nombrePais;
     private String nombreCliente;
+    private String descripcionHabitacion;
     private int    numHabitacion;
     private LocalDate fechaEntrada;
     private LocalDate fechaSalida;
+    private String horaEntrada;
+    private String horaSalida;
 
 
 //==============================================================================
@@ -33,21 +36,27 @@ public class Reserva
         this.nombreHotel = "";
         this.nombrePais = "";
         this.nombreCliente = "";
+        this.descripcionHabitacion = "";
         this.numHabitacion = 0;
         this.fechaEntrada = null;
         this.fechaSalida = null;
+        this.horaEntrada = "";
+        this.horaSalida = "";
     } 
 
-       public Reserva(int idReserva, int idPais, String nombreHotel, String nombrePais, String nombreCliente, int numHabitacion, LocalDate fechaEntrada, LocalDate fechaSalida)
+       public Reserva(int idReserva, int idPais, String nombreHotel, String nombrePais, String nombreCliente,String descripcionHabitacion, int numHabitacion, LocalDate fechaEntrada, LocalDate fechaSalida,String horaEntrada,String horaSalida)
        {
         this.idReserva = idReserva;
         this.idPais = idPais;
         this.nombreHotel = nombreHotel;
         this.nombrePais = nombrePais;
         this.nombreCliente = nombreCliente;
+        this.descripcionHabitacion = descripcionHabitacion;
         this.numHabitacion = numHabitacion;
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
     }
 //==============================================================================
 //GETTERS Y SETTERS
@@ -132,5 +141,39 @@ public class Reserva
     {
         this.fechaSalida = fechaSalida;
     }
+
+    public String getDescripcionHabitacion() 
+    {
+        return descripcionHabitacion;
+    }
+
+    public void setDescripcionHabitacion(String descripcionHabitacion) 
+    {
+        this.descripcionHabitacion = descripcionHabitacion;
+    }
+
+    public String getHoraEntrada() 
+    {
+        return horaEntrada;
+    }
+
+    public void setHoraEntrada(String horaEntrada) 
+    {
+        this.horaEntrada = horaEntrada;
+    }
+
+    public String getHoraSalida() 
+    {
+        return horaSalida;
+    }
+
+    public void setHoraSalida(String horaSalida) 
+    {
+        this.horaSalida = horaSalida;
+    }
+    
+    
+    
+    
 
 }

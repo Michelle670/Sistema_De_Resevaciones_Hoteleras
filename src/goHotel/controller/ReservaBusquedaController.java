@@ -2,6 +2,7 @@ package goHotel.controller;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.Reserva;
 import goHotel.model.Servicio;
+import goHotel.view.RegistroReserva;
 import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -18,14 +19,17 @@ public class ReservaBusquedaController implements ActionListener
     private final Reserva modelo;
     private final ReservaDAO consultas;
     private final ReservaBuscarHabitacion vista;
+    private final String correoUsuario;
+    
+     private int filaSeleccionada = -1;
 
-    public ReservaBusquedaController(Reserva modelo, ReservaDAO consultas, ReservaBuscarHabitacion vista) {
+    public ReservaBusquedaController(Reserva modelo, ReservaDAO consultas, ReservaBuscarHabitacion vista, String correoUsuario)
+    {
         this.modelo = modelo;
         this.consultas = consultas;
         this.vista = vista;
-
+        this.correoUsuario = correoUsuario;
         inicializarTablaServicios();
-//        cargarTablaInicial();
 
         // LISTENERS
         vista.cbNombresHoteles.addActionListener(this);
@@ -222,33 +226,71 @@ public class ReservaBusquedaController implements ActionListener
         // ======================
         // BOTÓN CANCELAR
         // ======================
-        if (e.getSource() == vista.btnCancelar) {
+        if (e.getSource() == vista.btnCancelar) 
+        {
             vista.dispose();
             return;
         }
 
         // ======================
-        // BOTÓN RESERVAR (se deja para después)
+        // BOTÓN RESERVAR 
         // ======================
-        if (e.getSource() == vista.btnReservar) {
-        }
+    
+      if (e.getSource() == vista.btnReservar) 
+{
+    filaSeleccionada = vista.jtBusquedaHabitacion.getSelectedRow();
+    
+    if (filaSeleccionada == -1) 
+    {
+        JOptionPane.showMessageDialog(null, 
+            "Por favor seleccione una habitación de la tabla");
+        return;
     }
     
-    private void actualizarLineasTabla() {
+    // Obtener datos de la fila seleccionada
+    String nombreHotel = vista.jtBusquedaHabitacion.getValueAt(filaSeleccionada, 0).toString();
+    int numHabitacion = Integer.parseInt(vista.jtBusquedaHabitacion.getValueAt(filaSeleccionada, 1).toString());
+    
+    // Obtener ID del hotel
+    int idHotel = consultas.obtenerIdHotelPorNombre(nombreHotel);
+    
+    // Crear formulario de registro
+    Reserva modelo = new Reserva();
+    ReservaDAO consultasReserva = new ReservaDAO();
+    RegistroReserva vistaRegistro = new RegistroReserva();
+    
+    // Llenar campos ANTES de iniciar
+    vistaRegistro.txtCodigoHotel.setText(String.valueOf(idHotel));
+    vistaRegistro.txtNumHabitacion.setText(String.valueOf(numHabitacion));
+    
+    // Iniciar controller
+    ReservaRegistroController control = new ReservaRegistroController(
+    modelo, consultasReserva, vistaRegistro, "Agregar", correoUsuario, numHabitacion,nombreHotel,null);
+    control.iniciar();
+    
+    // Cerrar ventana de búsqueda
+    vista.dispose();
+}
+    }
+    private void actualizarLineasTabla()
+    {
     DefaultTableModel modelo = (DefaultTableModel) vista.jtBusquedaHabitacion.getModel();
 
-    if (modelo.getRowCount() == 0) {
+    if (modelo.getRowCount() == 0) 
+    {
         // Tabla vacía → sin líneas
         vista.jtBusquedaHabitacion.setShowGrid(false);
         vista.jtBusquedaHabitacion.setIntercellSpacing(new Dimension(0, 0));
-    } else {
+    } else 
+    {
         // Tabla con datos → mostrar líneas
         vista.jtBusquedaHabitacion.setShowGrid(true);
         vista.jtBusquedaHabitacion.setIntercellSpacing(new Dimension(1, 1));
     }
 }
     
-    private void inicializarModeloVacíoTabla() {
+    private void inicializarModeloVacíoTabla() 
+    {
     String[] columnas = {"Hotel", "Habitación", "Tipo", "Capacidad", "Precio Base"};
     DefaultTableModel modeloVacio = new DefaultTableModel(columnas, 0);
     vista.jtBusquedaHabitacion.setModel(modeloVacio);
@@ -258,19 +300,18 @@ public class ReservaBusquedaController implements ActionListener
     vista.jtBusquedaHabitacion.setIntercellSpacing(new Dimension(0, 0));
     // Opcional: que llene el viewport para que se vea el rectángulo grande
     vista.jtBusquedaHabitacion.setFillsViewportHeight(true);
-}
+    }
     
     private void actualizarCantidadRegistros() 
     {
     int filas = vista.jtBusquedaHabitacion.getRowCount();
     vista.jlCantidadRegistros.setText("Registros: " + filas);
-}
+    }
     
-    private void limpiarTablaInicial() {
+    private void limpiarTablaInicial() 
+    {
     DefaultTableModel modelo = (DefaultTableModel) vista.jtBusquedaHabitacion.getModel();
     modelo.setRowCount(0); // elimina las filas "dummy" de NetBeans
+    }
 }
 
-
-
-}

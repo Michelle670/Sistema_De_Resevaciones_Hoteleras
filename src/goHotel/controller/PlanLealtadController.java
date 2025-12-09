@@ -1,244 +1,305 @@
 package goHotel.controller;
 
+import goHotel.model.DAO.PlanLealtadDAO;
 import goHotel.model.PlanLealtad;
-import goHotel.model.DAO.PlanLealtadDAO; 
 import goHotel.view.GestionPlanLealtad;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.sql.SQLException; 
-import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.lang.IllegalArgumentException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class PlanLealtadController implements ActionListener, MouseListener {
+/**
+ * AUTOR: GRUPO 3 PROYECTO SEMANA 9
+ * Controlador para la gestión de Planes de Lealtad (CRUD).
+ */
+public class PlanLealtadController implements ActionListener {
 
+    private final GestionPlanLealtad vista;
+    private final PlanLealtadDAO modeloDAO;
     private final PlanLealtad modelo;
-    private final GestionPlanLealtad view;
-    private final PlanLealtadDAO dao; 
-    private final DecimalFormat df = new DecimalFormat("#.##");
 
-    public PlanLealtadController(PlanLealtad modelo, GestionPlanLealtad vista) {
+    //**************************************************************************
+    // CONSTRUCTOR
+    //**************************************************************************
+    public PlanLealtadController(GestionPlanLealtad vista, PlanLealtadDAO modeloDAO, PlanLealtad modelo) {
+        this.vista = vista;
+        this.modeloDAO = modeloDAO;
         this.modelo = modelo;
-        this.view = vista;
-        this.dao = new PlanLealtadDAO(); 
 
-        this.view.setVisible(true);
-        this.view.setLocationRelativeTo(null);
-        
-        // 1. Registro de Listeners
-        this.view.getBtnAgregar().addActionListener(this);
-        this.view.getBtnEditar().addActionListener(this);
-        this.view.getBtnBuscar().addActionListener(this);
-        this.view.getBtnEliminar().addActionListener(this);
-        this.view.getBtnSalir().addActionListener(this);
+        // ESTA LÍNEA DEBE EJECUTARSE SOLO UNA VEZ POR INSTANCIA DE VISTA.
+        this.vista.setPlanLealtadController(this);
 
-        this.view.getTxtDescuento().addFocusListener(new DescuentoFocusHandler());
-
-        this.view.getJtPlanLealtad().addMouseListener(this);
-
-        cargarTabla(); 
-
-    }
-
-    private class DescuentoFocusHandler implements FocusListener {
-
-        @Override
-        public void focusGained(FocusEvent e) {
-            String text = view.getTxtDescuento().getText().trim();
-            if (text.startsWith("%")) {
-                view.getTxtDescuento().setText(text.substring(1));
+        // Asignar MouseListener para cargar campos al hacer clic en la tabla
+        this.vista.getJtPlanLealtad().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                cargarCamposDesdeTabla();
             }
-        }
+        });
 
-        @Override
-        public void focusLost(FocusEvent e) {
-            String text = view.getTxtDescuento().getText().trim();
-            if (!text.isEmpty() && !text.startsWith("%")) {
-                try {
-                    double desc = Double.parseDouble(text);
-                    view.getTxtDescuento().setText("%" + df.format(desc));
-                } catch (NumberFormatException ex) {
-                }
-            }
-        }
-    }
-    
-    private PlanLealtad obtenerPlanDesdeVista() throws NumberFormatException, IllegalArgumentException {
-        
-        String idText = view.getTxtId().getText().trim();
-        String descuentoText = view.getTxtDescuento().getText().trim().replace("%", "");
-        String nivelText = view.getTxtNivel().getText().trim();
-
-        if (idText.isEmpty() || descuentoText.isEmpty() || nivelText.isEmpty()) {
-            throw new IllegalArgumentException("Debe ingresar ID, Descuento y Nivel.");
-        }
-        
-        int idIngresado = Integer.parseInt(idText);
-        double descuentoIngresado = Double.parseDouble(descuentoText);
-        
-        return new PlanLealtad(idIngresado, nivelText, descuentoIngresado);
+        cargarTabla();
     }
 
+// -----------------------------------------------------------------------------
+// MÉTODOS DE TABLA Y LECTURA
+// -----------------------------------------------------------------------------
+
+    /**
+     * Carga todos los planes de lealtad en la JTable de la vista.
+     */
     public void cargarTabla() {
-        DefaultTableModel model = (DefaultTableModel) view.getJtPlanLealtad().getModel();
-        model.setRowCount(0);
+        DefaultTableModel model = new DefaultTableModel(
+                new Object[]{"ID", "Nivel", "Descuento (%)", "Factor Puntos (x)"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        List<PlanLealtad> planes = modeloDAO.obtenerTodos();
+
+        for (PlanLealtad plan : planes) {
+            Double descuento = plan.getDescuento();
+            Double factorPuntos = plan.getFactorPuntos();
+
+            String descuentoStr = (descuento == null) ? "0.00" : String.format("%.2f", descuento);
+            String factorPuntosStr = (factorPuntos == null) ? "0.00" : String.format("%.2f", factorPuntos);
+
+            model.addRow(new Object[]{
+                plan.getId(),
+                plan.getNivel(),
+                descuentoStr,
+                factorPuntosStr
+            });
+        }
+        vista.getJtPlanLealtad().setModel(model);
+    }
+
+    /**
+     * Carga los datos de la fila seleccionada en los campos de texto.
+     */
+    public void cargarCamposDesdeTabla() {
+        JTable tabla = vista.getJtPlanLealtad();
+        int fila = tabla.getSelectedRow();
+
+        if (fila >= 0) {
+            try {
+                Object id = tabla.getValueAt(fila, 0);
+                Object nivel = tabla.getValueAt(fila, 1);
+                Object descuento = tabla.getValueAt(fila, 2);
+                Object factorPuntos = tabla.getValueAt(fila, 3);
+
+                vista.getTxtId().setText(String.valueOf(id));
+                vista.getTxtNivel().setText(String.valueOf(nivel));
+                // Usamos replace para manejar el punto decimal en la conversión
+                vista.getTxtDescuento().setText(String.valueOf(descuento).replace(",", "."));
+                vista.getTxtFactorPuntos().setText(String.valueOf(factorPuntos).replace(",", "."));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(vista, "Error al leer datos de la fila seleccionada: " + ex.getMessage(), "Error de Datos", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Lee los datos de los campos de texto y los asigna al objeto modelo,
+     * realizando validaciones según la operación.
+     * @param incluirId Si es verdadero, intenta parsear el ID y valida que no esté vacío.
+     * @param validarCamposAdicionales Si es verdadero, valida que Nivel, Descuento y Factor Puntos no estén vacíos.
+     * @return true si la lectura y conversión es exitosa, false en caso contrario.
+     */
+    private boolean leerCampos(boolean incluirId, boolean validarCamposAdicionales) {
+
+        String idStr = vista.getTxtId().getText().trim();
+        String nivel = vista.getTxtNivel().getText().trim();
+        String descuentoStr = vista.getTxtDescuento().getText().trim();
+        String factorPuntosStr = vista.getTxtFactorPuntos().getText().trim();
+
+        // ** CAMBIO CLAVE: Combinar la validación de ID y campos adicionales. **
+        if (validarCamposAdicionales) {
+            boolean faltaID = incluirId && idStr.isEmpty();
+            boolean faltaNivel = nivel.isEmpty();
+            boolean faltaDescuento = descuentoStr.isEmpty();
+            boolean faltaFactorPuntos = factorPuntosStr.isEmpty();
+
+            if (faltaID || faltaNivel || faltaDescuento || faltaFactorPuntos) {
+                JOptionPane.showMessageDialog(vista, "Es obligatorio llenar todos los campos: ID, Nivel, Descuento y Factor Puntos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        } else if (incluirId && idStr.isEmpty()) {
+            // Esta validación solo se ejecuta si NO es una operación de Agregar/Editar
+            // donde solo se necesita el ID (como en Buscar o Eliminar por ID).
+            JOptionPane.showMessageDialog(vista, "El campo ID es obligatorio para esta operación.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
 
         try {
-            List<PlanLealtad> lista = dao.listarPlanesLealtad(); 
-            
-            for (PlanLealtad pl : lista) {
-                Object[] fila = new Object[3];
-                fila[0] = pl.getIdLealtad();
-                fila[1] = "%" + df.format(pl.getDescuento()); 
-                fila[2] = pl.getNivel();
-                model.addRow(fila);
+            // Asignación de ID
+            if (incluirId) {
+                int id = Integer.parseInt(idStr);
+                modelo.setId(id);
             }
-            view.getJtPlanLealtad().setModel(model);
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(view, "Error al cargar datos de planes de lealtad: " + e.getMessage());
+            // Asignación y Conversión de Formato de campos adicionales
+            modelo.setNivel(nivel);
+
+            if (!descuentoStr.isEmpty()) {
+                modelo.setDescuento(Double.parseDouble(descuentoStr));
+            } else if (!validarCamposAdicionales) {
+                // Esto es solo para operaciones que no requieren el campo, no aplica para Agregar/Editar.
+                modelo.setDescuento(null); 
+            }
+
+            if (!factorPuntosStr.isEmpty()) {
+                modelo.setFactorPuntos(Double.parseDouble(factorPuntosStr));
+            } else if (!validarCamposAdicionales) {
+                // Esto es solo para operaciones que no requieren el campo, no aplica para Agregar/Editar.
+                modelo.setFactorPuntos(null); 
+            }
+
+            return true;
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(vista, "Error: Verifique que los campos numéricos (ID, Descuento, Factor Puntos) sean válidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
-    
+
+// -----------------------------------------------------------------------------
+// MANEJO DE EVENTOS (actionPerformed)
+// -----------------------------------------------------------------------------
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        String comando = e.getActionCommand();
 
-        if (e.getSource() == view.getBtnAgregar()) {
-            try {
-                PlanLealtad nuevoPlan = obtenerPlanDesdeVista();
-                if (dao.agregarPlanLealtad(nuevoPlan)) { 
-                    JOptionPane.showMessageDialog(view, "Plan de Lealtad agregado con éxito.");
-                    limpiarCampos();
+        // --- 1. Botón AGREGAR ---
+        // Al pasar (true, true), el método leerCampos ahora valida que todos los campos estén llenos
+        if (comando.equals("Agregar")) {
+            if (leerCampos(true, true)) { 
+                if (modeloDAO.agregar(modelo)) {
+                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad ID " + modelo.getId() + " agregado exitosamente.");
+                    vista.limpiarCampos();
                     cargarTabla();
                 } else {
-                    JOptionPane.showMessageDialog(view, "El Plan de Lealtad NO pudo ser agregado.");
+                    JOptionPane.showMessageDialog(vista, "Error: No se pudo agregar el Plan de Lealtad. (Verifique ID duplicado o error de BD)", "Error de BD", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(view, ex.getMessage());
-                JOptionPane.showMessageDialog(view, "Error: El ID y/o el Descuento deben ser valores numéricos válidos.");
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(view, "Error al guardar el Plan de Lealtad en la BD: " + ex.getMessage());
             }
+        }
 
-        } else if (e.getSource() == view.getBtnEditar()) {
-            try {
-                PlanLealtad planModificar = obtenerPlanDesdeVista();
-                if (dao.modificarPlanLealtad(planModificar)) { 
-                    JOptionPane.showMessageDialog(view, "Plan de Lealtad modificado con éxito.");
-                    limpiarCampos();
+        // --- 2. Botón EDITAR ---
+        // Al pasar (true, true), el método leerCampos ahora valida que todos los campos estén llenos
+        else if (comando.equals("Editar")) {
+            if (leerCampos(true, true)) {
+                if (modeloDAO.editar(modelo)) {
+                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad modificado exitosamente.");
+                    vista.limpiarCampos();
                     cargarTabla();
                 } else {
-                    JOptionPane.showMessageDialog(view, "El Plan de Lealtad NO pudo ser modificado. Verifique el ID.");
+                    JOptionPane.showMessageDialog(vista, "Error: No se pudo modificar el Plan de Lealtad. (ID no encontrado)", "Error de BD", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(view, ex.getMessage());
-                JOptionPane.showMessageDialog(view, "Error: El ID y/o el Descuento deben ser números válidos.");
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(view, "Error al modificar: " + ex.getMessage());
             }
+        }
 
-        } else if (e.getSource() == view.getBtnEliminar()) {
-            String idText = view.getTxtId().getText().trim();
-            if (idText.isEmpty()) {
-                JOptionPane.showMessageDialog(view, "Debe ingresar el ID del Plan de Lealtad a eliminar.");
+        // --- 3. Botón BUSCAR (Solo por ID) ---
+        else if (comando.equals("Buscar")) {
+
+            String idStr = vista.getTxtId().getText().trim();
+            if (idStr.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Debe ingresar el ID para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            
-            Object[] options = {"Sí", "No"};
-            int confirmacion = JOptionPane.showOptionDialog(
-                view,
-                "¿Está seguro de eliminar el Plan de Lealtad con ID: " + idText + "?",
-                "Confirmar Eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[1]
-            );
 
-            if (confirmacion == 0) {
+            try {
+                int id = Integer.parseInt(idStr);
+
+                // 1. Cargamos el ID en el objeto modelo
+                modelo.setId(id);
+                // 2. Limpiamos los otros campos del modelo para que el DAO solo use el ID
+                modelo.setNivel(null);
+                modelo.setDescuento(null);
+                modelo.setFactorPuntos(null);
+
+                // 3. Llamamos al método DAO genérico (modeloDAO.buscar(modelo))
+                PlanLealtad encontrado = modeloDAO.buscar(modelo);
+
+                if (encontrado != null) {
+                    // Rellenar las casillas con los datos encontrados
+                    vista.getTxtId().setText(String.valueOf(encontrado.getId()));
+                    vista.getTxtNivel().setText(encontrado.getNivel());
+                    vista.getTxtDescuento().setText(String.format("%.2f", encontrado.getDescuento()));
+                    vista.getTxtFactorPuntos().setText(String.format("%.2f", encontrado.getFactorPuntos()));
+                    // El mensaje se muestra SOLO AQUÍ (una vez por búsqueda exitosa)
+                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad ID " + encontrado.getId() + " encontrado.");
+                } else {
+                    // El mensaje se muestra SOLO AQUÍ (una vez por búsqueda fallida)
+                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad con ID " + id + " no encontrado.", "No Encontrado", JOptionPane.WARNING_MESSAGE);
+                    // Limpiar solo los campos que no son el ID
+                    vista.getTxtNivel().setText("");
+                    vista.getTxtDescuento().setText("");
+                    vista.getTxtFactorPuntos().setText("");
+                }
+            } catch (NumberFormatException ex) {
+                // El mensaje se muestra SOLO AQUÍ (una vez por error de formato)
+                JOptionPane.showMessageDialog(vista, "El ID debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        // --- 4. Botón ELIMINAR (Por ID o por Nivel) ---
+        else if (comando.equals("Eliminar")) {
+            String idStr = vista.getTxtId().getText().trim();
+            String nivel = vista.getTxtNivel().getText().trim();
+
+            if (idStr.isEmpty() && nivel.isEmpty()) {
+                JOptionPane.showMessageDialog(vista, "Debe ingresar el ID o el Nivel para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int id = 0;
+            boolean eliminarPorId = false;
+
+            // Preparamos el modelo
+            modelo.setId(0); // Limpiamos ID por defecto
+            modelo.setNivel(null); // Limpiamos Nivel por defecto
+
+            if (!idStr.isEmpty()) {
                 try {
-                    int idAEliminar = Integer.parseInt(idText); 
-                    if (dao.eliminarPlanLealtad(idAEliminar)) { 
-                        JOptionPane.showMessageDialog(view, "Plan de Lealtad eliminado con éxito.");
-                        limpiarCampos();
-                        cargarTabla();
-                    } else {
-                        JOptionPane.showMessageDialog(view, "No se encontró el Plan de Lealtad con ese ID para eliminar.");
-                    }
+                    id = Integer.parseInt(idStr);
+                    modelo.setId(id);
+                    eliminarPorId = true;
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(view, "Error: El ID debe ser un número entero válido.");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(view, "Error al eliminar: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(vista, "Si ingresa el ID, debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } else if (!nivel.isEmpty()) {
+                modelo.setNivel(nivel);
+                eliminarPorId = false;
+            }
+
+            // Confirmación
+            String target = eliminarPorId ? ("ID " + id) : ("Nivel: " + nivel);
+            int confirmacion = JOptionPane.showConfirmDialog(vista, "¿Está seguro que desea eliminar el plan con " + target + "?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                if (modeloDAO.eliminar(modelo)) {
+                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad eliminado exitosamente.");
+                    vista.limpiarCampos();
+                    cargarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(vista, "Error: No se pudo eliminar el Plan de Lealtad. (Criterio no encontrado o error de BD)", "Error de BD", JOptionPane.ERROR_MESSAGE);
                 }
             }
-
-        } else if (e.getSource() == view.getBtnBuscar()) {
-            String criterio = JOptionPane.showInputDialog(view, "Ingrese ID o Nivel del Plan de Lealtad:");
-            if (criterio != null && !criterio.trim().isEmpty()) {
-                try {
-                    PlanLealtad pl = dao.buscarPlanLealtad(criterio.trim()); 
-                    if (pl != null) {
-                        view.getTxtId().setText(String.valueOf(pl.getIdLealtad()));
-                        view.getTxtNivel().setText(pl.getNivel());
-                        view.getTxtDescuento().setText(String.valueOf(pl.getDescuento())); 
-
-                    } else {
-                        JOptionPane.showMessageDialog(view, "Plan de Lealtad no encontrado.");
-                        limpiarCampos();
-                    }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(view, "Error de base de datos al buscar: " + ex.getMessage());
-                }
-            }
-        } else if (e.getSource() == view.getBtnSalir()) {
-            view.dispose();
         }
-    }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == view.getJtPlanLealtad()) {
-            int fila = view.getJtPlanLealtad().getSelectedRow();
-            if (fila >= 0) {
-                DefaultTableModel modeloTabla = (DefaultTableModel) view.getJtPlanLealtad().getModel();
-
-                String id = modeloTabla.getValueAt(fila, 0).toString();
-                String descuentoConSimbolo = modeloTabla.getValueAt(fila, 1).toString();
-                String nivel = modeloTabla.getValueAt(fila, 2).toString();
-
-                String descuentoSinSimbolo = descuentoConSimbolo.replace("%", "");
-
-                view.getTxtId().setText(id);
-                view.getTxtNivel().setText(nivel);
-                view.getTxtDescuento().setText(descuentoSinSimbolo);
-            }
+        // --- Botones Auxiliares ---
+        else if (comando.equals("Limpiar")) {
+            vista.limpiarCampos();
+            cargarTabla();
+        } else if (comando.equals("Salir")) {
+            vista.dispose();
         }
-    }
-
-    
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    
-    public void limpiarCampos() {
-        view.getTxtId().setText("");
-        view.getTxtNivel().setText("");
-        view.getTxtDescuento().setText("");
     }
 }

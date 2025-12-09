@@ -8,6 +8,7 @@ import goHotel.model.DAO.LimpiezaDAO;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.DAO.ServicioDAO;
+import goHotel.model.DAO.PlanLealtadDAO; 
 import goHotel.model.Habitacion;
 import goHotel.model.Hotel;
 import goHotel.model.Reserva;
@@ -24,8 +25,8 @@ import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import goHotel.view.GestionPlanLealtad; // Importar la vista de Plan Lealtad
-import goHotel.model.PlanLealtad; // Importar el modelo de Plan Lealtad
+import goHotel.view.GestionPlanLealtad; 
+import goHotel.model.PlanLealtad; 
 
 /*****************************************************************************
  * AUTOR: GRUPO 3
@@ -79,11 +80,11 @@ public class MenuController implements ActionListener {
     private void configurarPermisosPorRol() {
         // Si es Cliente, ocultar menús de empleado
           if (tipoUsuario.equalsIgnoreCase("Cliente"))
-        {
+          {
             vista.mnuMantenimientos.setVisible(false);
             vista.mnuLimpieza.setVisible(false);
             return;
-        }
+          }
 
         // Si es Empleado, configurar según rol
         if (tipoUsuario.equalsIgnoreCase("Empleado")) {
@@ -138,24 +139,36 @@ public class MenuController implements ActionListener {
     }
     
     private void abrirGestionPaises() {
-        // NOTA: Para que Gestión País funcione con la misma estructura MVC,
-        // deberías hacer esto, pero mantengo tu código original que funciona:
+        // Mantenemos el código original que funciona:
         GestionPaises vistaPaises = new GestionPaises();
         vistaPaises.setVisible(true);
         vistaPaises.setLocationRelativeTo(null);
     }
     
-    // 💡 MÉTODO FALTANTE AÑADIDO 💡
+    /**
+     * CORRECCIÓN DE ERROR: Eliminamos la llamada a GestionPlanLealtad.getInstancia()
+     * y se crea una nueva instancia normal (new GestionPlanLealtad()).
+     */
     private void abrirGestionPlanLealtad() {
         try {
+            // 1. Instanciar el MODELO
             PlanLealtad modelo = new PlanLealtad();
-            // Usamos el singleton que definiste en GestionPlanLealtad
-            GestionPlanLealtad vistaPlan = GestionPlanLealtad.getInstancia(); 
             
-            // Creamos e inicializamos el controlador
-            new PlanLealtadController(modelo, vistaPlan); 
+            // 2. Instanciar el DAO
+            PlanLealtadDAO modeloDAO = new PlanLealtadDAO(); 
             
-            // NOTA: El PlanLealtadController ya tiene vista.setVisible(true) en su constructor.
+            // 3. Crear la VISTA sin usar Singleton
+            GestionPlanLealtad vistaPlan = new GestionPlanLealtad();
+            
+            // 4. Creamos e inicializamos el controlador con los 3 argumentos
+            PlanLealtadController controller = new PlanLealtadController(vistaPlan, modeloDAO, modelo); 
+            
+            // 5. Asignar el controlador a la vista si existe el setter (Ya lo hace el controlador, pero se deja para ser explícito)
+            vistaPlan.setPlanLealtadController(controller);
+            
+            // 6. Mostrar la Vista (El controlador ya llama a iniciar(), que debería hacer esto)
+            vistaPlan.setVisible(true); 
+            vistaPlan.setLocationRelativeTo(null);
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(vista, "Error al abrir Gestión Plan Lealtad: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -191,7 +204,6 @@ public class MenuController implements ActionListener {
 
     private void abrirGestionEmpleados() {
         JOptionPane.showMessageDialog(vista, "Módulo en desarrollo", "Información", JOptionPane.INFORMATION_MESSAGE);
-        // TODO: Implementar cuando esté listo
     }
 
     private void abrirGestionHabitaciones() {
@@ -251,7 +263,6 @@ public class MenuController implements ActionListener {
             abrirGestionPaises();
         }
         
-        // 💡 LLAMADA AL NUEVO MÉTODO AÑADIDA 💡
         if (e.getSource() == vista.chmGestionPlanLealtad) {
             abrirGestionPlanLealtad(); 
         }
@@ -277,7 +288,7 @@ public class MenuController implements ActionListener {
         }
         
         if (e.getSource() == vista.chmReporteOcupacion){
-           abrirReporteLimpieza(); 
+            abrirReporteLimpieza(); 
         }
         
         if (e.getSource() == vista.chmSalir) {

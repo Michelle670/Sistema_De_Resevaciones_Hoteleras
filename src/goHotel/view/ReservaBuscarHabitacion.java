@@ -14,12 +14,19 @@ public class ReservaBuscarHabitacion extends javax.swing.JFrame {
     /**
      * Creates new form ReservaBuscarHabitacion
      */
-    public ReservaBuscarHabitacion() {
+    public ReservaBuscarHabitacion() 
+    {
         initComponents();
         jtServicios.getTableHeader().setBackground(lightGray);
         setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/reservado.png")).getImage());
     }
-
+    public ReservaBuscarHabitacion(String nombreHotel,int numHabitacion, String correoUsuario)
+    {
+        initComponents();
+        jtServicios.getTableHeader().setBackground(lightGray);
+        setIconImage(new ImageIcon(getClass().getResource("/ImagenesProyecto/reservado.png")).getImage());
+        
+    }  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
