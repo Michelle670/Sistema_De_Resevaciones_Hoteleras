@@ -211,6 +211,7 @@ public class RolController implements ActionListener {
         // ============================
         if (e.getSource() == vista.btnLimpiar) {
             limpiarCampos();
+            actualizarTabla();
         }
 
         // ============================

@@ -213,6 +213,7 @@ public class TipoHabitacionController implements ActionListener {
         // ==================================
         if (e.getSource() == vista.btLimpiar) {
             limpiar();
+            actualizarTabla();
         }
 
         // ==================================
