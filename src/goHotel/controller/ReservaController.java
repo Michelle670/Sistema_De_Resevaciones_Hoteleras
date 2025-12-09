@@ -3,6 +3,7 @@ package goHotel.controller;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.Reserva;
 import goHotel.view.GestionReserva;
+import goHotel.view.RegistroReserva;
 import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -117,14 +118,13 @@ public class ReservaController implements ActionListener
         //======================================================================
         if (e.getSource() == vista.btnAgregar) 
         {
+            
             Reserva modelo = new Reserva();
-            ReservaDAO dao = new ReservaDAO();
-            ReservaBuscarHabitacion vista = new ReservaBuscarHabitacion();
-        
-            ReservaBusquedaController controller = new ReservaBusquedaController(modelo, dao, vista, correoUsuario);
-            controller.iniciar(); // ← AQUÍ SE ABRE EL FRAME Y SE CARGAN LOS HOTELES
-               
-
+            ReservaDAO consultas = new ReservaDAO();
+            RegistroReserva vista = new RegistroReserva();
+            ReservaRegistroController control = new ReservaRegistroController(modelo, consultas, vista,"Agregar",correoUsuario,0,null,this);
+            control.iniciar();
+            
         }
         
         //======================================================================
@@ -132,6 +132,48 @@ public class ReservaController implements ActionListener
         //======================================================================
         if (e.getSource() == vista.btnEditar) 
         {
+        int filaSeleccionada = vista.jtGestionReserva.getSelectedRow();
+
+         // Validar que haya una fila seleccionada
+         if (filaSeleccionada == -1) {
+             JOptionPane.showMessageDialog(vista, 
+                 "Debe seleccionar una reserva de la tabla", 
+                 "Advertencia", 
+                 JOptionPane.WARNING_MESSAGE);
+             return;
+         }
+
+         // Obtener datos de la fila seleccionada
+         int idReserva = Integer.parseInt(vista.jtGestionReserva.getValueAt(filaSeleccionada, 0).toString());
+         String estado = vista.jtGestionReserva.getValueAt(filaSeleccionada, 1).toString();
+         String nombreHotel = vista.jtGestionReserva.getValueAt(filaSeleccionada, 4).toString();
+         int numHabitacion = Integer.parseInt(vista.jtGestionReserva.getValueAt(filaSeleccionada, 5).toString());
+         String nombreCliente = vista.jtGestionReserva.getValueAt(filaSeleccionada, 6).toString();
+         String fechaEntrada = vista.jtGestionReserva.getValueAt(filaSeleccionada, 7).toString();
+         String fechaSalida = vista.jtGestionReserva.getValueAt(filaSeleccionada, 8).toString();
+
+         // Crear formulario
+         Reserva modelo = new Reserva();
+         ReservaDAO consultas = new ReservaDAO();
+         RegistroReserva vistaRegistro = new RegistroReserva();
+
+         // Obtener IDs desde los nombres
+         int idHotel = consultas.obtenerIdHotelPorNombre(nombreHotel);
+         int idCliente = consultas.obtenerIdClientePorReserva(idReserva);
+
+         // Llenar campos ANTES de iniciar
+         vistaRegistro.txtIdReserva.setText(String.valueOf(idReserva));
+         vistaRegistro.txtCodigoHotel.setText(String.valueOf(idHotel));
+         vistaRegistro.txtNumHabitacion.setText(String.valueOf(numHabitacion));
+         vistaRegistro.txtCodigoCliente.setText(String.valueOf(idCliente));
+
+         // Iniciar controller
+         ReservaRegistroController control = new ReservaRegistroController(
+             modelo, consultas, vistaRegistro, "Editar", correoUsuario, numHabitacion, nombreHotel, this);
+         control.iniciar();
+
+         // Cargar datos adicionales después de iniciar
+         control.cargarDatosEdicion(idReserva, estado, fechaEntrada, fechaSalida);
             
         }
         
