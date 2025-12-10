@@ -1,5 +1,7 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +12,14 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
+//==============================================================================  
+// ROL DAO
+//==============================================================================
 public class RolDAO extends ConexionBD {
 
     // ---------------------------

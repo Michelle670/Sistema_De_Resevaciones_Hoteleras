@@ -1,16 +1,20 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD;
 import goHotel.model.TipoHabitacion;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
+//==============================================================================  
+// TIPO HABITACION DAO
+//==============================================================================
 public class TipoHabitacionDAO {
 
     // ---------------------------

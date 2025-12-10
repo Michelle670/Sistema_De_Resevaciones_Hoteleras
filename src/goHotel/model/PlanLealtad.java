@@ -1,13 +1,17 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model;
-
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- */
-
-//******************************************************************************
-public class PlanLealtad {
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// MODELO PLAN LEALTAD
+//============================================================================== 
+public class PlanLealtad
+{
 //==============================================================================
 //ATRIBUTOS 
 //==============================================================================
@@ -21,14 +25,16 @@ public class PlanLealtad {
 //CONSTRUCTOR
 //==============================================================================
     
-    public PlanLealtad() {
+    public PlanLealtad()
+    {
         this.id = 0;
         this.nivel = "";
         this.descuento = 0.0; // Inicializar Double a 0.0
         this.factorPuntos = 0.0; // Inicializar Double a 0.0
     }
 
-    public PlanLealtad(int id, String nivel, Double descuento, Double factorPuntos) {
+    public PlanLealtad(int id, String nivel, Double descuento, Double factorPuntos)
+    {
         this.id = id;
         this.nivel = nivel;
         this.descuento = descuento;
@@ -38,35 +44,44 @@ public class PlanLealtad {
 //==============================================================================
 //GETTERS Y SETTERS
 //==============================================================================
-    public int getId() {
+    public int getId() 
+    {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) 
+    {
         this.id = id;
     }
 
-    public String getNivel() {
+    public String getNivel() 
+    {
         return nivel;
     }
 
-    public void setNivel(String nivel) {
+    public void setNivel(String nivel)
+    {
         this.nivel = nivel;
     }
 
-    public Double getDescuento() {
+    public Double getDescuento() 
+    {
         return descuento;
     }
 
-    public void setDescuento(Double descuento) {
+    public void setDescuento(Double descuento)
+    {
         this.descuento = descuento;
     }
 
-    public Double getFactorPuntos() {
+    public Double getFactorPuntos()
+    {
         return factorPuntos;
     }
 
-    public void setFactorPuntos(Double factorPuntos) {
+    public void setFactorPuntos(Double factorPuntos) 
+    {
         this.factorPuntos = factorPuntos;
     }
+    //==========================================================================
 }

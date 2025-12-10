@@ -1,3 +1,6 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.controller;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.Reserva;
@@ -12,7 +15,18 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
+ * PROYECTO
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================
+// RESERVA BUSQUEDA CONTROLLER
+//==============================================================================
+/**
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Gestión de reserva busqueda.
+ */ 
 public class ReservaBusquedaController implements ActionListener 
 {
 
@@ -20,9 +34,10 @@ public class ReservaBusquedaController implements ActionListener
     private final ReservaDAO consultas;
     private final ReservaBuscarHabitacion vista;
     private final String correoUsuario;
-    
-     private int filaSeleccionada = -1;
-
+    private int filaSeleccionada = -1;
+    // =========================================================================
+    // CONSTRUCTOR
+    // =========================================================================
     public ReservaBusquedaController(Reserva modelo, ReservaDAO consultas, ReservaBuscarHabitacion vista, String correoUsuario)
     {
         this.modelo = modelo;
@@ -42,10 +57,11 @@ public class ReservaBusquedaController implements ActionListener
         vista.btnCancelar.addActionListener(this);
     }
 
-    // ============================
+    // =========================================================================
     // INICIAR VISTA
-    // ============================
-    public void iniciar() {
+    // =========================================================================
+    public void iniciar()
+    {
         vista.setTitle("Búsqueda de Habitación");
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
@@ -55,49 +71,49 @@ public class ReservaBusquedaController implements ActionListener
         inicializarModeloVacíoTabla();
         actualizarLineasTabla();
     }
-
-    // ============================
+    // =========================================================================
     // TABLA SERVICIOS
-    // ============================
-    private void inicializarTablaServicios() {
-        DefaultTableModel modelo = new DefaultTableModel(
+    // =========================================================================
+    private void inicializarTablaServicios()
+    {
+        DefaultTableModel modelo = new DefaultTableModel
+        (
                 new Object[]{"ID", "Nombre", "Descripción"}, 0
         );
         limpiarTablaInicial();
         vista.jtServicios.setModel(modelo);
-        actualizarCantidadRegistros();
-        
+        actualizarCantidadRegistros();  
     }
-
-    // ============================
+    // =========================================================================
     // CARGA INICIAL DE HABITACIONES
-    // ============================
-    private void cargarTablaInicial() {
+    // =========================================================================
+    private void cargarTablaInicial() 
+    {
         DefaultTableModel modelo = (DefaultTableModel) vista.jtBusquedaHabitacion.getModel();
         consultas.cargarHabitaciones(modelo);
         limpiarTablaInicial();
         inicializarModeloVacíoTabla();
-        actualizarLineasTabla();
-        
+        actualizarLineasTabla(); 
     }
-
-    // ============================
-    // BOTONES
-    // ============================
+    // =========================================================================
+    // MANEJADOR DE EVENTOS
+    // =========================================================================
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) 
+    {
 
-        // ======================
+        // =====================================================================
         // BOTÓN BUSCAR
-        // ======================
-        if (e.getSource() == vista.btnBuscar) {
-
+        // =====================================================================
+        if (e.getSource() == vista.btnBuscar) 
+        {
             String hotel = vista.cbNombresHoteles.getSelectedItem().toString();
             Date fechaEntrada = vista.jdateFechaEntrada.getDate();
             Date fechaSalida = vista.jdateFechaSalida.getDate();
             int numPersonas = (Integer) vista.jsNumPersonas.getValue();
-
+            //==================================================================
             // VALIDACIONES
+            //==================================================================
             if (fechaEntrada != null & fechaSalida != null) 
             {
                 if (fechaSalida.before(fechaEntrada)) 
@@ -106,8 +122,9 @@ public class ReservaBusquedaController implements ActionListener
                     return;
                 } 
             }
-            
+        //======================================================================    
         // VALIDACIÓN: Fecha de entrada no puede ser en el pasado
+        //======================================================================
         if (fechaEntrada != null) 
         {
             // Crear fecha actual SIN hora (00:00:00)
@@ -124,17 +141,18 @@ public class ReservaBusquedaController implements ActionListener
                 return;
             }
         }
-
-
+            //==================================================================
             // OBTENER SERVICIOS
+            //==================================================================
             List<String> serviciosSeleccionados = new ArrayList<>();
             DefaultTableModel modServ = (DefaultTableModel) vista.jtServicios.getModel();
-
-            for (int i = 0; i < modServ.getRowCount(); i++) {
+            for (int i = 0; i < modServ.getRowCount(); i++) 
+            {
                 serviciosSeleccionados.add(modServ.getValueAt(i, 0).toString());
             }
-
+            //==================================================================
             // LLAMAR DAO
+            //==================================================================
             DefaultTableModel resultado = consultas.buscarHabitaciones(
                     hotel,
                     fechaEntrada,
@@ -142,136 +160,135 @@ public class ReservaBusquedaController implements ActionListener
                     numPersonas,
                     serviciosSeleccionados
             );
-
             vista.jtBusquedaHabitacion.setModel(resultado);
             actualizarCantidadRegistros();
             return;
         }
-
-        // ======================
+        // =====================================================================
         // BOTÓN AGREGAR SERVICIO
-        // ======================
-        if (e.getSource() == vista.btnAgregar) {
-
+        // =====================================================================
+        if (e.getSource() == vista.btnAgregar)
+        {
             String nombreServicio = vista.cbServicios.getSelectedItem().toString();
-
-            if (nombreServicio.equals("--- Ninguno ---")) {
-//                JOptionPane.showMessageDialog(null, "Seleccione un servicio válido");
+            if (nombreServicio.equals("--- Ninguno ---")) 
+            {
                 return;
             }
-
             Servicio s = consultas.obtenerServicioPorNombre(nombreServicio);
-
-            if (s == null) {
+            if (s == null) 
+            {
                 JOptionPane.showMessageDialog(null, "Error: servicio no encontrado");
                 return;
             }
-
             DefaultTableModel modelo = (DefaultTableModel) vista.jtServicios.getModel();
-
+            //==================================================================
             // EVITAR DUPLICADOS
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                if ((int) modelo.getValueAt(i, 0) == s.getIdServicio()) {
+            //==================================================================
+            for (int i = 0; i < modelo.getRowCount(); i++)
+            {
+                if ((int) modelo.getValueAt(i, 0) == s.getIdServicio())
+                {
                     JOptionPane.showMessageDialog(null, "Este servicio ya está agregado");
                     return;
                 }
             }
-
+            //==================================================================
             // AGREGAR FILA
-            modelo.addRow(new Object[]{
+            //==================================================================
+            modelo.addRow(new Object[]
+            {
                 s.getIdServicio(),
                 s.getNombreServicio(),
                 s.getDescripcion()
             });
-
             return;
         }
-
-        // ======================
+        // =====================================================================
         // BOTÓN QUITAR SERVICIO
-        // ======================
-        if (e.getSource() == vista.btnQuitar) {
+        // =====================================================================
+        if (e.getSource() == vista.btnQuitar)
+        {
             DefaultTableModel modelo = (DefaultTableModel) vista.jtServicios.getModel();
-
             int fila = vista.jtServicios.getSelectedRow();
-
-            if (fila == -1) {
+            if (fila == -1) 
+            {
                 JOptionPane.showMessageDialog(null, "Seleccione un servicio para quitar");
                 return;
             }
-
             modelo.removeRow(fila);
             return;
         }
-
-        // ======================
+        // =====================================================================
         // BOTÓN LIMPIAR
-        // ======================
-        if (e.getSource() == vista.btnLimpiar) {
-
+        // =====================================================================
+        if (e.getSource() == vista.btnLimpiar)
+        {
             vista.cbNombresHoteles.setSelectedIndex(0);
             vista.cbServicios.setSelectedIndex(0);
             vista.jdateFechaEntrada.setDate(null);
             vista.jdateFechaSalida.setDate(null);
             vista.jsNumPersonas.setValue(1);
-
             ((DefaultTableModel) vista.jtServicios.getModel()).setRowCount(0);
-
             inicializarModeloVacíoTabla();
             actualizarLineasTabla();
             actualizarCantidadRegistros();
             return;
         }
-
-        // ======================
+        // =====================================================================
         // BOTÓN CANCELAR
-        // ======================
+        // =====================================================================
         if (e.getSource() == vista.btnCancelar) 
         {
             vista.dispose();
             return;
         }
-
-        // ======================
+        // =====================================================================
         // BOTÓN RESERVAR 
-        // ======================
-    
-      if (e.getSource() == vista.btnReservar) 
-{
-    filaSeleccionada = vista.jtBusquedaHabitacion.getSelectedRow();
-    
-    if (filaSeleccionada == -1) 
-    {
-        JOptionPane.showMessageDialog(null, 
-            "Por favor seleccione una habitación de la tabla");
-        return;
-    }
-    
+        // =====================================================================
+            if (e.getSource() == vista.btnReservar) 
+            {
+          filaSeleccionada = vista.jtBusquedaHabitacion.getSelectedRow();
+
+          if (filaSeleccionada == -1) 
+          {
+              JOptionPane.showMessageDialog(null, 
+                  "Por favor seleccione una habitación de la tabla");
+              return;
+          }
+    //==========================================================================
     // Obtener datos de la fila seleccionada
     String nombreHotel = vista.jtBusquedaHabitacion.getValueAt(filaSeleccionada, 0).toString();
     int numHabitacion = Integer.parseInt(vista.jtBusquedaHabitacion.getValueAt(filaSeleccionada, 1).toString());
-    
+    //==========================================================================
     // Obtener ID del hotel
     int idHotel = consultas.obtenerIdHotelPorNombre(nombreHotel);
-    
+    //==========================================================================
     // Crear formulario de registro
     Reserva modelo = new Reserva();
     ReservaDAO consultasReserva = new ReservaDAO();
     RegistroReserva vistaRegistro = new RegistroReserva();
-    
+    //==========================================================================
     // Llenar campos ANTES de iniciar
     vistaRegistro.txtCodigoHotel.setText(String.valueOf(idHotel));
     vistaRegistro.txtNumHabitacion.setText(String.valueOf(numHabitacion));
-    
+    //==========================================================================
     // Iniciar controller
     ReservaRegistroController control = new ReservaRegistroController(
     modelo, consultasReserva, vistaRegistro, "Agregar", correoUsuario, numHabitacion,nombreHotel,null);
     control.iniciar();
-    
+    //==========================================================================
     // Cerrar ventana de búsqueda
     vista.dispose();
 }
+            
     }
+    // =========================================================================
+    // METODOS AUXILIARES
+    // =========================================================================
+    
+    // =========================================================================
+    // METODOS ACTUALIZAR LINEAS TABLA
+    // =========================================================================
     private void actualizarLineasTabla()
     {
     DefaultTableModel modelo = (DefaultTableModel) vista.jtBusquedaHabitacion.getModel();
@@ -288,7 +305,9 @@ public class ReservaBusquedaController implements ActionListener
         vista.jtBusquedaHabitacion.setIntercellSpacing(new Dimension(1, 1));
     }
 }
-    
+    // =========================================================================
+    // METODOS INICIALIZAR MODELO VACIO TABLA
+    // =========================================================================
     private void inicializarModeloVacíoTabla() 
     {
     String[] columnas = {"Hotel", "Habitación", "Tipo", "Capacidad", "Precio Base"};
@@ -301,17 +320,22 @@ public class ReservaBusquedaController implements ActionListener
     // Opcional: que llene el viewport para que se vea el rectángulo grande
     vista.jtBusquedaHabitacion.setFillsViewportHeight(true);
     }
-    
+    // =========================================================================
+    // METODOS ACTUALIZAR CANTIDAD REGISTROS
+    // =========================================================================
     private void actualizarCantidadRegistros() 
     {
     int filas = vista.jtBusquedaHabitacion.getRowCount();
     vista.jlCantidadRegistros.setText("Registros: " + filas);
     }
-    
+    // =========================================================================
+    // METODOS LIMPIAR TABLA INICIAL
+    // =========================================================================
     private void limpiarTablaInicial() 
     {
     DefaultTableModel modelo = (DefaultTableModel) vista.jtBusquedaHabitacion.getModel();
     modelo.setRowCount(0); // elimina las filas "dummy" de NetBeans
     }
+    //==========================================================================
 }
 

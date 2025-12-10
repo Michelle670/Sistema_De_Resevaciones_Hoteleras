@@ -1,27 +1,34 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
-public class EmpleadoDAO {
+//==============================================================================  
+// EMPLEADO DAO
+//============================================================================== 
+public class EmpleadoDAO extends ConexionBD
+{
 
     // ---------------------------
     // AGREGAR EMPLEADO
     // ---------------------------
-    public boolean agregar(int id, String nombre, int idRol, String correo, String password) {
+    public boolean agregar(int id, String nombre, int idRol, String correo, String password) 
+    {
         PreparedStatement ps = null;
         Connection conexion = ConexionBD.getConnection();
 
         String sql = "INSERT INTO empleado (id_empleado,nombre, id_rol, correo, password) VALUES (?, ?, ?, ?, ?)";
 
-        try {
+        try 
+        {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
             ps.setString(2, nombre);
@@ -31,27 +38,32 @@ public class EmpleadoDAO {
 
             return ps.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.err.println(e);
             return false;
-        } finally {
-            try {
+        } finally 
+        {
+            try 
+            {
                 conexion.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                 System.err.println(e);
             }
         }
     }
-
     // ---------------------------
     // EDITAR EMPLEADO
     // ---------------------------
-    public boolean editar(int id, String nombre, int idRol, String correo, String password) {
+    public boolean editar(int id, String nombre, int idRol, String correo, String password) 
+    {
         PreparedStatement ps = null;
         Connection conexion = ConexionBD.getConnection();
         String sql = "UPDATE empleado SET nombre=?, id_rol=?, correo=?, password=? WHERE id_empleado=?";
 
-        try {
+        try
+        {
             ps = conexion.prepareStatement(sql);
             ps.setString(1, nombre);
             ps.setInt(2, idRol);
@@ -61,50 +73,59 @@ public class EmpleadoDAO {
 
             return ps.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             System.err.println(e);
             return false;
-        } finally {
-            try {
+        } finally 
+        {
+            try
+            {
                 conexion.close();
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
                 System.err.println(e);
             }
         }
     }
-
     // ---------------------------
     // ELIMINAR EMPLEADO
     // ---------------------------
-    public boolean eliminar(int id) {
+    public boolean eliminar(int id)
+    {
         PreparedStatement ps = null;
         Connection conexion = ConexionBD.getConnection();
 
         String sql = "DELETE FROM empleado WHERE id_empleado = ?";
 
-        try {
+        try
+        {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
-
             return ps.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.err.println(e);
             return false;
-        } finally {
-            try {
+        } finally 
+        {
+            try 
+            {
                 conexion.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                 System.err.println(e);
             }
         }
     }
-
     // ---------------------------
     //  OBTENER ROL
     // ---------------------------
-    private String obtenerRolTexto(int idRol) {
-        switch (idRol) {
+    private String obtenerRolTexto(int idRol)
+    {
+        switch (idRol)
+        {
             case 1:
                 return "Admin";
             case 2:
@@ -119,19 +140,22 @@ public class EmpleadoDAO {
     // ---------------------------
     // BUSCAR EMPLEADO POR ID
     // ---------------------------
-    public ArrayList<Object[]> buscarPorId(int id) {
+    public ArrayList<Object[]> buscarPorId(int id) 
+    {
         ArrayList<Object[]> lista = new ArrayList<>();
         PreparedStatement ps = null;
         Connection conexion = ConexionBD.getConnection();
 
         String sql = "SELECT * FROM empleado WHERE id_empleado = ?";
 
-        try {
+        try 
+        {
             ps = conexion.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next())
+            {
 
                 int idRol = rs.getInt("id_rol");
                 String rolTexto = obtenerRolTexto(idRol);
@@ -145,7 +169,8 @@ public class EmpleadoDAO {
                 });
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.out.println("Error buscando empleados: " + e.getMessage());
         }
 
@@ -155,20 +180,22 @@ public class EmpleadoDAO {
     // CARGAR TABLA
     // ---------------------------
 
-    public void cargarTabla(DefaultTableModel modelo) {
+    public void cargarTabla(DefaultTableModel modelo)
+    {
         modelo.setRowCount(0);
-
         String sql = "SELECT * FROM empleado";
-
-        try (
+        try 
+            (
                 Connection conexion = ConexionBD.getConnection(); Statement st = conexion.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
 
                 int idRol = rs.getInt("id_rol");
                 String rolTexto = obtenerRolTexto(idRol);
 
-                modelo.addRow(new Object[]{
+                modelo.addRow(new Object[]
+                {
                     rs.getInt("id_empleado"),
                     rs.getString("nombre"),
                     rs.getString("correo"),
@@ -177,8 +204,10 @@ public class EmpleadoDAO {
                 });
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.out.println("Error al cargar la tabla empleados: " + e.getMessage());
         }
     }
+    //==========================================================================
 }

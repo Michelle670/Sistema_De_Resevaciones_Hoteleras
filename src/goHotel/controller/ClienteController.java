@@ -1,4 +1,6 @@
-
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.controller;
 import goHotel.model.Cliente;
 import goHotel.model.DAO.ClienteDAO;
@@ -9,18 +11,29 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================
+// CLIENTE CONTROLLER
+//==============================================================================
+/**
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Gestión de Clientes.
  */
-public class ClienteController implements ActionListener {
+public class ClienteController implements ActionListener 
+{
     private final Cliente modelo;
     private final ClienteDAO consultas;
     private final GestionCliente vista;
-
-    public ClienteController(Cliente modelo, ClienteDAO consultas, GestionCliente vista) {
+    
+    // ===========================================================
+    // CONSTRUCTOR
+    // ===========================================================
+    public ClienteController(Cliente modelo, ClienteDAO consultas, GestionCliente vista)
+    {
         this.modelo = modelo;
         this.consultas = consultas;
         this.vista = vista;
@@ -37,13 +50,18 @@ public class ClienteController implements ActionListener {
         consultas.cargarPaises(vista.cmbPais);
         consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
     }
-    
-    public void iniciar() {
+    //==========================================================================
+    public void iniciar()
+    {
         vista.setTitle("Gestión de Clientes");
         vista.setLocationRelativeTo(null);
     }
-    
-    public void limpiar() {
+    //==========================================================================
+    // METODO LIMPIAR
+    // Limpia lo que hay en pantalla
+    //==========================================================================
+    public void limpiar()
+    {
         vista.txtID.setText("");
         vista.cmbPlanLealtad.setSelectedIndex(0);
         vista.txtNombre.setText("");
@@ -54,11 +72,17 @@ public class ClienteController implements ActionListener {
         vista.txtID.requestFocus();
     }
     
-    //
+    // =========================================================================
+    // MANEJADOR DE EVENTOS
+    // =========================================================================
     @Override
-    public void actionPerformed(ActionEvent e){
-        //btnAgregar;
-        if(e.getSource() == vista.btnAgregar){
+    public void actionPerformed(ActionEvent e)
+    {
+        //======================================================================
+        // BTN AGREGAR
+        //======================================================================
+        if(e.getSource() == vista.btnAgregar)
+        {
             ComboItem planItem = (ComboItem) vista.cmbPlanLealtad.getSelectedItem();
             ComboItem paisItem = (ComboItem) vista.cmbPais.getSelectedItem();
             if(vista.txtID.getText().trim().isEmpty()
@@ -79,16 +103,22 @@ public class ClienteController implements ActionListener {
             modelo.setContrasenna(vista.txtPassword.getText().trim());
             modelo.setIdPais(paisItem.getId());
             
-            if(consultas.registrarCliente(modelo)){
+            if(consultas.registrarCliente(modelo))
+            {
                 JOptionPane.showMessageDialog(null, "Cliente registrado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
-            } else {
+            } else 
+            {
                 JOptionPane.showMessageDialog(null, "Error al registrar cliente.");
             } 
         }
-        
-        //btnEditar;
-        if (e.getSource() == vista.btnEditar) {
+        //======================================================================
+        //BTN EDITAR
+        //=====================================================================
+         
+         
+        if (e.getSource() == vista.btnEditar) 
+        {
             ComboItem planItem = (ComboItem) vista.cmbPlanLealtad.getSelectedItem();
             ComboItem paisItem = (ComboItem) vista.cmbPais.getSelectedItem();
             int id = Integer.parseInt(vista.txtID.getText().trim());
@@ -99,29 +129,37 @@ public class ClienteController implements ActionListener {
             modelo.setContrasenna(vista.txtPassword.getText().trim());
             modelo.setIdPais(paisItem.getId());
 
-            if (consultas.modificarCliente(modelo)) {
+            if (consultas.modificarCliente(modelo)) 
+            {
                 JOptionPane.showMessageDialog(null, "Cliente modificado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
             } else {
                 JOptionPane.showMessageDialog(null, "Error al modificar cliente.");
             }
         }
-        
-        //btnEliminar;
-        if (e.getSource() == vista.btnEliminar){
+        //======================================================================
+        //BTN ELIMINAR
+        //======================================================================
+        if (e.getSource() == vista.btnEliminar)
+        {
             modelo.setIdCliente(Integer.parseInt(vista.txtID.getText().trim()));
             
-            if(consultas.eliminarCliente(modelo)){
+            if(consultas.eliminarCliente(modelo))
+            {
                 JOptionPane.showMessageDialog(null, "Cliente eliminado.");
                 consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
-            } else {
+            } else 
+            {
                 JOptionPane.showMessageDialog(null, "Error al eliminar cliente.");
             }
             limpiar();            
         }
         
-        //btnBuscar;
-        if (e.getSource() == vista.btnBuscar){
+        //======================================================================
+        //BTN BUSCAR
+        //======================================================================
+        if (e.getSource() == vista.btnBuscar)
+        {
             try{
                 int id = Integer.parseInt(vista.txtID.getText().trim());
                 modelo.setIdCliente(id);
@@ -138,32 +176,41 @@ public class ClienteController implements ActionListener {
                     
                     consultas.cargarDatosEnTablaPorID((DefaultTableModel) vista.jtTablaCliente.getModel(), id);
                     JOptionPane.showMessageDialog(null, "Cliente encontrado.");
-                }else {
+                }else
+                {
                     JOptionPane.showMessageDialog(null, "No se encontró un cliente con ese ID.");
                 }
                 
-            }catch (NumberFormatException ex) {
+            }catch (NumberFormatException ex)
+            {
                 JOptionPane.showMessageDialog(null, "El ID debe ser un número válido.");
             }
         }
         
-        //btnLimpiar
-        if (e.getSource() == vista.btnLimpiar) {
+        //======================================================================
+        //BTN LIMPIAR
+        //======================================================================
+        if (e.getSource() == vista.btnLimpiar)
+        {
             limpiar();
             consultas.cargarDatosEnTabla((DefaultTableModel) vista.jtTablaCliente.getModel());
         }
-        
-        //btnSalir
-        if (e.getSource() == vista.btnSalir) {
+        //======================================================================
+        //BTN SALIR
+        //======================================================================
+        if (e.getSource() == vista.btnSalir)
+        {
             int confirmacion = JOptionPane.showConfirmDialog(null,
                     "¿Está seguro de salir?", "Confirmar Salida", JOptionPane.YES_NO_OPTION);
-            if (confirmacion == JOptionPane.YES_OPTION) {
+            if (confirmacion == JOptionPane.YES_OPTION) 
+            {
                 vista.dispose();
             }
         }
     }
-    
+    //==========================================================================
     //Helper para los Combobox
+    //==========================================================================
     private void seleccionarPorId(JComboBox<ComboItem> combo, int idBuscado) {
         for (int i = 0; i < combo.getItemCount(); i++) {
             ComboItem it = combo.getItemAt(i);
@@ -174,5 +221,6 @@ public class ClienteController implements ActionListener {
         }
         combo.setSelectedIndex(0);
     }
+   //===========================================================================
     
 }

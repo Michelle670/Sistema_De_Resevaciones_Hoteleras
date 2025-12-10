@@ -1,18 +1,20 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model;
-
-/**
-* AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- */
-
-//******************************************************************************
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// MODELO HOTEL
+//============================================================================== 
 public class Hotel 
 {
 //==============================================================================
 //ATRIBUTOS   
 //==============================================================================
-    
     private int idHotel;
     private String nombreHotel;
     private int idPais;
@@ -46,39 +48,48 @@ public class Hotel
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public void setDireccion(String direccion)
+    {
         this.direccion = direccion;
     }
 
-    public int getIdHotel() {
+    public int getIdHotel() 
+    {
         return idHotel;
     }
 
-    public void setIdHotel(int idHotel) {
+    public void setIdHotel(int idHotel)
+    {
         this.idHotel = idHotel;
     }
 
-    public String getNombreHotel() {
+    public String getNombreHotel() 
+    {
         return nombreHotel;
     }
 
-    public void setNombreHotel(String nombreHotel) {
+    public void setNombreHotel(String nombreHotel) 
+    {
         this.nombreHotel = nombreHotel;
     }
 
-    public int getIdPais() {
+    public int getIdPais() 
+    {
         return idPais;
     }
 
-    public void setIdPais(int idPais) {
+    public void setIdPais(int idPais) 
+    {
         this.idPais = idPais;
     }
 
-    public String getCiudad() {
+    public String getCiudad()
+    {
         return ciudad;
     }
 
-    public void setCiudad(String ciudad) {
+    public void setCiudad(String ciudad) 
+    {
         this.ciudad = ciudad;
     }
 

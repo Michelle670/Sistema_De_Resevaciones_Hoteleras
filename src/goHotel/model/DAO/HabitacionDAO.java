@@ -1,30 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
-
 import goHotel.controller.HabitacionController;
 import goHotel.model.ConexionBD;
 import goHotel.model.Habitacion;
-import goHotel.view.GestionHabitacion;
 import java.sql.*;
 import java.util.logging.*;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-/**
- *
- * @author israelapuy
- */
-public class HabitacionDAO extends ConexionBD{
-    public boolean registrarHabitacion(Habitacion habitacion){
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
+ * PROYECTO
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// HABITACION DAO
+//============================================================================== 
+public class HabitacionDAO extends ConexionBD
+{
+    public boolean registrarHabitacion(Habitacion habitacion)
+    {
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
         
         String sql = "INSERT INTO habitacion (id_habitacion, id_hotel, id_tipo, numero) VALUES (?,?,?,?)";
-        try{
+        try
+        {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, habitacion.getIdHabitacion());
             ps.setInt(2, habitacion.getHotel());
@@ -34,41 +37,53 @@ public class HabitacionDAO extends ConexionBD{
             ps.executeUpdate();
             return true;
             
-        }catch (SQLIntegrityConstraintViolationException e) {
+        }catch (SQLIntegrityConstraintViolationException e) 
+        {
             String msg = e.getMessage().toLowerCase();
 
-            if (msg.contains("duplicate")) {
+            if (msg.contains("duplicate"))
+            {
                 JOptionPane.showMessageDialog(null,
                         "El ID ingresado (" + habitacion.getIdHabitacion() + ") ya está registrado.\n"
                         + "Por favor, use otro ID o edite la habitación existente.",
                         "Error de duplicado", JOptionPane.ERROR_MESSAGE);
-            } else if (msg.contains("foreign key")) {
+            } else if (msg.contains("foreign key"))
+            {
                 JOptionPane.showMessageDialog(null,
                         "El ID de hotel o tipo no existe en la base de datos.\n"
                         + "Verifique id_hotel e id_tipo antes de agregar.",
                         "Error de llave foránea", JOptionPane.ERROR_MESSAGE);
-            } else {
+            } else 
+            {
                 JOptionPane.showMessageDialog(null,
                         "Error de integridad: " + e.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
             return false;
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.err.println("Error SQL al registrar habitación: " + e.getMessage());
             return false;
-        } finally {
-            try {
-                if (ps != null) {
+        } finally 
+        {
+            try 
+            {
+                if (ps != null)
+                {
                     ps.close();
                 }
                 conn.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                 System.err.println(e);
             }
         }
     }
-
-    public boolean editarHabitacion(Habitacion habitacion) {
+    //==========================================================================
+    // EDITAR HABITACION
+    //==========================================================================
+    public boolean editarHabitacion(Habitacion habitacion) 
+    {
         PreparedStatement ps = null;
         Connection conn = ConexionBD.getConnection();
 
@@ -77,7 +92,8 @@ public class HabitacionDAO extends ConexionBD{
                 + "id_tipo = ?, "
                 + "numero = ? "
                 + "WHERE id_habitacion = ?";
-        try {
+        try 
+        {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, habitacion.getHotel());
             ps.setInt(2, habitacion.getTipo());
@@ -87,18 +103,23 @@ public class HabitacionDAO extends ConexionBD{
             int rows = ps.executeUpdate();
             return rows > 0;
 
-        } catch (SQLIntegrityConstraintViolationException e) {
+        } catch (SQLIntegrityConstraintViolationException e) 
+        {
             JOptionPane.showMessageDialog(null,
                     "El ID ingresado (" + habitacion.getIdHabitacion() + ") ya está registrado.\n"
                     + "Por favor, use otro ID o edite la habitació existente.",
                     "Error de duplicado", JOptionPane.ERROR_MESSAGE);
             return false;
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.err.println("Error SQL al modificar habitación: " + e.getMessage());
             return false;
-        } finally {
-            try {
-                if (ps != null) {
+        } finally 
+        {
+            try 
+            {
+                if (ps != null) 
+                {
                     ps.close();
                 }
                 conn.close();
@@ -107,8 +128,11 @@ public class HabitacionDAO extends ConexionBD{
             }
         }
     }
-    
-    public boolean eliminarHabitacion(Habitacion habitacion) {
+    //==========================================================================
+    //ELIMINAR HABITACION
+    //==========================================================================
+    public boolean eliminarHabitacion(Habitacion habitacion) 
+    {
         PreparedStatement ps1 = null;
         PreparedStatement ps2 = null;
         Connection conn = ConexionBD.getConnection();
@@ -116,64 +140,82 @@ public class HabitacionDAO extends ConexionBD{
         String sql1 = "DELETE FROM habitacion_servicio WHERE id_habitacion = ?";
         String sql2 = "DELETE from habitacion WHERE id_habitacion=?";
         
-        try {
+        try 
+        {
             ps1 = conn.prepareStatement(sql1);
             ps1.setInt(1, habitacion.getIdHabitacion());
             ps1.executeUpdate();
-            
             ps2 = conn.prepareStatement(sql2);
             ps2.setInt(1, habitacion.getIdHabitacion());
-            
             int rows = ps2.executeUpdate();
             return rows > 0;
 
-        }catch (SQLException e) {
+        }catch (SQLException e)
+        {
             System.err.println(e);
-            try {
-                if (conn != null) {
+            try
+            {
+                if (conn != null) 
+                {
                     conn.rollback();
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException ex) 
+            {
                 System.err.println(ex);
             }
             return false;
 
-        } finally {
-            try {
-                if (ps1 != null) {
+        } finally 
+        {
+            try 
+            {
+                if (ps1 != null) 
+                {
                     ps1.close();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
             }
-            try {
-                if (ps2 != null) {
+            try 
+            {
+                if (ps2 != null) 
+                {
                     ps2.close();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
             }
-            try {
-                if (conn != null) {
+            try 
+            {
+                if (conn != null) 
+                {
                     conn.close();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
             }
         }
             
     }
-
-    public boolean buscarHabitacion(Habitacion habitacion) {
+//==============================================================================
+// METODO BUSCAR HABITACION
+//==============================================================================
+    public boolean buscarHabitacion(Habitacion habitacion) 
+    {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection conn = ConexionBD.getConnection();
         
         String sql = "SELECT * FROM habitacion WHERE id_habitacion=?";
         
-        try{
+        try
+        {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, habitacion.getIdHabitacion());
             rs = ps.executeQuery();
             
-            if(rs.next()){
+            if(rs.next())
+            {
                 habitacion.setIdHabitacion(rs.getInt("id_habitacion"));
                 habitacion.setHotel(rs.getInt("id_hotel"));
                 habitacion.setTipo(rs.getInt("id_tipo"));
@@ -181,33 +223,44 @@ public class HabitacionDAO extends ConexionBD{
                 return true;
             }
             return false;
-        }catch (SQLException e) {
+        }catch (SQLException e)
+        {
             System.err.println(e);
             return false;
-        } finally {
-            try {
-                if (rs != null) {
+        } finally 
+        {
+            try 
+            {
+                if (rs != null)
+                {
                     rs.close();
                 }
-                if (ps != null) {
+                if (ps != null)
+                {
                     ps.close();
                 }
-                if (conn != null) {
+                if (conn != null) 
+                {
                     conn.close();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
                 System.err.println(e);
             }
         }
     }
-
-    public void cargarDatosEnTabla(DefaultTableModel modelo) {
+    //==========================================================================
+    // METODO CARGAR DATOS EN TABLA
+    //==========================================================================
+    public void cargarDatosEnTabla(DefaultTableModel modelo) 
+    {
         modelo.setRowCount(0);
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        try {
+        try
+        {
             conn = ConexionBD.getConnection();
             String sql = "SELECT h.id_habitacion, "
                     + "       h.id_hotel, "
@@ -223,8 +276,10 @@ public class HabitacionDAO extends ConexionBD{
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
-            while (rs.next()) {
-                Object[] fila = {
+            while (rs.next()) 
+            {
+                Object[] fila = 
+                {
                     rs.getInt("id_habitacion"),
                     rs.getInt("id_hotel"), // <- hidden
                     rs.getString("hotel_nombre"), // visible
@@ -234,25 +289,34 @@ public class HabitacionDAO extends ConexionBD{
                 };
                 modelo.addRow(fila);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al cargar las habitaciones: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
+        } finally 
+        {
+            try
+            {
+                if (rs != null) 
+                {
                     rs.close();
                 }
-                if (ps != null) {
+                if (ps != null) 
+                {
                     ps.close();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
                 Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
             } 
             // No cerramos conn porque es conexión global
         }
     }
-    
-    public void cargarDatosEnTablaPorID(DefaultTableModel modelo, int id) {
+    //==========================================================================
+    // METOD CARGAR DATOS EN TABLA POR ID
+    //==========================================================================
+    public void cargarDatosEnTablaPorID(DefaultTableModel modelo, int id) 
+    {
         modelo.setRowCount(0);
 
         String sqlBase
@@ -268,19 +332,24 @@ public class HabitacionDAO extends ConexionBD{
 
         String sql = sqlBase;
 
-        if (id > 0) {                     
+        if (id > 0) 
+        {                     
             sql += "WHERE h.id_habitacion = ?";
         }
 
         try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            if (id > 0) {
+            if (id > 0)
+            {
                 ps.setInt(1, id);
             }
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Object[] fila = {
+            try (ResultSet rs = ps.executeQuery()) 
+            {
+                while (rs.next()) 
+                {
+                    Object[] fila =
+                    {
                         rs.getInt("id_habitacion"),
                         rs.getInt("id_hotel"), // hidden
                         rs.getString("hotel_nombre"), // visible
@@ -292,34 +361,42 @@ public class HabitacionDAO extends ConexionBD{
                 }
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             Logger.getLogger(HabitacionController.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("Error al cargar habitación por ID: " + e.getMessage());
         }
     }
-    
+    //==========================================================================
     //Helpers
-    public class ComboItemH {
+    public class ComboItemH 
+    {
 
         private final int id;
         private final String label;
 
-        public ComboItemH(int id, String label) {
+        public ComboItemH(int id, String label)
+        {
             this.id = id;
             this.label = label;
         }
 
-        public int getId() {
+        public int getId() 
+        {
             return id;
         }
 
         @Override
-        public String toString() {
+        public String toString() 
+        {
             return label;
         }
     }
-    
-    public void cargarTiposHabitacion(JComboBox<ComboItemH> combo) {
+    //==========================================================================
+    // CARGAR TIPOS HABITACION 
+    //==========================================================================
+    public void cargarTiposHabitacion(JComboBox<ComboItemH> combo) 
+    {
         combo.removeAllItems();
         combo.addItem(new ComboItemH(0, "--- Seleccione ---"));
 
@@ -327,18 +404,23 @@ public class HabitacionDAO extends ConexionBD{
 
         try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+            while (rs.next()) 
+            {
                 combo.addItem(new ComboItemH(
                         rs.getInt("id_tipo"),
                         rs.getString("nombre")
                 ));
             }
-        } catch (SQLException ex) {
+        } catch (SQLException ex) 
+        {
             JOptionPane.showMessageDialog(null, "Error cargando tipos: " + ex.getMessage());
         }
     }
-    
-    public void cargarHoteles(JComboBox<ComboItemH> combo) {
+    //==========================================================================
+    // CARGAR HOTELES 
+    //==========================================================================
+    public void cargarHoteles(JComboBox<ComboItemH> combo) 
+    {
         combo.removeAllItems();
         combo.addItem(new ComboItemH(0, "--- Seleccione ---"));
 
@@ -346,14 +428,17 @@ public class HabitacionDAO extends ConexionBD{
 
         try (Connection c = ConexionBD.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 combo.addItem(new ComboItemH(
                         rs.getInt("id_hotel"),
                         rs.getString("nombre")
                 ));
             }
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             JOptionPane.showMessageDialog(null, "Error cargando hoteles: " + ex.getMessage());
         }
     }
+    //==========================================================================
 }

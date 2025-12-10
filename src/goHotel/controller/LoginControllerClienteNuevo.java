@@ -1,33 +1,42 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.controller;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.model.DAO.PaisDAO;
-import goHotel.model.Login;
 import goHotel.view.LoginClienteNuevo;
 import goHotel.view.LoginView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
+//==============================================================================
+// LOGIN CLIENTE NUEVO CONTROLLER
+//==============================================================================
+/**
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Login Cliente Nuevo.
+ */ 
 public class LoginControllerClienteNuevo implements ActionListener
 {
     private LoginClienteNuevo vista;
     private LoginDAO loginDAO;
     private PaisDAO paisDAO;
-    
+    // =========================================================================
+    // CONSTRUCTOR
+    // =========================================================================
     public LoginControllerClienteNuevo(LoginClienteNuevo vista, LoginDAO loginDAO)
     {
         this.vista = vista;
         this.loginDAO = loginDAO;
         this.paisDAO = new PaisDAO();
-        
         // Agregar listeners a los botones
         this.vista.btnRegistrar.addActionListener(this);
         this.vista.btnCancelar.addActionListener(this);
-        
         // Cargar países en el ComboBox usando PaisDAO
         paisDAO.cargarPaises(vista.jcbPaises);
     }
@@ -40,9 +49,9 @@ public class LoginControllerClienteNuevo implements ActionListener
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
     }
-    //==========================================================================
-    // ACTION PERFORMED
-    //==========================================================================
+    // =========================================================================
+    // MANEJADOR DE EVENTOS
+    // =========================================================================
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -65,14 +74,15 @@ public class LoginControllerClienteNuevo implements ActionListener
         String correo = vista.txtCorreo.getText().trim();
         String pass = new String(vista.jPassword.getPassword());
         String pais = (String) vista.jcbPaises.getSelectedItem();
-        
+        //======================================================================
         // VALIDACIONES
+        //======================================================================
         if (nombre.isEmpty())
         {
             JOptionPane.showMessageDialog(vista, "El nombre es obligatorio.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+   
         if (pais == null || pais.equals("--- Ninguno ---"))
         {
             JOptionPane.showMessageDialog(vista, "Debe seleccionar un país.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -90,8 +100,9 @@ public class LoginControllerClienteNuevo implements ActionListener
             JOptionPane.showMessageDialog(vista, "La contraseña debe tener mínimo 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+        //======================================================================
         // REGISTRAR EN LA BASE DE DATOS
+        //======================================================================
         boolean registroExitoso = loginDAO.registrarClienteCompleto(nombre, correo, pass, pais);
         
         if (registroExitoso)
@@ -109,7 +120,6 @@ public class LoginControllerClienteNuevo implements ActionListener
     //==========================================================================
     private void volverAlLogin()
     {
-        
      // Crear instancias
         LoginDAO dao = new LoginDAO();
         LoginView vista = new LoginView();
@@ -121,12 +131,16 @@ public class LoginControllerClienteNuevo implements ActionListener
         // Iniciar la aplicación
         controller.iniciar();       
     }
-    
+    //==========================================================================
+    // VALIDAR CORREO
+    //==========================================================================
     private boolean validarCorreo(String correo)
     {
         return correo.contains("@") && correo.contains(".");
     }
-    
+    //==========================================================================
+    // VALIDAR CONTRASEÑA
+    //==========================================================================
     private boolean validarPassword(String pass)
     {
         return pass.length() >= 4;

@@ -51,7 +51,8 @@ public class Menu extends javax.swing.JFrame {
 
         jlCorreo = new javax.swing.JLabel();
         jlTipo = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jlIdCliente = new javax.swing.JLabel();
+        MenuFoto = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuReservas = new javax.swing.JMenu();
@@ -79,14 +80,18 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jlCorreo.setText("NombreUsuario");
-        getContentPane().add(jlCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 0, 180, 30));
+        getContentPane().add(jlCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 0, 180, 30));
 
         jlTipo.setText("RolAcceso");
-        getContentPane().add(jlTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 160, 30));
+        getContentPane().add(jlTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 160, 30));
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/MenuFinal.jpeg"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jlIdCliente.setForeground(new java.awt.Color(0, 0, 0));
+        jlIdCliente.setText("ID:");
+        getContentPane().add(jlIdCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 10, 60, 10));
+
+        MenuFoto.setBackground(new java.awt.Color(255, 255, 255));
+        MenuFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImagenesProyecto/MenuFinal.jpeg"))); // NOI18N
+        getContentPane().add(MenuFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -323,6 +328,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel MenuFoto;
     public javax.swing.JCheckBoxMenuItem chmGestionClientes;
     public javax.swing.JCheckBoxMenuItem chmGestionEmpleados;
     public javax.swing.JCheckBoxMenuItem chmGestionHabitaciones;
@@ -335,10 +341,10 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JCheckBoxMenuItem chmSalir;
     public javax.swing.JCheckBoxMenuItem chmTipoHabitacion;
     public javax.swing.JCheckBoxMenuItem chmTipoServicio;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     public javax.swing.JLabel jlCorreo;
+    public javax.swing.JLabel jlIdCliente;
     public javax.swing.JLabel jlTipo;
     public javax.swing.JMenu mnuLimpieza;
     public javax.swing.JMenu mnuMantenimientos;

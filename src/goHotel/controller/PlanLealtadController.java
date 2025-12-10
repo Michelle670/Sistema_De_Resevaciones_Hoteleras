@@ -1,5 +1,7 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.controller;
-
 import goHotel.model.DAO.PlanLealtadDAO;
 import goHotel.model.PlanLealtad;
 import goHotel.view.GestionPlanLealtad;
@@ -11,64 +13,74 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
+ * PROYECTO
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================
+// PLAN LEALTAD CONTROLLER
+//==============================================================================
 /**
- * AUTOR: GRUPO 3 PROYECTO SEMANA 9
- * Controlador para la gestión de Planes de Lealtad (CRUD).
- */
-public class PlanLealtadController implements ActionListener {
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Gestión de plan de lealtad.
+ */ 
+public class PlanLealtadController implements ActionListener 
+{
 
     private final GestionPlanLealtad vista;
     private final PlanLealtadDAO modeloDAO;
     private final PlanLealtad modelo;
-
-    //**************************************************************************
+    // =========================================================================
     // CONSTRUCTOR
-    //**************************************************************************
-    public PlanLealtadController(GestionPlanLealtad vista, PlanLealtadDAO modeloDAO, PlanLealtad modelo) {
+    // =========================================================================
+    public PlanLealtadController(GestionPlanLealtad vista, PlanLealtadDAO modeloDAO, PlanLealtad modelo) 
+    {
         this.vista = vista;
         this.modeloDAO = modeloDAO;
         this.modelo = modelo;
-
         // ESTA LÍNEA DEBE EJECUTARSE SOLO UNA VEZ POR INSTANCIA DE VISTA.
         this.vista.setPlanLealtadController(this);
-
         // Asignar MouseListener para cargar campos al hacer clic en la tabla
-        this.vista.getJtPlanLealtad().addMouseListener(new MouseAdapter() {
+        this.vista.getJtPlanLealtad().addMouseListener(new MouseAdapter() 
+        {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 cargarCamposDesdeTabla();
             }
         });
 
         cargarTabla();
     }
-
 // -----------------------------------------------------------------------------
 // MÉTODOS DE TABLA Y LECTURA
 // -----------------------------------------------------------------------------
-
+    // =========================================================================
+    // METODO CARGAR TABLA
+    // =========================================================================
     /**
      * Carga todos los planes de lealtad en la JTable de la vista.
      */
-    public void cargarTabla() {
+    public void cargarTabla() 
+    {
         DefaultTableModel model = new DefaultTableModel(
-                new Object[]{"ID", "Nivel", "Descuento (%)", "Factor Puntos (x)"}, 0) {
+                new Object[]{"ID", "Nivel", "Descuento (%)", "Factor Puntos (x)"}, 0)
+        {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(int row, int column) 
+            {
                 return false;
             }
         };
 
         List<PlanLealtad> planes = modeloDAO.obtenerTodos();
-
-        for (PlanLealtad plan : planes) {
+        for (PlanLealtad plan : planes)
+        {
             Double descuento = plan.getDescuento();
             Double factorPuntos = plan.getFactorPuntos();
-
             String descuentoStr = (descuento == null) ? "0.00" : String.format("%.2f", descuento);
             String factorPuntosStr = (factorPuntos == null) ? "0.00" : String.format("%.2f", factorPuntos);
-
             model.addRow(new Object[]{
                 plan.getId(),
                 plan.getNivel(),
@@ -78,27 +90,32 @@ public class PlanLealtadController implements ActionListener {
         }
         vista.getJtPlanLealtad().setModel(model);
     }
-
+    // =========================================================================
+    // METODO CARGAR CAMPOS DESDE LA TABLA
+    // =========================================================================
     /**
      * Carga los datos de la fila seleccionada en los campos de texto.
      */
-    public void cargarCamposDesdeTabla() {
+    public void cargarCamposDesdeTabla() 
+    {
         JTable tabla = vista.getJtPlanLealtad();
         int fila = tabla.getSelectedRow();
 
-        if (fila >= 0) {
-            try {
+        if (fila >= 0)
+        {
+            try
+            {
                 Object id = tabla.getValueAt(fila, 0);
                 Object nivel = tabla.getValueAt(fila, 1);
                 Object descuento = tabla.getValueAt(fila, 2);
                 Object factorPuntos = tabla.getValueAt(fila, 3);
-
                 vista.getTxtId().setText(String.valueOf(id));
                 vista.getTxtNivel().setText(String.valueOf(nivel));
                 // Usamos replace para manejar el punto decimal en la conversión
                 vista.getTxtDescuento().setText(String.valueOf(descuento).replace(",", "."));
                 vista.getTxtFactorPuntos().setText(String.valueOf(factorPuntos).replace(",", "."));
-            } catch (Exception ex) {
+            } catch (Exception ex)
+            {
                 JOptionPane.showMessageDialog(vista, "Error al leer datos de la fila seleccionada: " + ex.getMessage(), "Error de Datos", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -111,6 +128,9 @@ public class PlanLealtadController implements ActionListener {
      * @param validarCamposAdicionales Si es verdadero, valida que Nivel, Descuento y Factor Puntos no estén vacíos.
      * @return true si la lectura y conversión es exitosa, false en caso contrario.
      */
+    // =========================================================================
+    // METODO LEER CAMPOS
+    // =========================================================================
     private boolean leerCampos(boolean incluirId, boolean validarCamposAdicionales) {
 
         String idStr = vista.getTxtId().getText().trim();
@@ -167,139 +187,196 @@ public class PlanLealtadController implements ActionListener {
             return false;
         }
     }
-
-// -----------------------------------------------------------------------------
-// MANEJO DE EVENTOS (actionPerformed)
-// -----------------------------------------------------------------------------
-
+    // =========================================================================
+    // MANEJADOR DE EVENTOS
+    // =========================================================================
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) 
+    {
         String comando = e.getActionCommand();
-
-        // --- 1. Botón AGREGAR ---
+    // =========================================================================
+    // BTN AGREGAR
+    // =========================================================================
         // Al pasar (true, true), el método leerCampos ahora valida que todos los campos estén llenos
-        if (comando.equals("Agregar")) {
-            if (leerCampos(true, true)) { 
-                if (modeloDAO.agregar(modelo)) {
+        if (comando.equals("Agregar")) 
+        {
+            if (leerCampos(true, true))
+            { 
+                if (modeloDAO.agregar(modelo)) 
+                {
                     JOptionPane.showMessageDialog(vista, "Plan de Lealtad ID " + modelo.getId() + " agregado exitosamente.");
                     vista.limpiarCampos();
                     cargarTabla();
-                } else {
+                } else
+                {
                     JOptionPane.showMessageDialog(vista, "Error: No se pudo agregar el Plan de Lealtad. (Verifique ID duplicado o error de BD)", "Error de BD", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
-
-        // --- 2. Botón EDITAR ---
+    // =========================================================================
+    // BTN EDITAR
+    // =========================================================================
         // Al pasar (true, true), el método leerCampos ahora valida que todos los campos estén llenos
-        else if (comando.equals("Editar")) {
-            if (leerCampos(true, true)) {
-                if (modeloDAO.editar(modelo)) {
+        else if (comando.equals("Editar")) 
+        {
+            if (leerCampos(true, true)) 
+            {
+                if (modeloDAO.editar(modelo)) 
+                {
                     JOptionPane.showMessageDialog(vista, "Plan de Lealtad modificado exitosamente.");
                     vista.limpiarCampos();
                     cargarTabla();
-                } else {
+                } else 
+                {
                     JOptionPane.showMessageDialog(vista, "Error: No se pudo modificar el Plan de Lealtad. (ID no encontrado)", "Error de BD", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
-
-        // --- 3. Botón BUSCAR (Solo por ID) ---
-        else if (comando.equals("Buscar")) {
-
-            String idStr = vista.getTxtId().getText().trim();
-            if (idStr.isEmpty()) {
-                JOptionPane.showMessageDialog(vista, "Debe ingresar el ID para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            try {
-                int id = Integer.parseInt(idStr);
-
-                // 1. Cargamos el ID en el objeto modelo
-                modelo.setId(id);
-                // 2. Limpiamos los otros campos del modelo para que el DAO solo use el ID
-                modelo.setNivel(null);
-                modelo.setDescuento(null);
-                modelo.setFactorPuntos(null);
-
-                // 3. Llamamos al método DAO genérico (modeloDAO.buscar(modelo))
-                PlanLealtad encontrado = modeloDAO.buscar(modelo);
-
-                if (encontrado != null) {
-                    // Rellenar las casillas con los datos encontrados
-                    vista.getTxtId().setText(String.valueOf(encontrado.getId()));
-                    vista.getTxtNivel().setText(encontrado.getNivel());
-                    vista.getTxtDescuento().setText(String.format("%.2f", encontrado.getDescuento()));
-                    vista.getTxtFactorPuntos().setText(String.format("%.2f", encontrado.getFactorPuntos()));
-                    // El mensaje se muestra SOLO AQUÍ (una vez por búsqueda exitosa)
-                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad ID " + encontrado.getId() + " encontrado.");
-                } else {
-                    // El mensaje se muestra SOLO AQUÍ (una vez por búsqueda fallida)
-                    JOptionPane.showMessageDialog(vista, "Plan de Lealtad con ID " + id + " no encontrado.", "No Encontrado", JOptionPane.WARNING_MESSAGE);
-                    // Limpiar solo los campos que no son el ID
-                    vista.getTxtNivel().setText("");
-                    vista.getTxtDescuento().setText("");
-                    vista.getTxtFactorPuntos().setText("");
-                }
-            } catch (NumberFormatException ex) {
-                // El mensaje se muestra SOLO AQUÍ (una vez por error de formato)
-                JOptionPane.showMessageDialog(vista, "El ID debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-            }
+    // =========================================================================
+    // BTN BUSCAR
+    // =========================================================================
+    else if (comando.equals("Buscar")) 
+    {
+        String idStr = vista.getTxtId().getText().trim();
+        if (idStr.isEmpty()) 
+        {
+            JOptionPane.showMessageDialog(vista, "Debe ingresar el ID para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-
-        // --- 4. Botón ELIMINAR (Por ID o por Nivel) ---
-        else if (comando.equals("Eliminar")) {
+        try 
+        {
+            int id = Integer.parseInt(idStr);
+            // 1. Cargamos el ID en el objeto modelo
+            modelo.setId(id);
+            // 2. Limpiamos los otros campos del modelo para que el DAO solo use el ID
+            modelo.setNivel(null);
+            modelo.setDescuento(null);
+            modelo.setFactorPuntos(null);
+            // 3. Llamamos al método DAO genérico (modeloDAO.buscar(modelo))
+            PlanLealtad encontrado = modeloDAO.buscar(modelo);
+            if (encontrado != null)
+            {
+                // Rellenar las casillas con los datos encontrados
+                vista.getTxtId().setText(String.valueOf(encontrado.getId()));
+                vista.getTxtNivel().setText(encontrado.getNivel());
+                vista.getTxtDescuento().setText(String.format("%.2f", encontrado.getDescuento()));
+                vista.getTxtFactorPuntos().setText(String.format("%.2f", encontrado.getFactorPuntos()));
+                
+                // Filtrar la tabla para mostrar solo el resultado
+                cargarTablaFiltrada(encontrado);
+                
+                JOptionPane.showMessageDialog(vista, "Plan de Lealtad ID " + encontrado.getId() + " encontrado.");
+            } else 
+            {
+                JOptionPane.showMessageDialog(vista, "Plan de Lealtad con ID " + id + " no encontrado.", "No Encontrado", JOptionPane.WARNING_MESSAGE);
+                // Limpiar solo los campos que no son el ID
+                vista.getTxtNivel().setText("");
+                vista.getTxtDescuento().setText("");
+                vista.getTxtFactorPuntos().setText("");
+            }
+        } catch (NumberFormatException ex)
+        {
+            JOptionPane.showMessageDialog(vista, "El ID debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    // =========================================================================
+    // BTN ELIMINAR
+    // =========================================================================
+        else if (comando.equals("Eliminar"))
+        {
             String idStr = vista.getTxtId().getText().trim();
             String nivel = vista.getTxtNivel().getText().trim();
-
-            if (idStr.isEmpty() && nivel.isEmpty()) {
+            if (idStr.isEmpty() && nivel.isEmpty())
+            {
                 JOptionPane.showMessageDialog(vista, "Debe ingresar el ID o el Nivel para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
             int id = 0;
             boolean eliminarPorId = false;
-
             // Preparamos el modelo
             modelo.setId(0); // Limpiamos ID por defecto
             modelo.setNivel(null); // Limpiamos Nivel por defecto
-
-            if (!idStr.isEmpty()) {
-                try {
+            if (!idStr.isEmpty()) 
+            {
+                try 
+                {
                     id = Integer.parseInt(idStr);
                     modelo.setId(id);
                     eliminarPorId = true;
-                } catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) 
+                {
                     JOptionPane.showMessageDialog(vista, "Si ingresa el ID, debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-            } else if (!nivel.isEmpty()) {
+            } else if (!nivel.isEmpty()) 
+            {
                 modelo.setNivel(nivel);
                 eliminarPorId = false;
             }
-
             // Confirmación
             String target = eliminarPorId ? ("ID " + id) : ("Nivel: " + nivel);
             int confirmacion = JOptionPane.showConfirmDialog(vista, "¿Está seguro que desea eliminar el plan con " + target + "?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-
-            if (confirmacion == JOptionPane.YES_OPTION) {
-                if (modeloDAO.eliminar(modelo)) {
+            if (confirmacion == JOptionPane.YES_OPTION)
+            {
+                if (modeloDAO.eliminar(modelo)) 
+                {
                     JOptionPane.showMessageDialog(vista, "Plan de Lealtad eliminado exitosamente.");
                     vista.limpiarCampos();
                     cargarTabla();
-                } else {
+                } else 
+                {
                     JOptionPane.showMessageDialog(vista, "Error: No se pudo eliminar el Plan de Lealtad. (Criterio no encontrado o error de BD)", "Error de BD", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
 
-        // --- Botones Auxiliares ---
-        else if (comando.equals("Limpiar")) {
+    // =========================================================================
+    // BTN AUXILIARES
+    // =========================================================================
+        else if (comando.equals("Limpiar")) 
+        {
             vista.limpiarCampos();
             cargarTabla();
-        } else if (comando.equals("Salir")) {
+        } else if (comando.equals("Salir"))
+        {
             vista.dispose();
         }
     }
+    
+//==========================================================================
+// METODO CARGAR TABLA FILTRADA (mostrar solo un plan)
+//==========================================================================
+/**
+ * Muestra solo el plan de lealtad encontrado en la tabla.
+ * @param plan El plan de lealtad a mostrar en la tabla.
+ */
+private void cargarTablaFiltrada(PlanLealtad plan) 
+{
+    DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"ID", "Nivel", "Descuento (%)", "Factor Puntos (x)"}, 0)
+    {
+        @Override
+        public boolean isCellEditable(int row, int column) 
+        {
+            return false;
+        }
+    };
+    
+    // Formatear los valores
+    Double descuento = plan.getDescuento();
+    Double factorPuntos = plan.getFactorPuntos();
+    String descuentoStr = (descuento == null) ? "0.00" : String.format("%.2f", descuento);
+    String factorPuntosStr = (factorPuntos == null) ? "0.00" : String.format("%.2f", factorPuntos);
+    
+    // Agregar solo el plan encontrado
+    model.addRow(new Object[]{
+        plan.getId(),
+        plan.getNivel(),
+        descuentoStr,
+        factorPuntosStr
+    });
+    
+    vista.getJtPlanLealtad().setModel(model);
+}
+    //==========================================================================
 }

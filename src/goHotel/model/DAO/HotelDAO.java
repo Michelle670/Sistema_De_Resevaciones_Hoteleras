@@ -1,4 +1,6 @@
-
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
 import goHotel.controller.HotelController;
 import goHotel.model.ConexionBD;
@@ -12,24 +14,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-//******************************************************************************
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- */
-//******************************************************************************
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// HOTEL  DAO
+//============================================================================== 
 public class HotelDAO extends ConexionBD 
 {
     //==========================================================================
     // REGISTRAR HOTEL
     //==========================================================================
-public boolean registrarHotel(String codigoTexto, String nombre, int idPais, String ciudad, String direccion) {
+public boolean registrarHotel(String codigoTexto, String nombre, int idPais, String ciudad, String direccion) 
+{
     Connection conn = null;
     PreparedStatement ps = null;
     
-    try {
+    try 
+    {
         // Validaciones
         if (codigoTexto.trim().isEmpty() || nombre.trim().isEmpty() || ciudad.trim().isEmpty() || direccion.trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
@@ -48,7 +52,6 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
         conn = ConexionBD.getConnection();
         String sql = "INSERT INTO hotel (id_hotel, nombre, id_pais, ciudad, direccion) VALUES (?, ?, ?, ?, ?)";
         ps = conn.prepareStatement(sql);
-        
         ps.setInt(1, codigo);
         ps.setString(2, nombre.trim());
         ps.setInt(3, idPais);
@@ -57,24 +60,31 @@ public boolean registrarHotel(String codigoTexto, String nombre, int idPais, Str
         
         int filasAfectadas = ps.executeUpdate();
 
-        if (filasAfectadas > 0) {
+        if (filasAfectadas > 0) 
+        {
             JOptionPane.showMessageDialog(null, "Hotel agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             return true;
-        } else {
+        } else 
+        {
             JOptionPane.showMessageDialog(null, "Error: No se pudo agregar el hotel.", "Fallido", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException e) 
+    {
         JOptionPane.showMessageDialog(null, "El código debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
         return false;
-    } catch (SQLException e) {
+    } catch (SQLException e) 
+    {
         JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         return false;
-    } finally {
-        try {
+    } finally 
+    {
+        try 
+        {
             if (ps != null) ps.close();
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             System.err.println("Error al cerrar PreparedStatement: " + e.getMessage());
         }
         // NO cerramos conn porque es conexión global

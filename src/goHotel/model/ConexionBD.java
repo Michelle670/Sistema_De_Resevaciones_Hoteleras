@@ -1,15 +1,24 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
+ * PROYECTO
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// CONEXION DE LA BD
+//==============================================================================  
 public class ConexionBD 
 {
     private static final String URL = "jdbc:mysql://localhost:3306/gohotel";
     private static final String USER = "root";
     private static final String PASSWORD = ""; 
-
+    //==========================================================================
     // Conexión única para toda la app
     private static Connection conn = null;
 
@@ -30,7 +39,7 @@ public class ConexionBD
         }
         return conn;
     }
-    
+    //==========================================================================
     // Cerrar conexión
     public static void cerrarConexion() 
     {
@@ -47,4 +56,5 @@ public class ConexionBD
             System.out.println("Error al cerrar: " + e.getMessage());
         }
     }
+    //==========================================================================
 }

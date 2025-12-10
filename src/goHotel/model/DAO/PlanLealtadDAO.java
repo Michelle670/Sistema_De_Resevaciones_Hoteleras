@@ -1,5 +1,7 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD; 
 import goHotel.model.PlanLealtad;
 import java.sql.Connection;
@@ -10,35 +12,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-//******************************************************************************
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- * Data Access Object para la entidad PlanLealtad.
- */
-//******************************************************************************
-public class PlanLealtadDAO extends ConexionBD {
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// PLAN LEALTAD DAO
+//==============================================================================
+public class PlanLealtadDAO extends ConexionBD 
+{
 
     private static final Logger LOGGER = Logger.getLogger(PlanLealtadDAO.class.getName());
 
     //==========================================================================
     // MÉTODO 1: OBTENER TODOS (READ ALL)
     //==========================================================================
-    public List<PlanLealtad> obtenerTodos() {
+    public List<PlanLealtad> obtenerTodos() 
+    {
         List<PlanLealtad> planes = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        try {
+        try
+        {
             conn = ConexionBD.getConnection();
             String sql = "SELECT id_plan, nivel, descuento, factor_puntos FROM plan_lealtad ORDER BY id_plan";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next()) 
+            {
                 PlanLealtad pl = new PlanLealtad(
                     rs.getInt("id_plan"),
                     rs.getString("nivel"),
@@ -98,7 +103,8 @@ public class PlanLealtadDAO extends ConexionBD {
     //==========================================================================
     // MÉTODO 3: EDITAR (UPDATE)
     //==========================================================================
-    public boolean editar(PlanLealtad modelo) {
+    public boolean editar(PlanLealtad modelo) 
+    {
         Connection conn = null;
         PreparedStatement ps = null;
 

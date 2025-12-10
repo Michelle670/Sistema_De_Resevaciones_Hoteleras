@@ -1,4 +1,6 @@
-
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.controller;
 import goHotel.model.DAO.LoginDAO;
 import goHotel.view.LoginClienteNuevo;
@@ -8,20 +10,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
 //==============================================================================
-//LOGIN CONTROLLER
-// Tiene toda la funcionalidad de los btn
+// LOGIN CONTROLLER
 //==============================================================================
+/**
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Login.
+ */
 public class LoginController implements ActionListener 
 {
     
     private final LoginDAO dao;
     private final LoginView vista;
-    
+    // =========================================================================
+    // CONSTRUCTOR
+    // =========================================================================
     public LoginController(LoginDAO dao, LoginView vista) 
     {
         this.dao = dao;
@@ -76,10 +83,9 @@ public class LoginController implements ActionListener
     {
         return dao.loginCliente(correo, pass);
     }
-    //==========================================================================
-    // ACTION PERFORMED  
-    // Contiene toda la funcionalidad de los btn
-    //==========================================================================
+    // =========================================================================
+    // MANEJADOR DE EVENTOS
+    // =========================================================================
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -90,68 +96,88 @@ public class LoginController implements ActionListener
     // si es empleado lo valida y reviso su rol y si es cliente ya registrado 
     // lo lleva al menu
     //==========================================================================
-    if (e.getSource() == vista.btnOk)
-{
-    String correo = vista.txtCorreo.getText().trim();
-    String pass = new String(vista.jPassword.getPassword());
-    boolean esEmpleado = vista.jrEmpleado.isSelected();
-    boolean esClienteNuevo = vista.jrClienteNuevo.isSelected();
-    String tipoUsuario = esEmpleado ? "Empleado" : "Cliente";
-    
-    // SI ES CLIENTE NUEVO - ABRIR VENTANA DE REGISTRO
-    if (esClienteNuevo)
-    {
-        LoginClienteNuevo vistaRegistro = new LoginClienteNuevo();
-        LoginControllerClienteNuevo controllerRegistro = new LoginControllerClienteNuevo(vistaRegistro, dao);
-        controllerRegistro.iniciar();
-        vista.dispose(); // Cerrar ventana de login actual
-        return;
+            if (e.getSource() == vista.btnOk)
+        {
+            String correo = vista.txtCorreo.getText().trim();
+            String pass = new String(vista.jPassword.getPassword());
+            boolean esEmpleado = vista.jrEmpleado.isSelected();
+            boolean esClienteNuevo = vista.jrClienteNuevo.isSelected();
+            String tipoUsuario = esEmpleado ? "Empleado" : "Cliente";
+
+            // SI ES CLIENTE NUEVO - ABRIR VENTANA DE REGISTRO
+            if (esClienteNuevo)
+            {
+                LoginClienteNuevo vistaRegistro = new LoginClienteNuevo();
+                LoginControllerClienteNuevo controllerRegistro = new LoginControllerClienteNuevo(vistaRegistro, dao);
+                controllerRegistro.iniciar();
+                vista.dispose(); // Cerrar ventana de login actual
+                return;
+            }
+        //==========================================================================        
+        // VALIDAR CORREO
+        //========================================================================== 
+        if (!validarCorreo(correo)) 
+        {
+            JOptionPane.showMessageDialog(vista, "Correo inválido, debe contener '@' y un '.'.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        //====================================================================== 
+        // VALIDAR CONTRASEÑA
+        //======================================================================
+        if (!validarPassword(pass)) 
+        {
+            JOptionPane.showMessageDialog(vista, "La contraseña debe tener mínimo 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean loginCorrecto = false;
+        //====================================================================== 
+        // SI ES EMPLEADO (login fijo)
+        if (esEmpleado) 
+        {
+            loginCorrecto = loginEmpleado(correo, pass);
+        }
+        //======================================================================
+        // SI ES CLIENTE (se valida en BD)
+        else 
+        {
+            loginCorrecto = loginCliente(correo, pass);
+        }
+
+        if (loginCorrecto)
+        { 
+            //==================================================================
+            // Obtener el ID del cliente (solo si es cliente)
+            int idCliente = -1;
+            if (!esEmpleado) 
+            {
+                idCliente = dao.getIdClienteByCorreo(correo);
+            }
+            //==================================================================
+            // Crear Menu con los parámetros (ahora incluye idCliente)
+            Menu vistaMenu = new Menu(correo, tipoUsuario);
+            MenuController menuController = new MenuController(vistaMenu, correo, tipoUsuario, idCliente);
+            vistaMenu.setController(menuController);
+            //==================================================================
+            // Iniciar el menú
+            menuController.iniciar();
+
+            vista.dispose(); // cerrar ventana de login
+//            //==================================================================
+//            // Crear Menu con los parámetros
+//            Menu vistaMenu = new Menu(correo, tipoUsuario);
+//            MenuController menuController = new MenuController(vistaMenu, correo, tipoUsuario);
+//            vistaMenu.setController(menuController);
+//            //==================================================================
+//            // Iniciar el menú
+//            menuController.iniciar();
+//
+//            vista.dispose(); // cerrar ventana de login
+        } 
+        else
+        {
+            JOptionPane.showMessageDialog(vista, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-    
-    // VALIDAR CORREO
-    if (!validarCorreo(correo)) 
-    {
-        JOptionPane.showMessageDialog(vista, "Correo inválido, debe contener '@' y un '.'.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    // VALIDAR CONTRASEÑA
-    if (!validarPassword(pass)) 
-    {
-        JOptionPane.showMessageDialog(vista, "La contraseña debe tener mínimo 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    boolean loginCorrecto = false;
-    
-    // SI ES EMPLEADO (login fijo)
-    if (esEmpleado) 
-    {
-        loginCorrecto = loginEmpleado(correo, pass);
-    }
-    // SI ES CLIENTE (se valida en BD)
-    else 
-    {
-        loginCorrecto = loginCliente(correo, pass);
-    }
-    
-    if (loginCorrecto)
-    { 
-        // Crear Menu con los parámetros
-        Menu vistaMenu = new Menu(correo, tipoUsuario);
-        MenuController menuController = new MenuController(vistaMenu, correo, tipoUsuario);
-        vistaMenu.setController(menuController);
-        
-        // Iniciar el menú
-        menuController.iniciar();
-        
-        vista.dispose(); // cerrar ventana de login
-    } 
-    else
-    {
-        JOptionPane.showMessageDialog(vista, "Correo o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
         //======================================================================
         // BOTÓN CANCELAR
         // sale de la pantalla
@@ -169,5 +195,6 @@ public class LoginController implements ActionListener
                 System.exit(0);
             }
         }
+        //======================================================================
     }
 }

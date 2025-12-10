@@ -1,44 +1,45 @@
-
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.controller;
 import goHotel.model.DAO.ReservaDAO;
 import goHotel.model.Reserva;
 import goHotel.view.GestionReserva;
 import goHotel.view.RegistroReserva;
-import goHotel.view.ReservaBuscarHabitacion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
 //==============================================================================  
 //CONTROLLER PARA LA PANTALLA DE GESTION RESERVA
-//==============================================================================  
+//============================================================================== 
+/**
+ * Controlador encargado de manejar la lógica de la pantalla
+ * Gestión de reserva.
+ */ 
 public class ReservaController implements ActionListener 
 {
-  
-    
     private final Reserva modelo;
     private final ReservaDAO consultas;
     private final GestionReserva vista;
     private final String correoUsuario;
     private final String tipoUsuario;
-
-    
+    // =========================================================================
+    // CONSTRUCTOR
+    // =========================================================================
     public ReservaController(Reserva modelo, ReservaDAO consultas, GestionReserva vista,String correo, String tipo) 
     {
-       
         this.correoUsuario = correo;
         this.tipoUsuario = tipo;
         this.modelo = modelo;
         this.consultas = consultas;
         this.vista = vista;
-    
         //==============================================================================      
         //GESTION RESERVA
         //==============================================================================  
@@ -66,7 +67,6 @@ public class ReservaController implements ActionListener
         actualizarTabla();
         ajustarColumnas();
     }
-    
     //==============================================================================  
     //ACTUALIZAR TABLA
     //==============================================================================      
@@ -106,27 +106,23 @@ public class ReservaController implements ActionListener
         vista.txtCliente.setText("");
         vista.jtGestionReserva.clearSelection();
     }
-//==============================================================================  
-// SE LLAMAN LAS FUNCIONES DE LOS BTN's 
-//==============================================================================  
+    // =========================================================================
+    // MANEJADOR DE EVENTOS
+    // =========================================================================
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-        
         //======================================================================
         // BOTÓN AGREGAR
         //======================================================================
         if (e.getSource() == vista.btnAgregar) 
-        {
-            
+        {  
             Reserva modelo = new Reserva();
             ReservaDAO consultas = new ReservaDAO();
             RegistroReserva vista = new RegistroReserva();
             ReservaRegistroController control = new ReservaRegistroController(modelo, consultas, vista,"Agregar",correoUsuario,0,null,this);
             control.iniciar();
-            
         }
-        
         //======================================================================
         // BOTÓN EDITAR
         //======================================================================
@@ -151,32 +147,29 @@ public class ReservaController implements ActionListener
          String nombreCliente = vista.jtGestionReserva.getValueAt(filaSeleccionada, 6).toString();
          String fechaEntrada = vista.jtGestionReserva.getValueAt(filaSeleccionada, 7).toString();
          String fechaSalida = vista.jtGestionReserva.getValueAt(filaSeleccionada, 8).toString();
-
+         //=====================================================================
          // Crear formulario
          Reserva modelo = new Reserva();
          ReservaDAO consultas = new ReservaDAO();
          RegistroReserva vistaRegistro = new RegistroReserva();
-
+         //=====================================================================
          // Obtener IDs desde los nombres
          int idHotel = consultas.obtenerIdHotelPorNombre(nombreHotel);
          int idCliente = consultas.obtenerIdClientePorReserva(idReserva);
-
+         //=====================================================================
          // Llenar campos ANTES de iniciar
          vistaRegistro.txtIdReserva.setText(String.valueOf(idReserva));
          vistaRegistro.txtCodigoHotel.setText(String.valueOf(idHotel));
          vistaRegistro.txtNumHabitacion.setText(String.valueOf(numHabitacion));
          vistaRegistro.txtCodigoCliente.setText(String.valueOf(idCliente));
-
+         //=====================================================================
          // Iniciar controller
-         ReservaRegistroController control = new ReservaRegistroController(
-             modelo, consultas, vistaRegistro, "Editar", correoUsuario, numHabitacion, nombreHotel, this);
+         ReservaRegistroController control = new ReservaRegistroController
+        ( modelo, consultas, vistaRegistro, "Editar", correoUsuario, numHabitacion, nombreHotel, this);
          control.iniciar();
-
          // Cargar datos adicionales después de iniciar
          control.cargarDatosEdicion(idReserva, estado, fechaEntrada, fechaSalida);
-            
         }
-        
         //======================================================================
         // BOTÓN BUSCAR
         //======================================================================
@@ -213,12 +206,12 @@ public class ReservaController implements ActionListener
                     JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            
+            //==================================================================
             // Obtener datos de la fila seleccionada
             int idReserva = Integer.parseInt(vista.jtGestionReserva.getValueAt(filaSeleccionada, 0).toString());
             String cliente = vista.jtGestionReserva.getValueAt(filaSeleccionada, 5).toString();
             String hotel = vista.jtGestionReserva.getValueAt(filaSeleccionada, 3).toString();
-            
+            //==================================================================
             // Confirmar la eliminación
             int confirmacion = JOptionPane.showConfirmDialog(vista,
                 "¿Está seguro de eliminar esta reserva?\n\n" +
@@ -232,7 +225,12 @@ public class ReservaController implements ActionListener
             
             if (confirmacion == JOptionPane.YES_OPTION) 
             {
-                if (consultas.eliminar(idReserva)) {
+                if (consultas.eliminar(idReserva)) 
+                {
+              // Obtener id_cliente ANTES de eliminar
+              int idCliente = consultas.obtenerIdClientePorReserva(idReserva);
+               // Actualizar puntos de lealtad del cliente
+                consultas.actualizarPuntosLealtad(idCliente);
                     JOptionPane.showMessageDialog(vista, 
                         "Reserva eliminada exitosamente", 
                         "Éxito", 
@@ -246,12 +244,8 @@ public class ReservaController implements ActionListener
                         "Error", 
                         JOptionPane.ERROR_MESSAGE);
                 }
-            }
-            
-            
-            
+            }    
         }
-    
         //======================================================================
         // BOTÓN LIMPIAR
         //======================================================================
@@ -279,7 +273,13 @@ public class ReservaController implements ActionListener
         }
         
     } 
+    //==========================================================================
+    // METODOS AUXILIARES
+    //==========================================================================
     
+    //==========================================================================
+    // METODO AJUSTAR COLUMNAS
+    //==========================================================================
     private void ajustarColumnas() 
     {
     TableColumnModel columnModel = vista.jtGestionReserva.getColumnModel();
@@ -290,5 +290,5 @@ public class ReservaController implements ActionListener
     columnModel.getColumn(7).setPreferredWidth(90);
     columnModel.getColumn(8).setPreferredWidth(90);
     }
-
+    //==========================================================================
     }

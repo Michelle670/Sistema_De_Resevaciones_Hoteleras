@@ -1,13 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
- */
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model;
-
-/**
- *
- * @author soloa
- */
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
+ * PROYECTO
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// ENUM ESTADO RESERVA
+//==============================================================================  
 public enum EstadoReserva 
 {
   CONFIRMADA,

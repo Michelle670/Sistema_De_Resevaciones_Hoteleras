@@ -1,11 +1,15 @@
-
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model;
-
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- */
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// MODELO CLIENTE 
+//============================================================================== 
 public class Cliente 
 {
 //==============================================================================
@@ -46,60 +50,74 @@ public class Cliente
 //GETTERS Y SETTERS
 //==============================================================================    
 
-    public int getIdCliente() {
+    public int getIdCliente()
+    {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(int idCliente)
+    {
         this.idCliente = idCliente;
     }
 
-    public int getIdPlan() {
+    public int getIdPlan() 
+    {
         return idPlan;
     }
 
-    public void setIdPlan(int idPlan) {
+    public void setIdPlan(int idPlan) 
+    {
         this.idPlan = idPlan;
     }
 
-    public String getNombre() {
+    public String getNombre() 
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public String getCorreo() {
+    public String getCorreo() 
+    {
         return correo;
     }
 
-    public void setCorreo(String correo) {
+    public void setCorreo(String correo)
+    {
         this.correo = correo;
     }
 
-    public String getContrasenna() {
+    public String getContrasenna() 
+    {
         return contrasenna;
     }
 
-    public void setContrasenna(String contrasenna) {
+    public void setContrasenna(String contrasenna)
+    {
         this.contrasenna = contrasenna;
     }
 
-    public int getIdPais() {
+    public int getIdPais()
+    {
         return idPais;
     }
 
-    public void setIdPais(int idPais) {
+    public void setIdPais(int idPais)
+    {
         this.idPais = idPais;
     }
 
-    public int getPuntosLealtad() {
+    public int getPuntosLealtad() 
+    {
         return puntosLealtad;
     }
 
-    public void setPuntosLealtad(int puntosLealtad) {
+    public void setPuntosLealtad(int puntosLealtad) 
+    {
         this.puntosLealtad = puntosLealtad;
     }
-
+//==============================================================================
 }

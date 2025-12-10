@@ -1,9 +1,11 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
 import goHotel.controller.ReservaController;
 import goHotel.model.ConexionBD;
 import goHotel.model.Reserva;
 import goHotel.model.Servicio;
-import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +19,14 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
-
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
+//==============================================================================  
+// RESERVA DAO
+//==============================================================================
 //==============================================================================  
 // FUNCIONA PARA TODAS LAS CONSULTAS RELACIONADAS CON RESERVA
 //==============================================================================  
@@ -298,7 +302,8 @@ public Servicio obtenerServicioPorNombre(String nombre) {
     return s;
 }
 //==============================================================================
-public void cargarHabitaciones(DefaultTableModel modelo) {
+public void cargarHabitaciones(DefaultTableModel modelo) 
+{
     Connection con = ConexionBD.getConnection();
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -647,57 +652,6 @@ public boolean guardarReserva(int idCliente, int idHotel, int numHabitacion,
     }
 }
 
-//public boolean verificarDisponibilidadHabitacion(int idHotel, int numHabitacion,
-//                                                  LocalDateTime fechaEntrada, 
-//                                                  LocalDateTime fechaSalida,
-//                                                  int idReservaExcluir) 
-//{
-//    String sql = """
-//        SELECT COUNT(*) AS conflictos
-//        FROM reserva R
-//            INNER JOIN habitacion H ON R.id_habitacion = H.id_habitacion
-//        WHERE H.id_hotel = ?
-//          AND H.numero = ?
-//          AND R.estado_reserva NOT IN ('CANCELADA', 'FINALIZADA')
-//          AND R.id_reserva != ?
-//          AND (
-//                (? >= R.fecha_entrada AND ? < R.fecha_salida)
-//                OR (? > R.fecha_entrada AND ? <= R.fecha_salida)
-//                OR (? <= R.fecha_entrada AND ? >= R.fecha_salida)
-//              )
-//        """;
-//
-//    try (Connection conn = ConexionBD.getConnection();
-//         PreparedStatement ps = conn.prepareStatement(sql)) 
-//    {
-//        java.sql.Timestamp tsEntrada = java.sql.Timestamp.valueOf(fechaEntrada);
-//        java.sql.Timestamp tsSalida = java.sql.Timestamp.valueOf(fechaSalida);
-//
-//        ps.setInt(1, idHotel);
-//        ps.setInt(2, numHabitacion);
-//        ps.setInt(3, idReservaExcluir);    // Excluir esta reserva
-//        ps.setTimestamp(4, tsEntrada);
-//        ps.setTimestamp(5, tsEntrada);
-//        ps.setTimestamp(6, tsSalida);
-//        ps.setTimestamp(7, tsSalida);
-//        ps.setTimestamp(8, tsEntrada);
-//        ps.setTimestamp(9, tsSalida);
-//
-//        try (ResultSet rs = ps.executeQuery()) 
-//        {
-//            if (rs.next()) {
-//                return rs.getInt("conflictos") == 0;
-//            }
-//        }
-//
-//    } catch (SQLException e) {
-//        System.err.println("Error al verificar disponibilidad: " + e.getMessage());
-//        e.printStackTrace();
-//    }
-//
-//    return false;
-//}
-
 public List<String> obtenerConflictosReserva(int idHotel, int numHabitacion,
                                               LocalDateTime fechaEntrada, 
                                               LocalDateTime fechaSalida) 
@@ -782,28 +736,6 @@ public int obtenerIdHotelPorNombre(String nombreHotel)
     
     return 0;
 }
-
-//public int obtenerIdClientePorNombre(String nombreCompleto) 
-//{
-//    String sql = "SELECT id_cliente FROM cliente WHERE CONCAT(nombre, ' ', apellido) = ?";
-//    
-//    try (Connection conn = ConexionBD.getConnection();
-//         PreparedStatement ps = conn.prepareStatement(sql)) 
-//    {
-//        ps.setString(1, nombreCompleto);
-//        
-//        try (ResultSet rs = ps.executeQuery()) 
-//        {
-//            if (rs.next()) {
-//                return rs.getInt("id_cliente");
-//            }
-//        }
-//    } catch (SQLException e) {
-//        System.err.println("Error al obtener ID cliente: " + e.getMessage());
-//    }
-//    
-//    return 0;
-//}
 
 public int obtenerIdClientePorReserva(int idReserva) 
 {
@@ -931,6 +863,34 @@ public boolean verificarDisponibilidadHabitacion(int idHotel, int numHabitacion,
     }
 
     return false;
+}
+//==============================================================================
+public boolean actualizarPuntosLealtad(int idCliente) 
+{
+    String sql = """
+        UPDATE cliente
+        SET puntos_lealtad = (
+            SELECT COALESCE(SUM(A.puntos_lealtad), 0) 
+            FROM reserva A 
+            WHERE A.id_cliente = ? 
+              AND A.estado_reserva NOT IN ('CANCELADA')
+        )
+        WHERE id_cliente = ?
+        """;
+
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) 
+    {
+        ps.setInt(1, idCliente);
+        ps.setInt(2, idCliente);
+
+        return ps.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        System.err.println("Error al actualizar puntos de lealtad: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
 }
 }
 

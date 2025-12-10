@@ -1,4 +1,6 @@
-
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
 import java.sql.SQLException;
 import goHotel.model.ConexionBD;
@@ -6,10 +8,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 /*****************************************************************************
- * AUTOR: GRUPO 3
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
+ * SEMANA 14
  *****************************************************************************/
+//==============================================================================  
+// LOGIN  DAO
+//============================================================================== 
 public class LoginDAO extends ConexionBD
 {
     // ---------------------------
@@ -219,5 +224,30 @@ public static String[] getUserInfo(String correo, String tipo)
     }
 }
 
+//==============================================================================
+public int getIdClienteByCorreo(String correo) 
+{
+    int idCliente = -1; // -1 indica que no se encontró
+    String sql = "SELECT id_Cliente FROM Cliente WHERE correo = ?";
+    
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) 
+    {
+        ps.setString(1, correo);
+        ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) 
+        {
+            idCliente = rs.getInt("id_Cliente");
+        }
+    } 
+    catch (SQLException e) 
+    {
+        e.printStackTrace();
+    }
+    
+    return idCliente;
+}
 
+//==============================================================================
 }

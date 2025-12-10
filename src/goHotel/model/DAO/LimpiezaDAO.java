@@ -1,3 +1,6 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
 import goHotel.model.ConexionBD;
 import java.sql.Connection;
@@ -7,8 +10,16 @@ import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-public class LimpiezaDAO {
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
+ * PROYECTO
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// LIMPIEZA  DAO
+//============================================================================== 
+public class LimpiezaDAO extends ConexionBD
+{
 
     // ============================================================
     // CARGAR REPORTE DE LIMPIEZA
@@ -96,12 +107,14 @@ public class LimpiezaDAO {
     // ============================================================
     // CARGAR COMBOBOX DE HOTELES
     // ============================================================
-    public void cargarHoteles(javax.swing.JComboBox<String> combo) {
+    public void cargarHoteles(javax.swing.JComboBox<String> combo) 
+    {
         combo.removeAllItems();
         combo.addItem("--- Ninguno ---");
 
         Connection con = ConexionBD.getConnection();
-        try {
+        try 
+        {
             PreparedStatement ps = con.prepareStatement("SELECT nombre FROM hotel ORDER BY nombre");
             ResultSet rs = ps.executeQuery();
 
@@ -112,4 +125,5 @@ public class LimpiezaDAO {
             System.out.println("Error cargando hoteles: " + e);
         }
     }
+    //==========================================================================
 }

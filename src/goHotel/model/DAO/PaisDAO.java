@@ -1,5 +1,7 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model.DAO;
-
 import goHotel.model.ConexionBD;
 import goHotel.model.Pais;
 import java.sql.Connection;
@@ -12,16 +14,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- *
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// PAIS DAO
+//==============================================================================
+/**
  * Clase Data Access Object para la entidad Pais.
  */
-//******************************************************************************
-public class PaisDAO extends ConexionBD {
+
+public class PaisDAO extends ConexionBD 
+{
     
     // Si la compañera usa Logger(HotelController) y System.err, eliminamos el logger estático
     // private static final Logger LOGGER = Logger.getLogger(PaisDAO.class.getName());
@@ -34,11 +40,13 @@ public class PaisDAO extends ConexionBD {
      * @param pais El objeto Pais con los datos a guardar.
      * @return true si se agregó con éxito, false en caso contrario.
      */
-    public boolean registrar(Pais pais) {
+    public boolean registrar(Pais pais)
+    {
         Connection con = null;
         PreparedStatement ps = null;
 
-        try {
+        try 
+        {
             if (pais.getCodigo().trim().isEmpty() || pais.getNombre().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "El Código y el Nombre son obligatorios.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
                 return false;
@@ -64,11 +72,13 @@ public class PaisDAO extends ConexionBD {
 
             return filasAfectadas > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             // Estilo de manejo de error (usando log para consistencia, aunque la compañera a veces usa JOptionPane solo)
             Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error de base de datos al registrar País: ", e);
 
-            if (e.getSQLState().startsWith("23")) {
+            if (e.getSQLState().startsWith("23")) 
+            {
                 JOptionPane.showMessageDialog(null,
                     "Error: El Código ISO o el ID ingresado ya existen. Verifique los datos.",
                     "Error de Duplicidad", JOptionPane.ERROR_MESSAGE);
@@ -78,10 +88,13 @@ public class PaisDAO extends ConexionBD {
                     "Error SQL", JOptionPane.ERROR_MESSAGE);
             }
             return false;
-        } finally {
-            try {
+        } finally 
+        {
+            try 
+            {
                 if (ps != null) ps.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                  Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar ps en registrar: ", e);
             }
             // NO cerramos conn porque es conexión global
@@ -96,16 +109,19 @@ public class PaisDAO extends ConexionBD {
      * @param pais El objeto Pais con el ID y los nuevos datos a modificar.
      * @return true si se modificó con éxito, false en caso contrario.
      */
-    public boolean editar(Pais pais) {
+    public boolean editar(Pais pais)
+    {
         Connection con = null;
         PreparedStatement ps = null;
 
-        if (pais.getIdPais() <= 0 || pais.getCodigo().trim().isEmpty() || pais.getNombre().trim().isEmpty()) {
+        if (pais.getIdPais() <= 0 || pais.getCodigo().trim().isEmpty() || pais.getNombre().trim().isEmpty()) 
+        {
               JOptionPane.showMessageDialog(null, "Debe ingresar ID, Código y Nombre válidos para modificar.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
               return false;
         }
 
-        try {
+        try
+        {
             con = ConexionBD.getConnection();
             ps = con.prepareStatement("UPDATE pais SET codigo = ?, nombre = ? WHERE id_pais = ?");
             
@@ -116,20 +132,24 @@ public class PaisDAO extends ConexionBD {
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error de base de datos al editar País: ", e);
             if (e.getSQLState().startsWith("23")) {
                 JOptionPane.showMessageDialog(null,
                     "Error: El Código ISO ingresado ya existe en otro país.",
                     "Error de Duplicidad", JOptionPane.ERROR_MESSAGE);
-            } else {
+            } else 
+            {
                 JOptionPane.showMessageDialog(null,
                     "Error de base de datos al editar País. Consulte el log.",
                     "Error SQL", JOptionPane.ERROR_MESSAGE);
             }
             return false;
-        } finally {
-            try {
+        } finally 
+        {
+            try 
+            {
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                 Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar ps en editar: ", e);
@@ -146,16 +166,19 @@ public class PaisDAO extends ConexionBD {
      * @param pais El objeto Pais que solo requiere el ID para la eliminación.
      * @return true si se eliminó con éxito, false en caso contrario.
      */
-    public boolean eliminar(Pais pais) {
+    public boolean eliminar(Pais pais) 
+    {
         Connection con = null;
         PreparedStatement ps = null;
 
-        if (pais.getIdPais() <= 0) {
+        if (pais.getIdPais() <= 0) 
+        {
             JOptionPane.showMessageDialog(null, "Debe ingresar un ID válido para eliminar.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        try {
+        try 
+        {
             con = ConexionBD.getConnection();
             ps = con.prepareStatement("DELETE FROM pais WHERE id_pais = ?");
             
@@ -164,16 +187,20 @@ public class PaisDAO extends ConexionBD {
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error de base de datos al eliminar País: ", e);
             if (e.getSQLState().startsWith("23")) {
                 JOptionPane.showMessageDialog(null, "Error: No se puede eliminar el país porque tiene hoteles asociados.", "Violación de Clave Foránea", JOptionPane.ERROR_MESSAGE);
-            } else {
+            } else 
+            {
                 JOptionPane.showMessageDialog(null, "Error al eliminar. Verifique el log de errores.", "Error SQL", JOptionPane.ERROR_MESSAGE);
             }
             return false;
-        } finally {
-            try {
+        } finally 
+        {
+            try
+            {
                 if (ps != null) ps.close();
             } catch (SQLException e) {
                  Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar ps en eliminar: ", e);
@@ -190,7 +217,8 @@ public class PaisDAO extends ConexionBD {
      * @param id El ID del país a buscar.
      * @return El objeto Pais encontrado, o null si no existe.
      */
-    public Pais buscarPorId(int id) {
+    public Pais buscarPorId(int id) 
+    {
         Pais paisEncontrado = null;
         Connection con = null;
         PreparedStatement ps = null;
@@ -200,13 +228,15 @@ public class PaisDAO extends ConexionBD {
 
         String sql = "SELECT id_pais, codigo, nombre FROM pais WHERE id_pais = ?";
 
-        try {
+        try 
+        {
             con = ConexionBD.getConnection();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             
-            if (rs.next()) {
+            if (rs.next()) 
+            {
                 paisEncontrado = new Pais(
                     rs.getInt("id_pais"),
                     rs.getString("codigo"),
@@ -214,17 +244,20 @@ public class PaisDAO extends ConexionBD {
                 );
             }
             
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error de base de datos al buscar País por ID", e);
         } finally {
              try {
                 if (rs != null) rs.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                 Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar rs en buscarPorId: ", e);
             }
             try {
                 if (ps != null) ps.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                 Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar ps en buscarPorId: ", e);
             }
             // NO cerramos conn porque es conexión global
@@ -240,21 +273,24 @@ public class PaisDAO extends ConexionBD {
      * **CORRECCIÓN:** Ordena por ID ascendente.
      * @return Una lista de objetos Pais.
      */
-    public List<Pais> obtenerTodos() {
+    public List<Pais> obtenerTodos() 
+    {
         List<Pais> paises = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         // Línea corregida: Ordenar por id_pais (ID de menor a mayor)
-        String sql = "SELECT id_pais, codigo, nombre FROM pais ORDER BY id_pais ASC";
+        String sql = "SELECT id_pais, codigo, nombre FROM pais";
 
-        try {
+        try 
+        {
             conn = ConexionBD.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             
-            while (rs.next()) {
+            while (rs.next()) 
+            {
                 Pais p = new Pais(
                     rs.getInt("id_pais"),
                     rs.getString("codigo"),
@@ -262,17 +298,22 @@ public class PaisDAO extends ConexionBD {
                 );
                 paises.add(p);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) 
+        {
             Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al obtener todos los países: ", e);
-        } finally {
-            try {
+        } finally 
+        {
+            try 
+            {
                 if (rs != null) rs.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                  Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar rs en obtenerTodos: ", e);
             }
             try {
                 if (ps != null) ps.close();
-            } catch (SQLException e) {
+            } catch (SQLException e) 
+            {
                  Logger.getLogger(PaisDAO.class.getName()).log(Level.SEVERE, "Error al cerrar ps en obtenerTodos: ", e);
             }
             // NO cerramos conn porque es conexión global
@@ -287,15 +328,17 @@ public class PaisDAO extends ConexionBD {
      * Cargar Países en un ComboBox.
      * @param combo El JComboBox a llenar con los nombres de los países.
      */
-    public void cargarPaises(JComboBox<String> combo) {
+    public void cargarPaises(JComboBox<String> combo) 
+    {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         // Para el ComboBox, usualmente se prefiere el orden alfabético por nombre
-        String sql = "SELECT nombre FROM pais ORDER BY nombre"; 
+        String sql = "SELECT id_pais, nombre FROM pais "; 
 
-        try {
+        try 
+        {
             conn = ConexionBD.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();

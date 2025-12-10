@@ -1,14 +1,15 @@
+//==============================================================================
+// IMPORTES
+//==============================================================================
 package goHotel.model;
-
-/**
- * AUTOR: GRUPO 3
+/*****************************************************************************
+ * AUTOR: GRUPO 3 / SOFIA LOAIZA, MICHELLE GUERRERO, NIXON VARGAS Y ISRAEL APUY
  * PROYECTO
- * SEMANA 9
- *
- * Clase que representa la entidad Pais.
- */
-
-//******************************************************************************
+ * SEMANA 14
+ *****************************************************************************/
+//==============================================================================  
+// MODELO PAIS
+//============================================================================== 
 public class Pais
 {
 //==============================================================================
@@ -46,27 +47,33 @@ public class Pais
 //GETTERS Y SETTERS
 //==============================================================================
 
-    public int getIdPais() {
+    public int getIdPais() 
+    {
         return idPais;
     }
 
-    public void setIdPais(int idPais) {
+    public void setIdPais(int idPais) 
+    {
         this.idPais = idPais;
     }
 
-    public String getCodigo() {
+    public String getCodigo()
+    {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(String codigo) 
+    {
         this.codigo = codigo;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) 
+    {
         this.nombre = nombre;
     }
 
